@@ -6,7 +6,12 @@ LIBS=-lsfml-graphics -lsfml-window -lsfml-system
 
 DEPS= i8080.h
 
-OBJ= main.o i8080.o
+OBJ= main.o i8080.o \
+	 impl_instructions_branch.o \
+	 impl_instructions_other.o \
+	 impl_instructions_stack.o \
+	 impl_instructions_move.o \
+	 impl_instructions_call.o \
 
 %.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $<  $(CFLAGS)

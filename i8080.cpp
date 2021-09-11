@@ -1,5 +1,6 @@
 #include "i8080.h"
 #include <iostream>
+#include <fstream>
 
 void CPU_8080::Initialize()
 {
@@ -15,6 +16,13 @@ void CPU_8080::Initialize()
     pc = 0;
     cc = {0,0,0,0,0,0};
     int_enable = 0;
+
+    for(int i=0; i<0x3fff; i++)
+    {
+        memory[i] = 0;
+    }
+
+    instructions_executed = 0;
 }
 
 
@@ -80,5 +88,60 @@ void CPU_8080::PrintState()
     std::cout << "P : " << std::hex << (unsigned int) cc.p << std::endl;
     std::cout << "CY: " << std::hex << (unsigned int) cc.cy << std::endl;
     std::cout << "AC: " << std::hex << (unsigned int) cc.ac << std::endl;
+    std::cout << "Instructions executed: " << std::dec << instructions_executed << std::endl;
     std::cout << "==========================" << std::endl;
+}
+
+void CPU_8080::UnimplementedInstruction(uint8_t opcode)
+{
+    std::cout << "Found unimplemented instruction: 0x"
+        << std::hex << (unsigned int) opcode << std::endl;
+    halted = true;
+}
+
+void CPU_8080::EmulateCycle()
+{
+    // Fetch opcode
+    uint8_t opcode = memory[pc];
+    std::cout << "Fetched instruction " << std::hex
+        << (unsigned int) opcode << std::endl;
+
+    // Decode instruction
+    switch(opcode)
+    {
+        case 0x00:      NOP();                           break;
+        case 0x06:   MVI_B(memory[pc+1]);               break;
+        case 0x11:   LXI_D(memory[pc+2], memory[pc+1]); break;
+        case 0x1a:  LDAX_D();                           break;
+        case 0x21:   LXI_H(memory[pc+2], memory[pc+1]); break;
+        case 0x31:  LXI_SP(memory[pc+2], memory[pc+1]); break;
+        case 0x77: MOV_M_A();                           break;
+        case 0xc3:     JMP(memory[pc+2], memory[pc+1]); break;
+        case 0xcd:    CALL(memory[pc+2], memory[pc+1]); break;
+        default:
+            UnimplementedInstruction(opcode);
+            break;
+    }
+
+    instructions_executed++;
+}
+
+bool CPU_8080::Running()
+{
+    return !halted;
+}
+
+void CPU_8080::DumpMemory()
+{
+    using namespace std;
+    ofstream wf("memdump", ios::out | ios::binary);
+    if(!wf) {
+        cout << "Error, could not write memory dump file." << endl;
+        return;
+    }
+
+    wf.write(reinterpret_cast<char*>(&memory), sizeof(memory));
+    wf.close();
+    cout << "Dumped memory to memdump file." << endl;
+
 }

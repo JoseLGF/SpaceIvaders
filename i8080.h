@@ -20,9 +20,11 @@ public:
 
     /* Public interface */
 	void Initialize();
-	//void EmulateCycle();
+	void EmulateCycle();
     void LoadRom();
     void PrintState();
+    bool Running();
+    void DumpMemory();
 
 // CPU state
 private:
@@ -41,9 +43,37 @@ private:
     // Program counter
     uint16_t    pc;
     // Memory
-    uint8_t     memory[0x2000];
+    // 0x0000 - 0x1fff - Game  ROM
+    // 0x2000 - 0x23ff - Work  RAM
+    // 0x2400 - 0x3fff - Video RAM
+    // 0x4000 - ------ - RAM mirror
+    uint8_t     memory[0x3fff];
     // Processor flags
     struct ConditionCodes cc;
     // interrupt enable
     uint8_t     int_enable;
+
+    uint16_t instructions_executed;
+
+    // For debugging
+    bool halted = false;
+    void UnimplementedInstruction(uint8_t opcode);
+
+    // Implementations for the opcodes
+    // Branch group
+    void JMP(uint8_t hi, uint8_t lo);
+    // Other group
+    void NOP();
+    // Stack group
+    void LXI_SP(uint8_t hi, uint8_t lo);
+    // Move group
+    void MVI_B(uint8_t data);
+    void MOV_M_A();
+    void LXI_D(uint8_t byte_d, uint8_t byte_e);
+    void LXI_H(uint8_t byte_h, uint8_t byte_l);
+    void LDAX_D();
+    // Call group
+    void CALL(uint8_t hi, uint8_t lo);
+
+
 };

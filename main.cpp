@@ -16,8 +16,14 @@ int main(int argc, char** argv) {
     cpu.LoadRom();
 
     // Emulation cycle
-    cpu.PrintState();
+    std::cout << "Starting emulation..." << std::endl;
+    while(cpu.Running())
+    {
+        cpu.PrintState();
+        cpu.EmulateCycle();
+    }
 
+    cpu.DumpMemory();
     std::cout << "Bye!" << std::endl;
 
     return 0;

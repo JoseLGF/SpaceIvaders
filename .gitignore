@@ -1,2 +1,4 @@
 *.o
 i8080emu
+memdump
+*.swp
