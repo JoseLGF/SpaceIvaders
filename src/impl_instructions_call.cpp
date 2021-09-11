@@ -10,7 +10,7 @@
 // following the call instruction
 void CPU_8080::CALL(uint8_t hi, uint8_t lo)
 {
-    uint16_t ret = pc+2;
+    uint16_t ret = pc+3;
     memory[sp-1] = (ret >> 8) & 0xff;
     memory[sp-2] = (ret & 0xff);
     sp = sp - 2;

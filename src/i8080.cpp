@@ -161,26 +161,86 @@ void CPU_8080::DumpMemory()
 // Even parity lookup table
 bool CPU_8080::Parity(uint8_t byte)
 {
-    bool parity = true;
 
-    for(int i=0; i<8; i++)
-    {
-        if(byte & 0x01)
-        {
-            parity = !parity;
-        }
-        parity = (parity >> 1) & 0x7f;
-    }
+    bool parity_table[] = {
+      1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+      0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+      0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+      1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+      0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+      1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+      1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+      0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+      0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+      1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+      1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+      0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+      1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1,
+      0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+      0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0,
+      1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1
+    };
+    return parity_table[byte];
 
-    return parity;
+    /* bool parity = true; */
+
+    /* for(int i=0; i<8; i++) */
+    /* { */
+    /*     if(byte & 0x01) */
+    /*     { */
+    /*         parity = !parity; */
+    /*     } */
+    /*     parity = (parity >> 1) & 0x7f; */
+    /* } */
+
+    /* return parity; */
 }
 
 void CPU_8080::WriteMemoryAt(uint16_t address, uint8_t data)
 {
     memory[address] = data;
 }
+uint8_t CPU_8080::ReadMemoryAt(uint16_t address)
+{
+    return memory[address];
+}
 
 uint16_t CPU_8080::Get_pc()
 {
     return pc;
+}
+
+uint8_t CPU_8080::Get_a()
+{
+    return a;
+}
+
+void CPU_8080::Set_z(bool bit)
+{
+    cc.z = bit;
+}
+
+void CPU_8080::Set_a(uint8_t data)
+{
+    a = data;
+}
+
+void CPU_8080::Set_h(uint8_t data)
+{
+    h = data;
+}
+
+void CPU_8080::Set_l(uint8_t data)
+{
+    l = data;
+}
+
+void CPU_8080::Set_sp(uint16_t address)
+{
+    sp = address;
+}
+
+uint16_t CPU_8080::Get_sp()
+{
+    return sp;
 }

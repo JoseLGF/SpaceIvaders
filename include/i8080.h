@@ -32,6 +32,11 @@ public:
     bool Get_p();
     bool Get_cy();
     bool Get_ac();
+    void Set_z(bool bit);
+    void Set_s(bool bit);
+    void Set_p(bool bit);
+    void Set_cy(bool bit);
+    void Set_ac(bool bit);
 
     uint8_t Get_a();
     uint8_t Get_b();
@@ -40,8 +45,16 @@ public:
     uint8_t Get_e();
     uint8_t Get_h();
     uint8_t Get_l();
+    void Set_a(uint8_t data);
+    void Set_b(uint8_t data);
+    void Set_c(uint8_t data);
+    void Set_d(uint8_t data);
+    void Set_e(uint8_t data);
+    void Set_h(uint8_t data);
+    void Set_l(uint8_t data);
 
     uint16_t Get_sp();
+    void Set_sp(uint16_t address);
     uint16_t Get_pc();
 
     uint8_t ReadMemoryAt(uint16_t address);
@@ -82,25 +95,25 @@ private:
 
     // Implementations for the opcodes
     // Branch group
-    void JMP(uint8_t hi, uint8_t lo);
-    void JNZ(uint8_t hi, uint8_t lo);
+    void JMP(uint8_t hi, uint8_t lo);               // Tested
+    void JNZ(uint8_t hi, uint8_t lo);               // Tested
     // Other group
-    void NOP();
+    void NOP();                                     // Skip
     // Stack group
-    void LXI_SP(uint8_t hi, uint8_t lo);
+    void LXI_SP(uint8_t hi, uint8_t lo);            // Skip
     // Move group
-    void MVI_B(uint8_t data);
-    void MVI_A(uint8_t data);
-    void MOV_M_A();
-    void LXI_B(uint8_t byte_b, uint8_t byte_c);
-    void LXI_D(uint8_t byte_d, uint8_t byte_e);
-    void LXI_H(uint8_t byte_h, uint8_t byte_l);
-    void LDAX_D();
-    void STA(uint8_t byte_h, uint8_t byte_l);
-    void LDA(uint8_t byte_h, uint8_t byte_l);
+    void MVI_B(uint8_t data);                       // Skip
+    void MVI_A(uint8_t data);                       // Skip
+    void MOV_M_A();                                 // Tested
+    void LXI_B(uint8_t byte_b, uint8_t byte_c);     // Skip
+    void LXI_D(uint8_t byte_d, uint8_t byte_e);     // Skip
+    void LXI_H(uint8_t byte_h, uint8_t byte_l);     // Skip
+    void LDAX_D();                                  // Skip
+    void STA(uint8_t byte_h, uint8_t byte_l);       // Tested
+    void LDA(uint8_t byte_h, uint8_t byte_l);       // Tested
     // Call group
-    void CALL(uint8_t hi, uint8_t lo);
-    void RET();
+    void CALL(uint8_t hi, uint8_t lo);              // Tested
+    void RET();                                     // Tested
     // Increment and decrement group
     void INX_H();
     void INX_D();

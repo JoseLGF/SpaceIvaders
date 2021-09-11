@@ -23,10 +23,10 @@ int main(int argc, char** argv) {
     {
         cpu.PrintState();
         cpu.EmulateCycle();
-        instructions++;
-        std::cout << "Press any key for emulation cycle." << std::endl;
+        /* instructions++; */
+        /* std::cout << "Press any key for emulation cycle." << std::endl; */
         //getchar();
-        if(instructions==1500+1) break;
+        /* if(instructions==1500+1) break; */
     }
 
     cpu.DumpMemory();
