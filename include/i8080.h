@@ -115,11 +115,11 @@ private:
     void CALL(uint8_t hi, uint8_t lo);              // Tested
     void RET();                                     // Tested
     // Increment and decrement group
-    void INX_H();
-    void INX_D();
-    void DCR_B();
+    void INX_H();                                   // Tested
+    void INX_D();                                   // Tested
+    void DCR_B();                                   // Tested
     // Add and Subtract groups
-    void DAD_D();
+    void DAD_D();                                   // Tested
     // Logical group
     void XRA_A();
     void ANA_A();

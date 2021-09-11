@@ -31,12 +31,6 @@ void CPU_8080::INX_D()
 // Decrement B register
 void CPU_8080::DCR_B()
 {
-    if(b==0)
-    {
-        std::cout << "Warning, possible underflow of B register."
-            << std::endl;
-    }
-
     uint8_t result = b - 1;
 
     cc.z = (result == 0);

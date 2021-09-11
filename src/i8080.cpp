@@ -103,8 +103,8 @@ void CPU_8080::EmulateCycle()
 {
     // Fetch opcode
     uint8_t opcode = memory[pc];
-    std::cout << "Fetched instruction " << std::hex
-        << (unsigned int) opcode << std::endl;
+    /* std::cout << "Fetched instruction " << std::hex */
+    /*     << (unsigned int) opcode << std::endl; */
 
     // Decode instruction
     switch(opcode)
@@ -205,42 +205,25 @@ uint8_t CPU_8080::ReadMemoryAt(uint16_t address)
     return memory[address];
 }
 
-uint16_t CPU_8080::Get_pc()
-{
-    return pc;
-}
+uint16_t CPU_8080::Get_pc() { return pc; }
+uint16_t CPU_8080::Get_sp() { return sp; }
 
-uint8_t CPU_8080::Get_a()
-{
-    return a;
-}
+uint8_t CPU_8080::Get_a() { return a; }
+uint8_t CPU_8080::Get_b() { return b; }
+uint8_t CPU_8080::Get_d() { return d; }
+uint8_t CPU_8080::Get_e() { return e; }
+uint8_t CPU_8080::Get_h() { return h; }
+uint8_t CPU_8080::Get_l() { return l; }
 
-void CPU_8080::Set_z(bool bit)
-{
-    cc.z = bit;
-}
+bool CPU_8080::Get_cy() { return cc.cy; }
 
-void CPU_8080::Set_a(uint8_t data)
-{
-    a = data;
-}
+void CPU_8080::Set_z(bool bit) { cc.z = bit; }
+void CPU_8080::Set_a(uint8_t data) { a = data; }
+void CPU_8080::Set_b(uint8_t data) { b = data; }
+void CPU_8080::Set_d(uint8_t data) { d = data; }
+void CPU_8080::Set_e(uint8_t data) { e = data; }
+void CPU_8080::Set_h(uint8_t data) { h = data; }
+void CPU_8080::Set_l(uint8_t data) { l = data; }
 
-void CPU_8080::Set_h(uint8_t data)
-{
-    h = data;
-}
+void CPU_8080::Set_sp(uint16_t address) { sp = address; }
 
-void CPU_8080::Set_l(uint8_t data)
-{
-    l = data;
-}
-
-void CPU_8080::Set_sp(uint16_t address)
-{
-    sp = address;
-}
-
-uint16_t CPU_8080::Get_sp()
-{
-    return sp;
-}
