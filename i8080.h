@@ -11,7 +11,7 @@ typedef struct ConditionCodes {
     uint8_t     s   : 1;
     uint8_t     p   : 1;
     uint8_t     cy  : 1;
-    uint8_t     ac  : 1;
+    uint8_t     ac  : 1; //  Unused in Space Invaders
     uint8_t     pad : 3;
 } ConditionCodes;
 
@@ -62,6 +62,7 @@ private:
     // Implementations for the opcodes
     // Branch group
     void JMP(uint8_t hi, uint8_t lo);
+    void JNZ(uint8_t hi, uint8_t lo);
     // Other group
     void NOP();
     // Stack group
@@ -69,11 +70,22 @@ private:
     // Move group
     void MVI_B(uint8_t data);
     void MOV_M_A();
+    void LXI_B(uint8_t byte_b, uint8_t byte_c);
     void LXI_D(uint8_t byte_d, uint8_t byte_e);
     void LXI_H(uint8_t byte_h, uint8_t byte_l);
     void LDAX_D();
     // Call group
     void CALL(uint8_t hi, uint8_t lo);
+    void RET();
+    // Increment and decrement group
+    void INX_H();
+    void INX_D();
+    void DCR_B();
+    // Add and Subtract groups
+    void DAD_D();
+
+    // Internal
+    bool Parity(uint8_t byte);
 
 
 };

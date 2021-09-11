@@ -20,6 +20,14 @@ void CPU_8080::LXI_D(uint8_t byte_d, uint8_t byte_e)
     pc += 3;
 }
 
+// Load immediate register pair B and C
+void CPU_8080::LXI_B(uint8_t byte_b, uint8_t byte_c)
+{
+    b = byte_b;
+    c = byte_c;
+    pc += 3;
+}
+
 // Load immediate register pair H and L
 void CPU_8080::LXI_H(uint8_t byte_h, uint8_t byte_l)
 {

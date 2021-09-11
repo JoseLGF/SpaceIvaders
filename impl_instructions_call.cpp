@@ -16,3 +16,9 @@ void CPU_8080::CALL(uint8_t hi, uint8_t lo)
     sp = sp - 2;
     pc = (hi << 8) | lo;
 }
+
+void CPU_8080::RET()
+{
+    pc = memory[sp] | (memory[sp+1] << 8);
+    sp += 2;
+}

@@ -109,18 +109,23 @@ void CPU_8080::EmulateCycle()
     // Decode instruction
     switch(opcode)
     {
-        case 0x00:      NOP();                           break;
-        case 0x06:   MVI_B(memory[pc+1]);               break;
-        case 0x11:   LXI_D(memory[pc+2], memory[pc+1]); break;
-        case 0x1a:  LDAX_D();                           break;
-        case 0x21:   LXI_H(memory[pc+2], memory[pc+1]); break;
-        case 0x31:  LXI_SP(memory[pc+2], memory[pc+1]); break;
-        case 0x77: MOV_M_A();                           break;
-        case 0xc3:     JMP(memory[pc+2], memory[pc+1]); break;
-        case 0xcd:    CALL(memory[pc+2], memory[pc+1]); break;
-        default:
-            UnimplementedInstruction(opcode);
-            break;
+        case 0x00:     NOP ();                           break;
+        case 0x01:   LXI_B (memory[pc+2], memory[pc+1]); break;
+        case 0x05:   DCR_B ();                           break;
+        case 0x06:   MVI_B (memory[pc+1]);               break;
+        case 0x11:   LXI_D (memory[pc+2], memory[pc+1]); break;
+        case 0x13:   INX_D ();                           break;
+        case 0x19:   DAD_D ();                           break;
+        case 0x1a:  LDAX_D ();                           break;
+        case 0x21:   LXI_H (memory[pc+2], memory[pc+1]); break;
+        case 0x23:   INX_H ();                           break;
+        case 0x31:  LXI_SP (memory[pc+2], memory[pc+1]); break;
+        case 0x77: MOV_M_A ();                           break;
+        case 0xc2:     JNZ (memory[pc+2], memory[pc+1]); break;
+        case 0xc3:     JMP (memory[pc+2], memory[pc+1]); break;
+        case 0xc9:     RET ();                           break;
+        case 0xcd:    CALL (memory[pc+2], memory[pc+1]); break;
+        default  : UnimplementedInstruction(opcode);     break;
     }
 
     instructions_executed++;
@@ -144,4 +149,21 @@ void CPU_8080::DumpMemory()
     wf.close();
     cout << "Dumped memory to memdump file." << endl;
 
+}
+
+// Even parity lookup table
+bool CPU_8080::Parity(uint8_t byte)
+{
+    bool parity = true;
+
+    for(int i=0; i<8; i++)
+    {
+        if(byte & 0x01)
+        {
+            parity = !parity;
+        }
+        parity >>= 1;
+    }
+
+    return parity;
 }

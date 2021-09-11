@@ -12,6 +12,8 @@ OBJ= main.o i8080.o \
 	 impl_instructions_stack.o \
 	 impl_instructions_move.o \
 	 impl_instructions_call.o \
+	 impl_instructions_inc_dec.o \
+	 impl_instructions_add_sub.o \
 
 %.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $<  $(CFLAGS)
