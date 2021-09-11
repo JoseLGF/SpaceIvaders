@@ -174,3 +174,13 @@ bool CPU_8080::Parity(uint8_t byte)
 
     return parity;
 }
+
+void CPU_8080::WriteMemoryAt(uint16_t address, uint8_t data)
+{
+    memory[address] = data;
+}
+
+uint16_t CPU_8080::Get_pc()
+{
+    return pc;
+}

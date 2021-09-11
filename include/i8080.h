@@ -26,6 +26,27 @@ public:
     bool Running();
     void DumpMemory();
 
+    /* Functions for unit testing */
+    bool Get_z();
+    bool Get_s();
+    bool Get_p();
+    bool Get_cy();
+    bool Get_ac();
+
+    uint8_t Get_a();
+    uint8_t Get_b();
+    uint8_t Get_c();
+    uint8_t Get_d();
+    uint8_t Get_e();
+    uint8_t Get_h();
+    uint8_t Get_l();
+
+    uint16_t Get_sp();
+    uint16_t Get_pc();
+
+    uint8_t ReadMemoryAt(uint16_t address);
+    void WriteMemoryAt(uint16_t address, uint8_t data);
+
 // CPU state
 private:
     // Accumulator register a
