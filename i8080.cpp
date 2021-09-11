@@ -120,11 +120,18 @@ void CPU_8080::EmulateCycle()
         case 0x21:   LXI_H (memory[pc+2], memory[pc+1]); break;
         case 0x23:   INX_H ();                           break;
         case 0x31:  LXI_SP (memory[pc+2], memory[pc+1]); break;
+        case 0x32:     STA (memory[pc+2], memory[pc+1]); break;
+        case 0x3a:     LDA (memory[pc+2], memory[pc+1]); break;
+        case 0x3e:   MVI_A (memory[pc+1]);               break;
         case 0x77: MOV_M_A ();                           break;
+        case 0xaf:   XRA_A ();                           break;
+        case 0xa7:   ANA_A ();                           break;
         case 0xc2:     JNZ (memory[pc+2], memory[pc+1]); break;
         case 0xc3:     JMP (memory[pc+2], memory[pc+1]); break;
         case 0xc9:     RET ();                           break;
         case 0xcd:    CALL (memory[pc+2], memory[pc+1]); break;
+        case 0xd3:     OUT (memory[pc+1]);               break;
+        case 0xfb:      EI ();                           break;
         default  : UnimplementedInstruction(opcode);     break;
     }
 
@@ -162,7 +169,7 @@ bool CPU_8080::Parity(uint8_t byte)
         {
             parity = !parity;
         }
-        parity >>= 1;
+        parity = (parity >> 1) & 0x7f;
     }
 
     return parity;

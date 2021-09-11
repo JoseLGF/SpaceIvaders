@@ -1,0 +1,817 @@
+Filename: cpudiag.bin
+0000 c3 ab 01 JMP adr    
+0003 4d       MOV C,L    
+0004 49       MOV C,C    
+0005 43       MOV B,E    
+0006 52       MOV D,D    
+0007 4f       MOV C,A    
+0008 43       MOV B,E    
+0009 4f       MOV C,A    
+000a 53       MOV D,E    
+000b 4d       MOV C,L    
+000c 20       -          
+000d 41       MOV B,C    
+000e 53       MOV D,E    
+000f 53       MOV D,E    
+0010 4f       MOV C,A    
+0011 43       MOV B,E    
+0012 49       MOV C,C    
+0013 41       MOV B,C    
+0014 54       MOV D,H    
+0015 45       MOV B,L    
+0016 53       MOV D,E    
+0017 20       -          
+0018 38       -          
+0019 30       -          
+001a 38       -          
+001b 30       -          
+001c 2f       CMA        
+001d 38       -          
+001e 30       -          
+001f 38       -          
+0020 35       DCR M      
+0021 20       -          
+0022 43       MOV B,E    
+0023 50       MOV D,B    
+0024 55       MOV D,L    
+0025 20       -          
+0026 44       MOV B,H    
+0027 49       MOV C,C    
+0028 41       MOV B,C    
+0029 47       MOV B,A    
+002a 4e       MOV C,M    
+002b 4f       MOV C,A    
+002c 53       MOV D,E    
+002d 54       MOV D,H    
+002e 49       MOV C,C    
+002f 43       MOV B,E    
+0030 20       -          
+0031 56       MOV D,M    
+0032 45       MOV B,L    
+0033 52       MOV D,D    
+0034 53       MOV D,E    
+0035 49       MOV C,C    
+0036 4f       MOV C,A    
+0037 4e       MOV C,M    
+0038 20       -          
+0039 31 2e 30 LXI SP, D16
+003c 20       -          
+003d 28       -          
+003e 43       MOV B,E    
+003f 29       DAD H      
+0040 20       -          
+0041 31 39 38 LXI SP, D16
+0044 30       -          
+0045 d5       PUSH D     
+0046 eb       XCHG       
+0047 0e 09    MVI C,D8   
+0049 cd 05 00 CALL adr   
+004c d1       POP D      
+004d c9       RET        
+004e 0e 02    MVI C,D8   
+0050 cd 05 00 CALL adr   
+0053 c9       RET        
+0054 f5       PUSH PSW   
+0055 cd 64 01 CALL adr   
+0058 5f       MOV E,A    
+0059 cd 4e 01 CALL adr   
+005c f1       POP PSW    
+005d cd 68 01 CALL adr   
+0060 5f       MOV E,A    
+0061 c3 4e 01 JMP adr    
+0064 0f       RRC        
+0065 0f       RRC        
+0066 0f       RRC        
+0067 0f       RRC        
+0068 e6 0f    ANI D8     
+006a fe 0a    CPI D8     
+006c fa 71 01 JM adr     
+006f c6 07    ADI D8     
+0071 c6 30    ADI D8     
+0073 c9       RET        
+0074 0c       INR C      
+0075 0d       DCR C      
+0076 0a       LDAX B     
+0077 20       -          
+0078 43       MOV B,E    
+0079 50       MOV D,B    
+007a 55       MOV D,L    
+007b 20       -          
+007c 49       MOV C,C    
+007d 53       MOV D,E    
+007e 20       -          
+007f 4f       MOV C,A    
+0080 50       MOV D,B    
+0081 45       MOV B,L    
+0082 52       MOV D,D    
+0083 41       MOV B,C    
+0084 54       MOV D,H    
+0085 49       MOV C,C    
+0086 4f       MOV C,A    
+0087 4e       MOV C,M    
+0088 41       MOV B,C    
+0089 4c       MOV C,H    
+008a 24       INR H      
+008b 0c       INR C      
+008c 0d       DCR C      
+008d 0a       LDAX B     
+008e 20       -          
+008f 43       MOV B,E    
+0090 50       MOV D,B    
+0091 55       MOV D,L    
+0092 20       -          
+0093 48       MOV C,B    
+0094 41       MOV B,C    
+0095 53       MOV D,E    
+0096 20       -          
+0097 46       MOV B,M    
+0098 41       MOV B,C    
+0099 49       MOV C,C    
+009a 4c       MOV C,H    
+009b 45       MOV B,L    
+009c 44       MOV B,H    
+009d 21 20 45 LXI H,D16  
+00a0 52       MOV D,D    
+00a1 52       MOV D,D    
+00a2 4f       MOV C,A    
+00a3 52       MOV D,D    
+00a4 20       -          
+00a5 45       MOV B,L    
+00a6 58       MOV E,B    
+00a7 49       MOV C,C    
+00a8 54       MOV D,H    
+00a9 3d       DCR A      
+00aa 24       INR H      
+00ab 31 ad 07 LXI SP, D16
+00ae e6 00    ANI D8     
+00b0 ca b6 01 JZ adr     
+00b3 cd 89 06 CALL adr   
+00b6 d2 bc 01 JNC adr    
+00b9 cd 89 06 CALL adr   
+00bc ea c2 01 JPE adr    
+00bf cd 89 06 CALL adr   
+00c2 f2 c8 01 JP adr     
+00c5 cd 89 06 CALL adr   
+00c8 c2 d7 01 JNZ adr    
+00cb da d7 01 JC adr     
+00ce e2 d7 01 JPO adr    
+00d1 fa d7 01 JM adr     
+00d4 c3 da 01 JMP adr    
+00d7 cd 89 06 CALL adr   
+00da c6 06    ADI D8     
+00dc c2 e2 01 JNZ adr    
+00df cd 89 06 CALL adr   
+00e2 da eb 01 JC adr     
+00e5 e2 eb 01 JPO adr    
+00e8 f2 ee 01 JP adr     
+00eb cd 89 06 CALL adr   
+00ee c6 70    ADI D8     
+00f0 e2 f6 01 JPO adr    
+00f3 cd 89 06 CALL adr   
+00f6 fa ff 01 JM adr     
+00f9 ca ff 01 JZ adr     
+00fc d2 02 02 JNC adr    
+00ff cd 89 06 CALL adr   
+0102 c6 81    ADI D8     
+0104 fa 0a 02 JM adr     
+0107 cd 89 06 CALL adr   
+010a ca 13 02 JZ adr     
+010d da 13 02 JC adr     
+0110 e2 16 02 JPO adr    
+0113 cd 89 06 CALL adr   
+0116 c6 fe    ADI D8     
+0118 da 1e 02 JC adr     
+011b cd 89 06 CALL adr   
+011e ca 27 02 JZ adr     
+0121 e2 27 02 JPO adr    
+0124 fa 2a 02 JM adr     
+0127 cd 89 06 CALL adr   
+012a fe 00    CPI D8     
+012c da 42 02 JC adr     
+012f ca 42 02 JZ adr     
+0132 fe f5    CPI D8     
+0134 da 42 02 JC adr     
+0137 c2 42 02 JNZ adr    
+013a fe ff    CPI D8     
+013c ca 42 02 JZ adr     
+013f da 45 02 JC adr     
+0142 cd 89 06 CALL adr   
+0145 ce 0a    ACI D8     
+0147 ce 0a    ACI D8     
+0149 fe 0b    CPI D8     
+014b ca 51 02 JZ adr     
+014e cd 89 06 CALL adr   
+0151 d6 0c    SUI D8     
+0153 d6 0f    SUI D8     
+0155 fe f0    CPI D8     
+0157 ca 5d 02 JZ adr     
+015a cd 89 06 CALL adr   
+015d de f1    SBI D8     
+015f de 0e    SBI D8     
+0161 fe f0    CPI D8     
+0163 ca 69 02 JZ adr     
+0166 cd 89 06 CALL adr   
+0169 e6 55    ANI D8     
+016b fe 50    CPI D8     
+016d ca 73 02 JZ adr     
+0170 cd 89 06 CALL adr   
+0173 f6 3a    ORI D8     
+0175 fe 7a    CPI D8     
+0177 ca 7d 02 JZ adr     
+017a cd 89 06 CALL adr   
+017d ee 0f    XRI D8     
+017f fe 75    CPI D8     
+0181 ca 87 02 JZ adr     
+0184 cd 89 06 CALL adr   
+0187 e6 00    ANI D8     
+0189 dc 89 06 CC adr     
+018c e4 89 06 CPO adr    
+018f fc 89 06 CM adr     
+0192 c4 89 06 CNZ adr    
+0195 fe 00    CPI D8     
+0197 ca 9d 02 JZ adr     
+019a cd 89 06 CALL adr   
+019d d6 77    SUI D8     
+019f d4 89 06 CNC adr    
+01a2 ec 89 06 CPE adr    
+01a5 f4 89 06 CP adr     
+01a8 cc 89 06 CZ adr     
+01ab fe 89    CPI D8     
+01ad ca b3 02 JZ adr     
+01b0 cd 89 06 CALL adr   
+01b3 e6 ff    ANI D8     
+01b5 e4 c0 02 CPO adr    
+01b8 fe d9    CPI D8     
+01ba ca 1d 03 JZ adr     
+01bd cd 89 06 CALL adr   
+01c0 e8       RPE        
+01c1 c6 10    ADI D8     
+01c3 ec cc 02 CPE adr    
+01c6 c6 02    ADI D8     
+01c8 e0       RPO        
+01c9 cd 89 06 CALL adr   
+01cc e0       RPO        
+01cd c6 20    ADI D8     
+01cf fc d8 02 CM adr     
+01d2 c6 04    ADI D8     
+01d4 e8       RPE        
+01d5 cd 89 06 CALL adr   
+01d8 f0       RP         
+01d9 c6 80    ADI D8     
+01db f4 e4 02 CP adr     
+01de c6 80    ADI D8     
+01e0 f8       RM         
+01e1 cd 89 06 CALL adr   
+01e4 f8       RM         
+01e5 c6 40    ADI D8     
+01e7 d4 f0 02 CNC adr    
+01ea c6 40    ADI D8     
+01ec f0       RP         
+01ed cd 89 06 CALL adr   
+01f0 d8       RC         
+01f1 c6 8f    ADI D8     
+01f3 dc fc 02 CC adr     
+01f6 d6 02    SUI D8     
+01f8 d0       RNC        
+01f9 cd 89 06 CALL adr   
+01fc d0       RNC        
+01fd c6 f7    ADI D8     
+01ff c4 08 03 CNZ adr    
+0202 c6 fe    ADI D8     
+0204 d8       RC         
+0205 cd 89 06 CALL adr   
+0208 c8       RZ         
+0209 c6 01    ADI D8     
+020b cc 14 03 CZ adr     
+020e c6 d0    ADI D8     
+0210 c0       RNZ        
+0211 cd 89 06 CALL adr   
+0214 c0       RNZ        
+0215 c6 47    ADI D8     
+0217 fe 47    CPI D8     
+0219 c8       RZ         
+021a cd 89 06 CALL adr   
+021d 3e 77    MVI A,D8   
+021f 3c       INR A      
+0220 47       MOV B,A    
+0221 04       INR B      
+0222 48       MOV C,B    
+0223 0d       DCR C      
+0224 51       MOV D,C    
+0225 5a       MOV E,D    
+0226 63       MOV H,E    
+0227 6c       MOV L,H    
+0228 7d       MOV A,L    
+0229 3d       DCR A      
+022a 4f       MOV C,A    
+022b 59       MOV E,C    
+022c 6b       MOV L,E    
+022d 45       MOV B,L    
+022e 50       MOV D,B    
+022f 62       MOV H,D    
+0230 7c       MOV A,H    
+0231 57       MOV D,A    
+0232 14       INR D      
+0233 6a       MOV L,D    
+0234 4d       MOV C,L    
+0235 0c       INR C      
+0236 61       MOV H,C    
+0237 44       MOV B,H    
+0238 05       DCR B      
+0239 58       MOV E,B    
+023a 7b       MOV A,E    
+023b 5f       MOV E,A    
+023c 1c       INR E      
+023d 43       MOV B,E    
+023e 60       MOV H,B    
+023f 24       INR H      
+0240 4c       MOV C,H    
+0241 69       MOV L,C    
+0242 55       MOV D,L    
+0243 15       DCR D      
+0244 7a       MOV A,D    
+0245 67       MOV H,A    
+0246 25       DCR H      
+0247 54       MOV D,H    
+0248 42       MOV B,D    
+0249 68       MOV L,B    
+024a 2c       INR L      
+024b 5d       MOV E,L    
+024c 1d       DCR E      
+024d 4b       MOV C,E    
+024e 79       MOV A,C    
+024f 6f       MOV L,A    
+0250 2d       DCR L      
+0251 65       MOV H,L    
+0252 5c       MOV E,H    
+0253 53       MOV D,E    
+0254 4a       MOV C,D    
+0255 41       MOV B,C    
+0256 78       MOV A,B    
+0257 fe 77    CPI D8     
+0259 c4 89 06 CNZ adr    
+025c af       XRA A      
+025d 06 01    MVI B, D8  
+025f 0e 03    MVI C,D8   
+0261 16 07    MVI D, D8  
+0263 1e 0f    MVI E,D8   
+0265 26 1f    MVI H,D8   
+0267 2e 3f    MVI L, D8  
+0269 80       ADD B      
+026a 81       ADD C      
+026b 82       ADD D      
+026c 83       ADD E      
+026d 84       ADD H      
+026e 85       ADD L      
+026f 87       ADD A      
+0270 fe f0    CPI D8     
+0272 c4 89 06 CNZ adr    
+0275 90       SUB B      
+0276 91       SUB C      
+0277 92       SUB D      
+0278 93       SUB E      
+0279 94       SUB H      
+027a 95       SUB L      
+027b fe 78    CPI D8     
+027d c4 89 06 CNZ adr    
+0280 97       SUB A      
+0281 c4 89 06 CNZ adr    
+0284 3e 80    MVI A,D8   
+0286 87       ADD A      
+0287 06 01    MVI B, D8  
+0289 0e 02    MVI C,D8   
+028b 16 03    MVI D, D8  
+028d 1e 04    MVI E,D8   
+028f 26 05    MVI H,D8   
+0291 2e 06    MVI L, D8  
+0293 88       ADC B      
+0294 06 80    MVI B, D8  
+0296 80       ADD B      
+0297 80       ADD B      
+0298 89       ADC C      
+0299 80       ADD B      
+029a 80       ADD B      
+029b 8a       ADC D      
+029c 80       ADD B      
+029d 80       ADD B      
+029e 8b       ADC E      
+029f 80       ADD B      
+02a0 80       ADD B      
+02a1 8c       ADC H      
+02a2 80       ADD B      
+02a3 80       ADD B      
+02a4 8d       ADC L      
+02a5 80       ADD B      
+02a6 80       ADD B      
+02a7 8f       ADC A      
+02a8 fe 37    CPI D8     
+02aa c4 89 06 CNZ adr    
+02ad 3e 80    MVI A,D8   
+02af 87       ADD A      
+02b0 06 01    MVI B, D8  
+02b2 98       SBB B      
+02b3 06 ff    MVI B, D8  
+02b5 80       ADD B      
+02b6 99       SBB C      
+02b7 80       ADD B      
+02b8 9a       SBB D      
+02b9 80       ADD B      
+02ba 9b       SBB E      
+02bb 80       ADD B      
+02bc 9c       SBB H      
+02bd 80       ADD B      
+02be 9d       SBB L      
+02bf fe e0    CPI D8     
+02c1 c4 89 06 CNZ adr    
+02c4 3e 80    MVI A,D8   
+02c6 87       ADD A      
+02c7 9f       SBB A      
+02c8 fe ff    CPI D8     
+02ca c4 89 06 CNZ adr    
+02cd 3e ff    MVI A,D8   
+02cf 06 fe    MVI B, D8  
+02d1 0e fc    MVI C,D8   
+02d3 16 ef    MVI D, D8  
+02d5 1e 7f    MVI E,D8   
+02d7 26 f4    MVI H,D8   
+02d9 2e bf    MVI L, D8  
+02db a7       ANA A      
+02dc a1       ANA C      
+02dd a2       ANA D      
+02de a3       ANA E      
+02df a4       ANA H      
+02e0 a5       ANA L      
+02e1 a7       ANA A      
+02e2 fe 24    CPI D8     
+02e4 c4 89 06 CNZ adr    
+02e7 af       XRA A      
+02e8 06 01    MVI B, D8  
+02ea 0e 02    MVI C,D8   
+02ec 16 04    MVI D, D8  
+02ee 1e 08    MVI E,D8   
+02f0 26 10    MVI H,D8   
+02f2 2e 20    MVI L, D8  
+02f4 b0       ORA B      
+02f5 b1       ORA C      
+02f6 b2       ORA D      
+02f7 b3       ORA E      
+02f8 b4       ORA H      
+02f9 b5       ORA L      
+02fa b7       ORA A      
+02fb fe 3f    CPI D8     
+02fd c4 89 06 CNZ adr    
+0300 3e 00    MVI A,D8   
+0302 26 8f    MVI H,D8   
+0304 2e 4f    MVI L, D8  
+0306 a8       XRA B      
+0307 a9       XRA C      
+0308 aa       XRA D      
+0309 ab       XRA E      
+030a ac       XRA H      
+030b ad       XRA L      
+030c fe cf    CPI D8     
+030e c4 89 06 CNZ adr    
+0311 af       XRA A      
+0312 c4 89 06 CNZ adr    
+0315 06 44    MVI B, D8  
+0317 0e 45    MVI C,D8   
+0319 16 46    MVI D, D8  
+031b 1e 47    MVI E,D8   
+031d 26 06    MVI H,D8   
+031f 2e a6    MVI L, D8  
+0321 70       MOV M,B    
+0322 06 00    MVI B, D8  
+0324 46       MOV B,M    
+0325 3e 44    MVI A,D8   
+0327 b8       CMP B      
+0328 c4 89 06 CNZ adr    
+032b 72       MOV M,D    
+032c 16 00    MVI D, D8  
+032e 56       MOV D,M    
+032f 3e 46    MVI A,D8   
+0331 ba       CMP D      
+0332 c4 89 06 CNZ adr    
+0335 73       MOV M,E    
+0336 1e 00    MVI E,D8   
+0338 5e       MOV E,M    
+0339 3e 47    MVI A,D8   
+033b bb       CMP E      
+033c c4 89 06 CNZ adr    
+033f 74       MOV M,H    
+0340 26 06    MVI H,D8   
+0342 2e a6    MVI L, D8  
+0344 66       MOV H,M    
+0345 3e 06    MVI A,D8   
+0347 bc       CMP H      
+0348 c4 89 06 CNZ adr    
+034b 75       MOV M,L    
+034c 26 06    MVI H,D8   
+034e 2e a6    MVI L, D8  
+0350 6e       MOV L,M    
+0351 3e a6    MVI A,D8   
+0353 bd       CMP L      
+0354 c4 89 06 CNZ adr    
+0357 26 06    MVI H,D8   
+0359 2e a6    MVI L, D8  
+035b 3e 32    MVI A,D8   
+035d 77       MOV M,A    
+035e be       CMP M      
+035f c4 89 06 CNZ adr    
+0362 86       ADD M      
+0363 fe 64    CPI D8     
+0365 c4 89 06 CNZ adr    
+0368 af       XRA A      
+0369 7e       MOV A,M    
+036a fe 32    CPI D8     
+036c c4 89 06 CNZ adr    
+036f 26 06    MVI H,D8   
+0371 2e a6    MVI L, D8  
+0373 7e       MOV A,M    
+0374 96       SUB M      
+0375 c4 89 06 CNZ adr    
+0378 3e 80    MVI A,D8   
+037a 87       ADD A      
+037b 8e       ADC M      
+037c fe 33    CPI D8     
+037e c4 89 06 CNZ adr    
+0381 3e 80    MVI A,D8   
+0383 87       ADD A      
+0384 9e       SBB M      
+0385 fe cd    CPI D8     
+0387 c4 89 06 CNZ adr    
+038a a6       ANA M      
+038b c4 89 06 CNZ adr    
+038e 3e 25    MVI A,D8   
+0390 b6       ORA M      
+0391 fe 37    CPI D8     
+0393 c4 89 06 CNZ adr    
+0396 ae       XRA M      
+0397 fe 05    CPI D8     
+0399 c4 89 06 CNZ adr    
+039c 36 55    MVI M,D8   
+039e 34       INR M      
+039f 35       DCR M      
+03a0 86       ADD M      
+03a1 fe 5a    CPI D8     
+03a3 c4 89 06 CNZ adr    
+03a6 01 ff 12 LXI B,D16  
+03a9 11 ff 12 LXI D,D16  
+03ac 21 ff 12 LXI H,D16  
+03af 03       INX B      
+03b0 13       INX D      
+03b1 23       INX H      
+03b2 3e 13    MVI A,D8   
+03b4 b8       CMP B      
+03b5 c4 89 06 CNZ adr    
+03b8 ba       CMP D      
+03b9 c4 89 06 CNZ adr    
+03bc bc       CMP H      
+03bd c4 89 06 CNZ adr    
+03c0 3e 00    MVI A,D8   
+03c2 b9       CMP C      
+03c3 c4 89 06 CNZ adr    
+03c6 bb       CMP E      
+03c7 c4 89 06 CNZ adr    
+03ca bd       CMP L      
+03cb c4 89 06 CNZ adr    
+03ce 0b       DCX B      
+03cf 1b       DCX D      
+03d0 2b       DCX H      
+03d1 3e 12    MVI A,D8   
+03d3 b8       CMP B      
+03d4 c4 89 06 CNZ adr    
+03d7 ba       CMP D      
+03d8 c4 89 06 CNZ adr    
+03db bc       CMP H      
+03dc c4 89 06 CNZ adr    
+03df 3e ff    MVI A,D8   
+03e1 b9       CMP C      
+03e2 c4 89 06 CNZ adr    
+03e5 bb       CMP E      
+03e6 c4 89 06 CNZ adr    
+03e9 bd       CMP L      
+03ea c4 89 06 CNZ adr    
+03ed 32 a6 06 STA adr    
+03f0 af       XRA A      
+03f1 3a a6 06 LDA adr    
+03f4 fe ff    CPI D8     
+03f6 c4 89 06 CNZ adr    
+03f9 2a a4 06 LHLD adr   
+03fc 22 a6 06 SHLD adr   
+03ff 3a a4 06 LDA adr    
+0402 47       MOV B,A    
+0403 3a a6 06 LDA adr    
+0406 b8       CMP B      
+0407 c4 89 06 CNZ adr    
+040a 3a a5 06 LDA adr    
+040d 47       MOV B,A    
+040e 3a a7 06 LDA adr    
+0411 b8       CMP B      
+0412 c4 89 06 CNZ adr    
+0415 3e aa    MVI A,D8   
+0417 32 a6 06 STA adr    
+041a 44       MOV B,H    
+041b 4d       MOV C,L    
+041c af       XRA A      
+041d 0a       LDAX B     
+041e fe aa    CPI D8     
+0420 c4 89 06 CNZ adr    
+0423 3c       INR A      
+0424 02       STAX B     
+0425 3a a6 06 LDA adr    
+0428 fe ab    CPI D8     
+042a c4 89 06 CNZ adr    
+042d 3e 77    MVI A,D8   
+042f 32 a6 06 STA adr    
+0432 2a a4 06 LHLD adr   
+0435 11 00 00 LXI D,D16  
+0438 eb       XCHG       
+0439 af       XRA A      
+043a 1a       LDAX D     
+043b fe 77    CPI D8     
+043d c4 89 06 CNZ adr    
+0440 af       XRA A      
+0441 84       ADD H      
+0442 85       ADD L      
+0443 c4 89 06 CNZ adr    
+0446 3e cc    MVI A,D8   
+0448 12       STAX D     
+0449 3a a6 06 LDA adr    
+044c fe cc    CPI D8     
+044e 12       STAX D     
+044f 3a a6 06 LDA adr    
+0452 fe cc    CPI D8     
+0454 c4 89 06 CNZ adr    
+0457 21 77 77 LXI H,D16  
+045a 29       DAD H      
+045b 3e ee    MVI A,D8   
+045d bc       CMP H      
+045e c4 89 06 CNZ adr    
+0461 bd       CMP L      
+0462 c4 89 06 CNZ adr    
+0465 21 55 55 LXI H,D16  
+0468 01 ff ff LXI B,D16  
+046b 09       DAD B      
+046c 3e 55    MVI A,D8   
+046e d4 89 06 CNC adr    
+0471 bc       CMP H      
+0472 c4 89 06 CNZ adr    
+0475 3e 54    MVI A,D8   
+0477 bd       CMP L      
+0478 c4 89 06 CNZ adr    
+047b 21 aa aa LXI H,D16  
+047e 11 33 33 LXI D,D16  
+0481 19       DAD D      
+0482 3e dd    MVI A,D8   
+0484 bc       CMP H      
+0485 c4 89 06 CNZ adr    
+0488 bd       CMP L      
+0489 c4 89 06 CNZ adr    
+048c 37       STC        
+048d d4 89 06 CNC adr    
+0490 3f       CMC        
+0491 dc 89 06 CC adr     
+0494 3e aa    MVI A,D8   
+0496 2f       CMA        
+0497 fe 55    CPI D8     
+0499 c4 89 06 CNZ adr    
+049c b7       ORA A      
+049d 27       DAA        
+049e fe 55    CPI D8     
+04a0 c4 89 06 CNZ adr    
+04a3 3e 88    MVI A,D8   
+04a5 87       ADD A      
+04a6 27       DAA        
+04a7 fe 76    CPI D8     
+04a9 c4 89 06 CNZ adr    
+04ac af       XRA A      
+04ad 3e aa    MVI A,D8   
+04af 27       DAA        
+04b0 d4 89 06 CNC adr    
+04b3 fe 10    CPI D8     
+04b5 c4 89 06 CNZ adr    
+04b8 af       XRA A      
+04b9 3e 9a    MVI A,D8   
+04bb 27       DAA        
+04bc d4 89 06 CNC adr    
+04bf c4 89 06 CNZ adr    
+04c2 37       STC        
+04c3 3e 42    MVI A,D8   
+04c5 07       RLC        
+04c6 dc 89 06 CC adr     
+04c9 07       RLC        
+04ca d4 89 06 CNC adr    
+04cd fe 09    CPI D8     
+04cf c4 89 06 CNZ adr    
+04d2 0f       RRC        
+04d3 d4 89 06 CNC adr    
+04d6 0f       RRC        
+04d7 fe 42    CPI D8     
+04d9 c4 89 06 CNZ adr    
+04dc 17       RAL        
+04dd 17       RAL        
+04de d4 89 06 CNC adr    
+04e1 fe 08    CPI D8     
+04e3 c4 89 06 CNZ adr    
+04e6 1f       RAR        
+04e7 1f       RAR        
+04e8 dc 89 06 CC adr     
+04eb fe 02    CPI D8     
+04ed c4 89 06 CNZ adr    
+04f0 01 34 12 LXI B,D16  
+04f3 11 aa aa LXI D,D16  
+04f6 21 55 55 LXI H,D16  
+04f9 af       XRA A      
+04fa c5       PUSH B     
+04fb d5       PUSH D     
+04fc e5       PUSH H     
+04fd f5       PUSH PSW   
+04fe 01 00 00 LXI B,D16  
+0501 11 00 00 LXI D,D16  
+0504 21 00 00 LXI H,D16  
+0507 3e c0    MVI A,D8   
+0509 c6 f0    ADI D8     
+050b f1       POP PSW    
+050c e1       POP H      
+050d d1       POP D      
+050e c1       POP B      
+050f dc 89 06 CC adr     
+0512 c4 89 06 CNZ adr    
+0515 e4 89 06 CPO adr    
+0518 fc 89 06 CM adr     
+051b 3e 12    MVI A,D8   
+051d b8       CMP B      
+051e c4 89 06 CNZ adr    
+0521 3e 34    MVI A,D8   
+0523 b9       CMP C      
+0524 c4 89 06 CNZ adr    
+0527 3e aa    MVI A,D8   
+0529 ba       CMP D      
+052a c4 89 06 CNZ adr    
+052d bb       CMP E      
+052e c4 89 06 CNZ adr    
+0531 3e 55    MVI A,D8   
+0533 bc       CMP H      
+0534 c4 89 06 CNZ adr    
+0537 bd       CMP L      
+0538 c4 89 06 CNZ adr    
+053b 21 00 00 LXI H,D16  
+053e 39       DAD SP     
+053f 22 ab 06 SHLD adr   
+0542 31 aa 06 LXI SP, D16
+0545 3b       DCX SP     
+0546 3b       DCX SP     
+0547 33       INX SP     
+0548 3b       DCX SP     
+0549 3e 55    MVI A,D8   
+054b 32 a8 06 STA adr    
+054e 2f       CMA        
+054f 32 a9 06 STA adr    
+0552 c1       POP B      
+0553 b8       CMP B      
+0554 c4 89 06 CNZ adr    
+0557 2f       CMA        
+0558 b9       CMP C      
+0559 c4 89 06 CNZ adr    
+055c 21 aa 06 LXI H,D16  
+055f f9       SPHL       
+0560 21 33 77 LXI H,D16  
+0563 3b       DCX SP     
+0564 3b       DCX SP     
+0565 e3       XTHL       
+0566 3a a9 06 LDA adr    
+0569 fe 77    CPI D8     
+056b c4 89 06 CNZ adr    
+056e 3a a8 06 LDA adr    
+0571 fe 33    CPI D8     
+0573 c4 89 06 CNZ adr    
+0576 3e 55    MVI A,D8   
+0578 bd       CMP L      
+0579 c4 89 06 CNZ adr    
+057c 2f       CMA        
+057d bc       CMP H      
+057e c4 89 06 CNZ adr    
+0581 2a ab 06 LHLD adr   
+0584 f9       SPHL       
+0585 21 9b 06 LXI H,D16  
+0588 e9       PCHL       
+0589 21 8b 01 LXI H,D16  
+058c cd 45 01 CALL adr   
+058f e3       XTHL       
+0590 7c       MOV A,H    
+0591 cd 54 01 CALL adr   
+0594 7d       MOV A,L    
+0595 cd 54 01 CALL adr   
+0598 c3 00 00 JMP adr    
+059b 21 74 01 LXI H,D16  
+059e cd 45 01 CALL adr   
+05a1 c3 00 00 JMP adr    
+05a4 a6       ANA M      
+05a5 06 00    MVI B, D8  
+05a7 00       NOP        
+05a8 00       NOP        
+05a9 00       NOP        
+05aa 00       NOP        
+05ab 00       NOP        
+05ac 00       NOP        
+Closing file.

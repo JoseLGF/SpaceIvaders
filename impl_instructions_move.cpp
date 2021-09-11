@@ -5,10 +5,17 @@
 
 #include "i8080.h"
 
-// Move immediate register B(000)
+// Move immediate register B
 void CPU_8080::MVI_B(uint8_t data)
 {
     b = data;
+    pc += 2;
+}
+
+// Move immediate register A
+void CPU_8080::MVI_A(uint8_t data)
+{
+    a = data;
     pc += 2;
 }
 
@@ -50,4 +57,20 @@ void CPU_8080::MOV_M_A()
     uint16_t address = (h << 8) | l;
     memory[address] = a;
     pc += 1;
+}
+
+// Store A direct
+void CPU_8080::STA(uint8_t byte_h, uint8_t byte_l)
+{
+    uint16_t address = (byte_h << 8) | byte_l;
+    memory[address] = a;
+    pc += 3;
+}
+
+// Load A direct
+void CPU_8080::LDA(uint8_t byte_h, uint8_t byte_l)
+{
+    uint16_t address = (byte_h << 8) | byte_l;
+    a = memory[address];
+    pc += 3;
 }

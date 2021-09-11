@@ -53,7 +53,7 @@ private:
     // interrupt enable
     uint8_t     int_enable;
 
-    uint16_t instructions_executed;
+    long int instructions_executed;
 
     // For debugging
     bool halted = false;
@@ -69,11 +69,14 @@ private:
     void LXI_SP(uint8_t hi, uint8_t lo);
     // Move group
     void MVI_B(uint8_t data);
+    void MVI_A(uint8_t data);
     void MOV_M_A();
     void LXI_B(uint8_t byte_b, uint8_t byte_c);
     void LXI_D(uint8_t byte_d, uint8_t byte_e);
     void LXI_H(uint8_t byte_h, uint8_t byte_l);
     void LDAX_D();
+    void STA(uint8_t byte_h, uint8_t byte_l);
+    void LDA(uint8_t byte_h, uint8_t byte_l);
     // Call group
     void CALL(uint8_t hi, uint8_t lo);
     void RET();
@@ -83,6 +86,12 @@ private:
     void DCR_B();
     // Add and Subtract groups
     void DAD_D();
+    // Logical group
+    void XRA_A();
+    void ANA_A();
+    // IO and special groups
+    void OUT(uint8_t byte);
+    void EI();
 
     // Internal
     bool Parity(uint8_t byte);
