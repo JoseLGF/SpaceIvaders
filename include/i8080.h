@@ -56,6 +56,7 @@ public:
     uint16_t Get_sp();
     void Set_sp(uint16_t address);
     uint16_t Get_pc();
+    void Set_pc(uint16_t address);
 
     uint8_t ReadMemoryAt(uint16_t address);
     void WriteMemoryAt(uint16_t address, uint8_t data);
@@ -104,9 +105,11 @@ private:
     void PUSH_B();                                  // Tested
     void PUSH_D();                                  // Tested
     void PUSH_H();                                  // Tested
+    void PUSH_PSW();                                // Tested
     void POP_H();                                   // Tested
     void POP_B();                                   // Tested
     void POP_D();                                   // Tested
+    void POP_PSW();                                 //
     // Move group
     void MVI_B(uint8_t data);                       // Skip
     void MVI_A(uint8_t data);                       // Skip
@@ -118,6 +121,8 @@ private:
     void MOV_D_M();                                 // Tested
     void MOV_H_M();                                 // Tested
     void MOV_A_H();                                 // Skip
+    void MOV_A_D();                                 // Skip
+    void MOV_A_E();                                 // Skip
     void MOV_L_A();                                 // Skip
     void MVI_M(uint8_t data);                       // Tested
     void LXI_B(uint8_t byte_b, uint8_t byte_c);     // Skip
@@ -130,19 +135,23 @@ private:
     // Call group
     void CALL(uint8_t hi, uint8_t lo);              // Tested
     void RET();                                     // Tested
+    void RST(uint8_t exp);                          //
     // Increment and decrement group
     void INX_H();                                   // Tested
     void INX_D();                                   // Tested
     void DCR_B();                                   // Tested
-    void DCR_C();                                   //
+    void DCR_C();                                   // Tested
     // Add and Subtract groups
     void DAD_B();                                   // Tested
     void DAD_D();                                   // Tested
     void DAD_H();                                   // Tested
-    // Logical group
+    void ADI(uint8_t data);
+    // Logical and rotate groups
     void XRA_A();                                   // Tested
     void ANA_A();                                   // Tested
+    void ANI(uint8_t data);                         // Tested
     void CPI(uint8_t data);                         // Tested
+    void RRC();                                     // Tested
     // IO and special groups
     void OUT(uint8_t byte);
     void EI();

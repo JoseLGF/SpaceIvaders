@@ -156,3 +156,17 @@ void CPU_8080::MOV_H_M()
     h = memory[address];
     pc += 1;
 }
+
+// Move D to A
+void CPU_8080::MOV_A_D()
+{
+    a = d;
+    pc += 1;
+}
+
+// Move E to A
+void CPU_8080::MOV_A_E()
+{
+    a = e;
+    pc += 1;
+}

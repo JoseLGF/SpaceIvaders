@@ -1,5 +1,6 @@
 /*
- * Implementations for the CPU instructions in the call group.
+ * Implementations for the CPU instructions in the call, return and
+ * restart groups.
  *
  */
 
@@ -21,4 +22,13 @@ void CPU_8080::RET()
 {
     pc = memory[sp] | (memory[sp+1] << 8);
     sp += 2;
+}
+
+void CPU_8080::RST(uint8_t exp)
+{
+    uint16_t new_pc = (exp << 3);
+    memory[sp-1] = (pc >> 8) & 0xff;
+    memory[sp-2] = (pc & 0xff);
+    sp = sp - 2;
+    pc = new_pc;
 }

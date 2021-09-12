@@ -117,3 +117,43 @@ TEST(StackGroup, POP_D_VerifyNormalOperation) {
     ASSERT_EQ(0x123b, cpu.Get_sp());
     ASSERT_EQ(0x0001, cpu.Get_pc());
 }
+
+TEST(StackGroup, PUSH_PSW_VerifyNormalAddition) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x1f);
+    cpu.Set_sp(0x502a);
+    cpu.Set_cy(true);
+    cpu.Set_z(true);
+    cpu.Set_p(true);
+    cpu.Set_s(false);
+    cpu.Set_ac(false);
+    cpu.WriteMemoryAt(0x0000, 0xf5); // PUSH_PSW instruction
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(0x1f, cpu.ReadMemoryAt(0x5029));
+    ASSERT_EQ(0x47, cpu.ReadMemoryAt(0x5028));
+    ASSERT_EQ(0x5028, cpu.Get_sp());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}
+
+TEST(StackGroup, POP_PSW_VerifyDataRestored) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_sp(0x2c00);
+    cpu.WriteMemoryAt(0x0000, 0xf1); // POP_PSW instruction
+    cpu.WriteMemoryAt(0x2c00, 0xc3);
+    cpu.WriteMemoryAt(0x2c01, 0xff);
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(0xff, cpu.Get_a());
+    ASSERT_EQ(true, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_cy());
+    ASSERT_EQ(true, cpu.Get_z());
+    ASSERT_EQ(false, cpu.Get_ac());
+    ASSERT_EQ(false, cpu.Get_p());
+    ASSERT_EQ(0x2c02, cpu.Get_sp());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}

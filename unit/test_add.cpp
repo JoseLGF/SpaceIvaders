@@ -75,3 +75,19 @@ TEST(AddGroup, DAD_B_VerifyWrapAroundFfff) {
     ASSERT_EQ(true, cpu.Get_cy());
     ASSERT_EQ(0x0001, cpu.Get_pc());
 }
+
+TEST(AddGroup, ADI) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0xbb);
+    cpu.WriteMemoryAt(0x0000, 0xc6); // ADI instruction
+    cpu.WriteMemoryAt(0x0001, 0xf2);
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(0xad, cpu.Get_a());
+    ASSERT_EQ(true, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(false, cpu.Get_p());
+    ASSERT_EQ(0x0002, cpu.Get_pc());
+}

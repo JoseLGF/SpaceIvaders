@@ -7,6 +7,7 @@
 #include "i8080.h"
 
 #include <iostream>
+#include <string>
 
 // Add D&E to H&L
 void CPU_8080::DAD_D()
@@ -48,4 +49,19 @@ void CPU_8080::DAD_H()
     cc.cy = ( (result & 0x10000) != 0 );
 
     pc += 1;
+}
+
+// Add immediate to A
+void CPU_8080::ADI(uint8_t data)
+{
+    uint16_t result  = a + data;
+
+    cc.cy = ( (result & 0x100) != 0 );
+    cc.z = (result == 0);
+    cc.s = ((result & 0x80) != 0);
+    cc.p = Parity(result);
+
+    a = (uint8_t) (result & 0xff);
+
+    pc += 2;
 }

@@ -38,3 +38,29 @@ TEST(CallGroup, RET_VerifyCorrectOperationsFromRet) {
     ASSERT_EQ(0x0003, cpu.Get_pc());
     ASSERT_EQ(0x200f, cpu.Get_sp());
 }
+
+TEST(CallGroup, RST0_VerifyPC) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_sp(0x200f);
+    cpu.Set_pc(0x0080);
+    cpu.WriteMemoryAt(0x0080, 0xc7); // RST0 instruction
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(0x0000, cpu.Get_pc());
+    ASSERT_EQ(0x200d, cpu.Get_sp());
+}
+
+TEST(CallGroup, RST5_VerifyPC) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_sp(0x200f);
+    cpu.Set_pc(0x0080);
+    cpu.WriteMemoryAt(0x0080, 0xef); // RST5 instruction
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(0x0028, cpu.Get_pc());
+    ASSERT_EQ(0x200d, cpu.Get_sp());
+}

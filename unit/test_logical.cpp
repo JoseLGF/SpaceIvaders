@@ -1,5 +1,5 @@
 /*
- * Test file for logical group instructions
+ * Test file for logical gnd rotate group instructions
  *
  */
 
@@ -89,5 +89,36 @@ TEST(LogicalGroup, CPI_VerifyDataIsGreater) {
     ASSERT_EQ(false, cpu.Get_z());
     ASSERT_EQ(true, cpu.Get_s());
     ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0002, cpu.Get_pc());
+}
+
+TEST(LogicalGroup, RRC) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0xf2);
+    cpu.Set_cy(true);
+    cpu.WriteMemoryAt(0x0000, 0x0f); // RRC instruction
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(0x79, cpu.Get_a());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}
+
+TEST(LogicalGroup, ANI) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x3a);
+    cpu.WriteMemoryAt(0x0000, 0xe6); // ANI instruction
+    cpu.WriteMemoryAt(0x0001, 0x0f);
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(false, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0a, cpu.Get_a());
     ASSERT_EQ(0x0002, cpu.Get_pc());
 }
