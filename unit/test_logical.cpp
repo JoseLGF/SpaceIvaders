@@ -17,7 +17,7 @@ TEST(LogicalGroup, XRA_A_VerifyNormalOperation) {
     cpu.Set_cy(true);
     cpu.WriteMemoryAt(0x0000, 0xaf); // XRA_A instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0x00, cpu.Get_a());
     ASSERT_EQ(false, cpu.Get_cy());
@@ -34,7 +34,7 @@ TEST(LogicalGroup, ANA_A_VerifyNormalOperation) {
     cpu.Set_z(true);
     cpu.WriteMemoryAt(0x0000, 0xa7); // ANA_A instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xf0, cpu.Get_a());
     ASSERT_EQ(false, cpu.Get_cy());
@@ -51,7 +51,7 @@ TEST(LogicalGroup, CPI_VerifyEqualNumbers) {
     cpu.WriteMemoryAt(0x0000, 0xfe); // CPI instruction
     cpu.WriteMemoryAt(0x0001, 0xf0);
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(false, cpu.Get_cy());
     ASSERT_EQ(true, cpu.Get_z());
@@ -67,7 +67,7 @@ TEST(LogicalGroup, CPI_VerifyAIsGreater) {
     cpu.WriteMemoryAt(0x0000, 0xfe); // CPI instruction
     cpu.WriteMemoryAt(0x0001, 0xf0);
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(false, cpu.Get_cy());
     ASSERT_EQ(false, cpu.Get_z());
@@ -83,7 +83,7 @@ TEST(LogicalGroup, CPI_VerifyDataIsGreater) {
     cpu.WriteMemoryAt(0x0000, 0xfe); // CPI instruction
     cpu.WriteMemoryAt(0x0001, 0xf4);
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(true, cpu.Get_cy());
     ASSERT_EQ(false, cpu.Get_z());
@@ -99,7 +99,7 @@ TEST(LogicalGroup, RRC) {
     cpu.Set_cy(true);
     cpu.WriteMemoryAt(0x0000, 0x0f); // RRC instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(false, cpu.Get_cy());
     ASSERT_EQ(0x79, cpu.Get_a());
@@ -113,7 +113,7 @@ TEST(LogicalGroup, ANI) {
     cpu.WriteMemoryAt(0x0000, 0xe6); // ANI instruction
     cpu.WriteMemoryAt(0x0001, 0x0f);
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(false, cpu.Get_cy());
     ASSERT_EQ(false, cpu.Get_z());

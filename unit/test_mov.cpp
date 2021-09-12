@@ -16,7 +16,7 @@ TEST(MoveGroup, MOV_M_A_VerifyContentsOfACorreclyLoaded) {
     cpu.Set_a(0xad);
     cpu.WriteMemoryAt(0x0000, 0x77); // MOV_M_A instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xad, cpu.ReadMemoryAt(0x01d0));
     ASSERT_EQ(0x01, cpu.Get_pc());
@@ -30,7 +30,7 @@ TEST(MoveGroup, STA_VerifyContentsOfACorrectlyLoaded) {
     cpu.WriteMemoryAt(0x0001, 0x45); // adr lo byte
     cpu.WriteMemoryAt(0x0002, 0x23); // adr hi byte
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xcc, cpu.ReadMemoryAt(0x2345));
     ASSERT_EQ(0x03, cpu.Get_pc());
@@ -45,7 +45,7 @@ TEST(MoveGroup, LDA_VerifyACorrectlyLoaded) {
     cpu.WriteMemoryAt(0x0002, 0x23); // adr hi byte
     cpu.WriteMemoryAt(0x2345, 0xcc);
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xcc, cpu.Get_a());
     ASSERT_EQ(0x03, cpu.Get_pc());
@@ -62,7 +62,7 @@ TEST(MoveGroup, MVI_M_VerifyContentsCorrectlyTransferred) {
     cpu.WriteMemoryAt(0x0000, 0x36); // MVI_M instruction
     cpu.WriteMemoryAt(0x0001, 0xcc); // Operand
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xcc, cpu.ReadMemoryAt(0x1234));
     ASSERT_EQ(0x02, cpu.Get_pc());
@@ -78,7 +78,7 @@ TEST(MoveGroup, XCHG_CheckValuesHaveBeenSwapped) {
 
     cpu.WriteMemoryAt(0x0000, 0xeb); // XCHG instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xbe, cpu.Get_h());
     ASSERT_EQ(0xef, cpu.Get_l());
@@ -94,7 +94,7 @@ TEST(MoveGroup, MOV_E_M_VerifyContentsOfACorreclyLoaded) {
     cpu.WriteMemoryAt(0x0000, 0x5e); // MOV_E_M instruction
     cpu.WriteMemoryAt(0x01d0, 0xbb);
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xbb, cpu.Get_e());
     ASSERT_EQ(0x01, cpu.Get_pc());
@@ -108,7 +108,7 @@ TEST(MoveGroup, MOV_D_M_VerifyContentsOfACorreclyLoaded) {
     cpu.WriteMemoryAt(0x0000, 0x56); // MOV_D_M instruction
     cpu.WriteMemoryAt(0x01d0, 0xbb);
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xbb, cpu.Get_d());
     ASSERT_EQ(0x01, cpu.Get_pc());
@@ -122,7 +122,7 @@ TEST(MoveGroup, MOV_A_M_VerifyContentsOfACorreclyLoaded) {
     cpu.WriteMemoryAt(0x0000, 0x7e); // MOV_A_M instruction
     cpu.WriteMemoryAt(0x01d0, 0xbb);
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xbb, cpu.Get_a());
     ASSERT_EQ(0x01, cpu.Get_pc());
@@ -136,8 +136,22 @@ TEST(MoveGroup, MOV_H_M_VerifyContentsOfACorreclyLoaded) {
     cpu.WriteMemoryAt(0x0000, 0x66); // MOV_H_M instruction
     cpu.WriteMemoryAt(0x01d0, 0xbb);
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xbb, cpu.Get_h());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(MoveGroup, STAX_B) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_b(0x3f);
+    cpu.Set_c(0x16);
+    cpu.Set_a(0xcc);
+    cpu.WriteMemoryAt(0x0000, 0x02); // STAX_B instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xcc, cpu.ReadMemoryAt(0x3f16));
     ASSERT_EQ(0x01, cpu.Get_pc());
 }

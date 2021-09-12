@@ -3,3 +3,4 @@ i8080emu
 memdump
 *.swp
 bin/emu8080
+unit/unittest

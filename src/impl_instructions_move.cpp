@@ -191,3 +191,12 @@ void CPU_8080::MOV_A_E()
     pc += 1;
     cycles += 5;
 }
+
+// Store A indirect
+void CPU_8080::STAX_B()
+{
+    uint16_t address = (b << 8) | c;
+    memory[address] = a;
+    pc += 1;
+    cycles += 7;
+}

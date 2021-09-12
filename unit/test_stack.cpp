@@ -18,7 +18,7 @@ TEST(StackGroup, PUSH_D_VerifyNormalAddition) {
     cpu.Set_sp(0x2020);
     cpu.WriteMemoryAt(0x0000, 0xd5); // PUSH_D instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xde, cpu.ReadMemoryAt(0x201f));
     ASSERT_EQ(0xad, cpu.ReadMemoryAt(0x201e));
@@ -34,7 +34,7 @@ TEST(StackGroup, PUSH_H_VerifyNormalAddition) {
     cpu.Set_sp(0x2020);
     cpu.WriteMemoryAt(0x0000, 0xe5); // PUSH_H instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xde, cpu.ReadMemoryAt(0x201f));
     ASSERT_EQ(0xad, cpu.ReadMemoryAt(0x201e));
@@ -50,7 +50,7 @@ TEST(StackGroup, PUSH_B_VerifyNormalAddition) {
     cpu.Set_sp(0x2020);
     cpu.WriteMemoryAt(0x0000, 0xc5); // PUSH_B instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xde, cpu.ReadMemoryAt(0x201f));
     ASSERT_EQ(0xad, cpu.ReadMemoryAt(0x201e));
@@ -70,7 +70,7 @@ TEST(StackGroup, POP_H_VerifyNormalOperation) {
     cpu.Set_sp(0x1239);
     cpu.WriteMemoryAt(0x0000, 0xe1); // POP_H instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0x93, cpu.Get_h());
     ASSERT_EQ(0x3d, cpu.Get_l());
@@ -90,7 +90,7 @@ TEST(StackGroup, POP_B_VerifyNormalOperation) {
     cpu.Set_sp(0x1239);
     cpu.WriteMemoryAt(0x0000, 0xc1); // POP_B instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0x93, cpu.Get_b());
     ASSERT_EQ(0x3d, cpu.Get_c());
@@ -110,7 +110,7 @@ TEST(StackGroup, POP_D_VerifyNormalOperation) {
     cpu.Set_sp(0x1239);
     cpu.WriteMemoryAt(0x0000, 0xd1); // POP_D instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0x93, cpu.Get_d());
     ASSERT_EQ(0x3d, cpu.Get_e());
@@ -130,7 +130,7 @@ TEST(StackGroup, PUSH_PSW_VerifyNormalAddition) {
     cpu.Set_ac(false);
     cpu.WriteMemoryAt(0x0000, 0xf5); // PUSH_PSW instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0x1f, cpu.ReadMemoryAt(0x5029));
     ASSERT_EQ(0x47, cpu.ReadMemoryAt(0x5028));
@@ -146,7 +146,7 @@ TEST(StackGroup, POP_PSW_VerifyDataRestored) {
     cpu.WriteMemoryAt(0x2c00, 0xc3);
     cpu.WriteMemoryAt(0x2c01, 0xff);
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xff, cpu.Get_a());
     ASSERT_EQ(true, cpu.Get_s());

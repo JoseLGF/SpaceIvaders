@@ -17,7 +17,7 @@ TEST(BranchGroup, JMP_VerifyPCUpdatedAfterJMP) {
     cpu.WriteMemoryAt(0x0001, 0xd4); // Lo byte of jmp adr
     cpu.WriteMemoryAt(0x0002, 0x18); // Hi byte of jmp adr
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0x18d4, cpu.Get_pc());
 }
@@ -31,7 +31,7 @@ TEST(BranchGroup, JNZ_WhenZIsClearedThenJmpToSpecifiedAddress) {
     cpu.WriteMemoryAt(0x0001, 0xd4); // Lo byte of jmp adr
     cpu.WriteMemoryAt(0x0002, 0x18); // Hi byte of jmp adr
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0x18d4, cpu.Get_pc());
 }
@@ -46,7 +46,7 @@ TEST(BranchGroup, JNZ_WhenZIsSetThenDontJumpToAddress) {
     cpu.WriteMemoryAt(0x0001, 0xd4); // Lo byte of jmp adr
     cpu.WriteMemoryAt(0x0002, 0x18); // Hi byte of jmp adr
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0x0003, cpu.Get_pc());
 }

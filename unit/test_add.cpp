@@ -19,7 +19,7 @@ TEST(AddGroup, DAD_D_VerifyNormalAddition) {
     cpu.Set_l(0x34);
     cpu.WriteMemoryAt(0x0000, 0x19); // DAD_D instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xf0, cpu.Get_h());
     ASSERT_EQ(0xe1, cpu.Get_l());
@@ -36,7 +36,7 @@ TEST(AddGroup, DAD_D_VerifyWrapAroundFfff) {
     cpu.Set_l(0xad);
     cpu.WriteMemoryAt(0x0000, 0x19); // DAD_D instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xde, cpu.Get_h());
     ASSERT_EQ(0xac, cpu.Get_l());
@@ -51,7 +51,7 @@ TEST(AddGroup, DAD_H_VerifyWrapAroundFfff) {
     cpu.Set_l(0xad);
     cpu.WriteMemoryAt(0x0000, 0x29); // DAD_H instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xbd, cpu.Get_h());
     ASSERT_EQ(0x5a, cpu.Get_l());
@@ -68,7 +68,7 @@ TEST(AddGroup, DAD_B_VerifyWrapAroundFfff) {
     cpu.Set_l(0xad);
     cpu.WriteMemoryAt(0x0000, 0x09); // DAD_B instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xde, cpu.Get_h());
     ASSERT_EQ(0xac, cpu.Get_l());
@@ -83,7 +83,7 @@ TEST(AddGroup, ADI) {
     cpu.WriteMemoryAt(0x0000, 0xc6); // ADI instruction
     cpu.WriteMemoryAt(0x0001, 0xf2);
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xad, cpu.Get_a());
     ASSERT_EQ(true, cpu.Get_cy());

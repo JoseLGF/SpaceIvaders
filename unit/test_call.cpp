@@ -16,7 +16,7 @@ TEST(CallGroup, CALL_VerifyCorrectOperationsFromCall) {
     cpu.WriteMemoryAt(0x0001, 0xcd);
     cpu.WriteMemoryAt(0x0002, 0xab);
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0xabcd, cpu.Get_pc());
     ASSERT_EQ(0x200d, cpu.Get_sp());
@@ -31,8 +31,8 @@ TEST(CallGroup, RET_VerifyCorrectOperationsFromRet) {
     cpu.WriteMemoryAt(0x0002, 0x20);
     cpu.WriteMemoryAt(0x2020, 0xc9); // RET instruction
 
-    cpu.EmulateCycle(); // Executes CALL
-    cpu.EmulateCycle(); // Executes RET
+    cpu.RegularInstruction(); // Executes CALL
+    cpu.RegularInstruction(); // Executes RET
 
 
     ASSERT_EQ(0x0003, cpu.Get_pc());
@@ -46,7 +46,7 @@ TEST(CallGroup, RST0_VerifyPC) {
     cpu.Set_pc(0x0080);
     cpu.WriteMemoryAt(0x0080, 0xc7); // RST0 instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0x0000, cpu.Get_pc());
     ASSERT_EQ(0x200d, cpu.Get_sp());
@@ -59,7 +59,7 @@ TEST(CallGroup, RST5_VerifyPC) {
     cpu.Set_pc(0x0080);
     cpu.WriteMemoryAt(0x0080, 0xef); // RST5 instruction
 
-    cpu.EmulateCycle();
+    cpu.RegularInstruction();
 
     ASSERT_EQ(0x0028, cpu.Get_pc());
     ASSERT_EQ(0x200d, cpu.Get_sp());

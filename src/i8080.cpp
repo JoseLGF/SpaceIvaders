@@ -131,6 +131,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
     {
         case 0x00:      NOP ();                           break;
         case 0x01:    LXI_B (memory[pc+2], memory[pc+1]); break;
+        case 0x02:   STAX_B ();                           break;
         case 0x05:    DCR_B ();                           break;
         case 0x06:    MVI_B (memory[pc+1]);               break;
         case 0x09:    DAD_B ();                           break;

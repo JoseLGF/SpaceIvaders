@@ -27,7 +27,7 @@ public:
     void DumpMemory();
     void Interrupt(uint8_t opcode);
 
-private:
+public:
     /* Internal functions */
     void RegularInstruction();
 
@@ -139,6 +139,7 @@ private:
     void STA(uint8_t byte_h, uint8_t byte_l);       // Tested
     void LDA(uint8_t byte_h, uint8_t byte_l);       // Tested
     void XCHG();                                    // Tested
+    void STAX_B();                                  //
     // Call group
     void CALL(uint8_t hi, uint8_t lo);              // Tested
     void RET();                                     // Tested
