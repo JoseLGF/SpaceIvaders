@@ -17,16 +17,21 @@ typedef struct ConditionCodes {
 
 class CPU_8080 {
 public:
-
     /* Public interface */
 	void Initialize();
-	void ExecuteInstruction();
+	void ExecuteInstruction(uint8_t opcode);
 	void EmulateCycles(uint32_t num_cycles);
     void LoadRom();
     void PrintState();
     bool Running();
     void DumpMemory();
+    void Interrupt(uint8_t opcode);
 
+private:
+    /* Internal functions */
+    void RegularInstruction();
+
+public:
     /* Functions for unit testing */
     bool Get_z();
     bool Get_s();

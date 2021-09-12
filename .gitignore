@@ -2,4 +2,4 @@
 i8080emu
 memdump
 *.swp
-/bin/*
+bin/emu8080

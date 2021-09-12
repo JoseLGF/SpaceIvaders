@@ -104,16 +104,29 @@ void CPU_8080::EmulateCycles(uint32_t num_cycles)
     cycles = 0;
     while(cycles < num_cycles)
     {
-        ExecuteInstruction();
+        RegularInstruction();
     }
 }
 
-void CPU_8080::ExecuteInstruction()
+void CPU_8080::RegularInstruction()
 {
     // Fetch opcode
     uint8_t opcode = memory[pc];
+    ExecuteInstruction(opcode);
+}
 
-    // Decode instruction
+void CPU_8080::Interrupt(uint8_t opcode)
+{
+    // If interrupts are enabled, service the request
+    if (int_enable)
+    {
+        ExecuteInstruction(opcode);
+    }
+}
+
+void CPU_8080::ExecuteInstruction(uint8_t opcode)
+{
+    // Decode and execute instruction
     switch(opcode)
     {
         case 0x00:      NOP ();                           break;
@@ -246,6 +259,7 @@ uint8_t CPU_8080::ReadMemoryAt(uint16_t address)
 {
     return memory[address];
 }
+
 
 uint16_t CPU_8080::Get_pc() { return pc; }
 uint16_t CPU_8080::Get_sp() { return sp; }
