@@ -19,6 +19,20 @@ void CPU_8080::MVI_A(uint8_t data)
     pc += 2;
 }
 
+// Move immediate register C
+void CPU_8080::MVI_C(uint8_t data)
+{
+    c = data;
+    pc += 2;
+}
+
+// Move immediate register H
+void CPU_8080::MVI_H(uint8_t data)
+{
+    h = data;
+    pc += 2;
+}
+
 // Load immediate register pair D and E
 void CPU_8080::LXI_D(uint8_t byte_d, uint8_t byte_e)
 {
@@ -59,6 +73,20 @@ void CPU_8080::MOV_M_A()
     pc += 1;
 }
 
+// Move the value of H into A
+void CPU_8080::MOV_A_H()
+{
+    a = h;
+    pc += 1;
+}
+
+// Move the value of A into H
+void CPU_8080::MOV_L_A()
+{
+    l = a;
+    pc += 1;
+}
+
 // Store A direct
 void CPU_8080::STA(uint8_t byte_h, uint8_t byte_l)
 {
@@ -73,4 +101,26 @@ void CPU_8080::LDA(uint8_t byte_h, uint8_t byte_l)
     uint16_t address = (byte_h << 8) | byte_l;
     a = memory[address];
     pc += 3;
+}
+
+// Move immediate Memory
+void CPU_8080::MVI_M(uint8_t data)
+{
+    uint16_t address = (h << 8) | l;
+    memory[address] = data;
+    pc += 2;
+}
+
+// Exchange the contents of register pairs HL and DE
+void CPU_8080::XCHG()
+{
+    uint8_t tmp;
+    tmp = h;
+    h = d;
+    d = tmp;
+    tmp = l;
+    l = e;
+    e = tmp;
+
+    pc += 1;
 }

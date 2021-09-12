@@ -34,3 +34,17 @@ void CPU_8080::ANA_A()
     a = result;
     pc += 1;
 }
+
+// Compare immediate with accumulator
+void CPU_8080::CPI(uint8_t data)
+{
+    uint8_t result = a - data;
+
+    cc.z  = (result == 0);
+    cc.s  = ((result & 0x80) != 0);
+    cc.p  = Parity(result);
+    cc.cy = data > a;
+
+    a = result;
+    pc += 2;
+}

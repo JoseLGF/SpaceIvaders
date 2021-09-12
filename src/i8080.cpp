@@ -113,16 +113,22 @@ void CPU_8080::EmulateCycle()
         case 0x01:   LXI_B (memory[pc+2], memory[pc+1]); break;
         case 0x05:   DCR_B ();                           break;
         case 0x06:   MVI_B (memory[pc+1]);               break;
+        case 0x0e:   MVI_C (memory[pc+1]);               break;
         case 0x11:   LXI_D (memory[pc+2], memory[pc+1]); break;
         case 0x13:   INX_D ();                           break;
         case 0x19:   DAD_D ();                           break;
+        case 0x29:   DAD_H ();                           break;
         case 0x1a:  LDAX_D ();                           break;
         case 0x21:   LXI_H (memory[pc+2], memory[pc+1]); break;
         case 0x23:   INX_H ();                           break;
+        case 0x26:   MVI_H (memory[pc+1]);               break;
         case 0x31:  LXI_SP (memory[pc+2], memory[pc+1]); break;
         case 0x32:     STA (memory[pc+2], memory[pc+1]); break;
+        case 0x36:   MVI_M (memory[pc+1]);               break;
         case 0x3a:     LDA (memory[pc+2], memory[pc+1]); break;
         case 0x3e:   MVI_A (memory[pc+1]);               break;
+        case 0x6f: MOV_L_A ();                           break;
+        case 0x7c: MOV_A_H ();                           break;
         case 0x77: MOV_M_A ();                           break;
         case 0xaf:   XRA_A ();                           break;
         case 0xa7:   ANA_A ();                           break;
@@ -131,6 +137,10 @@ void CPU_8080::EmulateCycle()
         case 0xc9:     RET ();                           break;
         case 0xcd:    CALL (memory[pc+2], memory[pc+1]); break;
         case 0xd3:     OUT (memory[pc+1]);               break;
+        case 0xd5:  PUSH_D ();                           break;
+        case 0xeb:    XCHG ();                           break;
+        case 0xe5:  PUSH_H ();                           break;
+        case 0xfe:     CPI (memory[pc+1]);               break;
         case 0xfb:      EI ();                           break;
         default  : UnimplementedInstruction(opcode);     break;
     }
@@ -216,8 +226,14 @@ uint8_t CPU_8080::Get_h() { return h; }
 uint8_t CPU_8080::Get_l() { return l; }
 
 bool CPU_8080::Get_cy() { return cc.cy; }
+bool CPU_8080::Get_z() { return cc.z; }
+bool CPU_8080::Get_s() { return cc.s; }
+bool CPU_8080::Get_p() { return cc.p; }
 
+void CPU_8080::Set_cy(bool bit) { cc.cy = bit; }
 void CPU_8080::Set_z(bool bit) { cc.z = bit; }
+void CPU_8080::Set_s(bool bit) { cc.s = bit; }
+void CPU_8080::Set_p(bool bit) { cc.p = bit; }
 void CPU_8080::Set_a(uint8_t data) { a = data; }
 void CPU_8080::Set_b(uint8_t data) { b = data; }
 void CPU_8080::Set_d(uint8_t data) { d = data; }

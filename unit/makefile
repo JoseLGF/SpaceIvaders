@@ -21,7 +21,9 @@ TESTOBJ= test_add.o \
 	 test_mov.o \
 	 test_branch.o \
 	 test_call.o \
-	 test_inc_dec.o
+	 test_inc_dec.o \
+	 test_logical.o \
+	 test_stack.o
 
 %.o: %.cpp $(DEPS)
 	$(CC) -c -o $@ $<  $(CFLAGS)

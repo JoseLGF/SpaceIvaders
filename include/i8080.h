@@ -101,16 +101,24 @@ private:
     void NOP();                                     // Skip
     // Stack group
     void LXI_SP(uint8_t hi, uint8_t lo);            // Skip
+    void PUSH_D();                                  // Tested
+    void PUSH_H();                                  // Tested
     // Move group
     void MVI_B(uint8_t data);                       // Skip
     void MVI_A(uint8_t data);                       // Skip
+    void MVI_C(uint8_t data);                       // Skip
+    void MVI_H(uint8_t data);                       // Skip
     void MOV_M_A();                                 // Tested
+    void MOV_A_H();                                 // Skip
+    void MOV_L_A();                                 // Skip
+    void MVI_M(uint8_t data);                       // Tested
     void LXI_B(uint8_t byte_b, uint8_t byte_c);     // Skip
     void LXI_D(uint8_t byte_d, uint8_t byte_e);     // Skip
     void LXI_H(uint8_t byte_h, uint8_t byte_l);     // Skip
     void LDAX_D();                                  // Skip
     void STA(uint8_t byte_h, uint8_t byte_l);       // Tested
     void LDA(uint8_t byte_h, uint8_t byte_l);       // Tested
+    void XCHG();                                    //
     // Call group
     void CALL(uint8_t hi, uint8_t lo);              // Tested
     void RET();                                     // Tested
@@ -120,9 +128,11 @@ private:
     void DCR_B();                                   // Tested
     // Add and Subtract groups
     void DAD_D();                                   // Tested
+    void DAD_H();                                   // Tested
     // Logical group
-    void XRA_A();
-    void ANA_A();
+    void XRA_A();                                   // Tested
+    void ANA_A();                                   // Tested
+    void CPI(uint8_t data);                         // Tested
     // IO and special groups
     void OUT(uint8_t byte);
     void EI();

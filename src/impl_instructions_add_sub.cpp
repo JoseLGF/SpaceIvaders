@@ -21,3 +21,16 @@ void CPU_8080::DAD_D()
 
     pc += 1;
 }
+
+// Add H&L to H&L
+void CPU_8080::DAD_H()
+{
+    uint16_t h_and_l = (h << 8) | l;
+    uint32_t result  = h_and_l + h_and_l;
+    h = ( (result >> 8) & 0xff );
+    l = result & 0xff;
+
+    cc.cy = ( (result & 0x10000) != 0 );
+
+    pc += 1;
+}
