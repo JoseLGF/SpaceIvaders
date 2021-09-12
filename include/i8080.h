@@ -21,7 +21,7 @@ public:
     /* Public interface */
 	void Initialize();
 	void ExecuteInstruction();
-	void EmulateCycles(uint32_t cycles);
+	void EmulateCycles(uint32_t num_cycles);
     void LoadRom();
     void PrintState();
     bool Running();

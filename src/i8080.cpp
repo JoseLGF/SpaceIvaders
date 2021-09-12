@@ -99,12 +99,19 @@ void CPU_8080::UnimplementedInstruction(uint8_t opcode)
     halted = true;
 }
 
+void CPU_8080::EmulateCycles(uint32_t num_cycles)
+{
+    cycles = 0;
+    while(cycles < num_cycles)
+    {
+        ExecuteInstruction();
+    }
+}
+
 void CPU_8080::ExecuteInstruction()
 {
     // Fetch opcode
     uint8_t opcode = memory[pc];
-    /* std::cout << "Fetched instruction " << std::hex */
-    /*     << (unsigned int) opcode << std::endl; */
 
     // Decode instruction
     switch(opcode)

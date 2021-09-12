@@ -2,13 +2,24 @@
  * Main file for the spaceInvaders emulator program.
  */
 
+#include <SFML/Graphics.hpp>
+#include <SFML/System.hpp>
 #include <iostream>
-#include "i8080.h"
 #include <cstdio>
+#include "i8080.h"
 
 int main(int argc, char** argv) {
 
     std::cout << "Space Invaders Emulator!" << std::endl;
+
+    // Setup sfml Graphics
+    sf::ContextSettings settings;
+    settings.antialiasingLevel = 8;
+    sf::RenderWindow window(
+            sf::VideoMode(256, 224),
+            "I8080 Emulator",
+            sf::Style::Default, settings);
+    window.setFramerateLimit(60);
 
     // Setup cpu
     std::cout << "Setup CPU..." << std::endl;
@@ -16,17 +27,12 @@ int main(int argc, char** argv) {
     cpu.Initialize();
     cpu.LoadRom();
 
-    // Emulation cycle
+    // Emulation loop
     std::cout << "Starting emulation..." << std::endl;
-    int instructions = 0;
-    while(cpu.Running())
+    while(window.isOpen() && cpu.Running())
     {
         cpu.PrintState();
         cpu.ExecuteInstruction();
-        /* instructions++; */
-        /* std::cout << "Press any key for emulation cycle." << std::endl; */
-        //getchar();
-        /* if(instructions==1500+1) break; */
     }
 
     cpu.DumpMemory();
