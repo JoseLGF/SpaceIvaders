@@ -124,3 +124,35 @@ void CPU_8080::XCHG()
 
     pc += 1;
 }
+
+// Contents of the address pointed to by the pair HL are loaded to E
+void CPU_8080::MOV_E_M()
+{
+    uint16_t address = (h << 8) | l;
+    e = memory[address];
+    pc += 1;
+}
+
+// Contents of the address pointed to by the pair HL are loaded to D
+void CPU_8080::MOV_D_M()
+{
+    uint16_t address = (h << 8) | l;
+    d = memory[address];
+    pc += 1;
+}
+
+// Contents of the address pointed to by the pair HL are loaded to A
+void CPU_8080::MOV_A_M()
+{
+    uint16_t address = (h << 8) | l;
+    a = memory[address];
+    pc += 1;
+}
+
+// Contents of the address pointed to by the pair HL are loaded to H
+void CPU_8080::MOV_H_M()
+{
+    uint16_t address = (h << 8) | l;
+    h = memory[address];
+    pc += 1;
+}

@@ -113,6 +113,8 @@ void CPU_8080::EmulateCycle()
         case 0x01:   LXI_B (memory[pc+2], memory[pc+1]); break;
         case 0x05:   DCR_B ();                           break;
         case 0x06:   MVI_B (memory[pc+1]);               break;
+        case 0x09:   DAD_B ();                           break;
+        case 0x0d:   DCR_C ();                           break;
         case 0x0e:   MVI_C (memory[pc+1]);               break;
         case 0x11:   LXI_D (memory[pc+2], memory[pc+1]); break;
         case 0x13:   INX_D ();                           break;
@@ -127,18 +129,26 @@ void CPU_8080::EmulateCycle()
         case 0x36:   MVI_M (memory[pc+1]);               break;
         case 0x3a:     LDA (memory[pc+2], memory[pc+1]); break;
         case 0x3e:   MVI_A (memory[pc+1]);               break;
+        case 0x56: MOV_D_M ();                           break;
+        case 0x5e: MOV_E_M ();                           break;
+        case 0x66: MOV_H_M ();                           break;
         case 0x6f: MOV_L_A ();                           break;
         case 0x7c: MOV_A_H ();                           break;
         case 0x77: MOV_M_A ();                           break;
+        case 0x7e: MOV_A_M ();                           break;
         case 0xaf:   XRA_A ();                           break;
         case 0xa7:   ANA_A ();                           break;
+        case 0xc1:   POP_B ();                           break;
         case 0xc2:     JNZ (memory[pc+2], memory[pc+1]); break;
         case 0xc3:     JMP (memory[pc+2], memory[pc+1]); break;
+        case 0xc5:  PUSH_B ();                           break;
         case 0xc9:     RET ();                           break;
         case 0xcd:    CALL (memory[pc+2], memory[pc+1]); break;
+        case 0xd1:   POP_D ();                           break;
         case 0xd3:     OUT (memory[pc+1]);               break;
         case 0xd5:  PUSH_D ();                           break;
         case 0xeb:    XCHG ();                           break;
+        case 0xe1:   POP_H ();                           break;
         case 0xe5:  PUSH_H ();                           break;
         case 0xfe:     CPI (memory[pc+1]);               break;
         case 0xfb:      EI ();                           break;
@@ -220,6 +230,7 @@ uint16_t CPU_8080::Get_sp() { return sp; }
 
 uint8_t CPU_8080::Get_a() { return a; }
 uint8_t CPU_8080::Get_b() { return b; }
+uint8_t CPU_8080::Get_c() { return c; }
 uint8_t CPU_8080::Get_d() { return d; }
 uint8_t CPU_8080::Get_e() { return e; }
 uint8_t CPU_8080::Get_h() { return h; }
@@ -236,6 +247,7 @@ void CPU_8080::Set_s(bool bit) { cc.s = bit; }
 void CPU_8080::Set_p(bool bit) { cc.p = bit; }
 void CPU_8080::Set_a(uint8_t data) { a = data; }
 void CPU_8080::Set_b(uint8_t data) { b = data; }
+void CPU_8080::Set_c(uint8_t data) { c = data; }
 void CPU_8080::Set_d(uint8_t data) { d = data; }
 void CPU_8080::Set_e(uint8_t data) { e = data; }
 void CPU_8080::Set_h(uint8_t data) { h = data; }

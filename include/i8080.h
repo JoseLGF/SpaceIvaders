@@ -101,14 +101,22 @@ private:
     void NOP();                                     // Skip
     // Stack group
     void LXI_SP(uint8_t hi, uint8_t lo);            // Skip
+    void PUSH_B();                                  // Tested
     void PUSH_D();                                  // Tested
     void PUSH_H();                                  // Tested
+    void POP_H();                                   // Tested
+    void POP_B();                                   // Tested
+    void POP_D();                                   // Tested
     // Move group
     void MVI_B(uint8_t data);                       // Skip
     void MVI_A(uint8_t data);                       // Skip
     void MVI_C(uint8_t data);                       // Skip
     void MVI_H(uint8_t data);                       // Skip
     void MOV_M_A();                                 // Tested
+    void MOV_A_M();                                 // Tested
+    void MOV_E_M();                                 // Tested
+    void MOV_D_M();                                 // Tested
+    void MOV_H_M();                                 // Tested
     void MOV_A_H();                                 // Skip
     void MOV_L_A();                                 // Skip
     void MVI_M(uint8_t data);                       // Tested
@@ -118,7 +126,7 @@ private:
     void LDAX_D();                                  // Skip
     void STA(uint8_t byte_h, uint8_t byte_l);       // Tested
     void LDA(uint8_t byte_h, uint8_t byte_l);       // Tested
-    void XCHG();                                    //
+    void XCHG();                                    // Tested
     // Call group
     void CALL(uint8_t hi, uint8_t lo);              // Tested
     void RET();                                     // Tested
@@ -126,7 +134,9 @@ private:
     void INX_H();                                   // Tested
     void INX_D();                                   // Tested
     void DCR_B();                                   // Tested
+    void DCR_C();                                   //
     // Add and Subtract groups
+    void DAD_B();                                   // Tested
     void DAD_D();                                   // Tested
     void DAD_H();                                   // Tested
     // Logical group

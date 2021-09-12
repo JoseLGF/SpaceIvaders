@@ -30,3 +30,39 @@ void CPU_8080::PUSH_H()
     sp = sp - 2;
     pc += 1;
 }
+
+// Pop Register Pair H & L off stack
+void CPU_8080::POP_H()
+{
+    l = memory[sp];
+    h = memory[sp+1];
+    sp = sp + 2;
+    pc += 1;
+}
+
+// Push Register Pair B & C on stack
+void CPU_8080::PUSH_B()
+{
+    memory[sp-1] = b;
+    memory[sp-2] = c;
+    sp = sp - 2;
+    pc += 1;
+}
+
+// Pop Register Pair B & C off stack
+void CPU_8080::POP_B()
+{
+    c = memory[sp];
+    b = memory[sp+1];
+    sp = sp + 2;
+    pc += 1;
+}
+
+// Pop Register Pair D & E off stack
+void CPU_8080::POP_D()
+{
+    e = memory[sp];
+    d = memory[sp+1];
+    sp = sp + 2;
+    pc += 1;
+}

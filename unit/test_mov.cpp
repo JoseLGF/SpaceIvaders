@@ -85,3 +85,59 @@ TEST(MoveGroup, XCHG_CheckValuesHaveBeenSwapped) {
     ASSERT_EQ(0xde, cpu.Get_d());
     ASSERT_EQ(0xad, cpu.Get_e());
 }
+
+TEST(MoveGroup, MOV_E_M_VerifyContentsOfACorreclyLoaded) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_h(0x01);
+    cpu.Set_l(0xd0);
+    cpu.WriteMemoryAt(0x0000, 0x5e); // MOV_E_M instruction
+    cpu.WriteMemoryAt(0x01d0, 0xbb);
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(0xbb, cpu.Get_e());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(MoveGroup, MOV_D_M_VerifyContentsOfACorreclyLoaded) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_h(0x01);
+    cpu.Set_l(0xd0);
+    cpu.WriteMemoryAt(0x0000, 0x56); // MOV_D_M instruction
+    cpu.WriteMemoryAt(0x01d0, 0xbb);
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(0xbb, cpu.Get_d());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(MoveGroup, MOV_A_M_VerifyContentsOfACorreclyLoaded) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_h(0x01);
+    cpu.Set_l(0xd0);
+    cpu.WriteMemoryAt(0x0000, 0x7e); // MOV_A_M instruction
+    cpu.WriteMemoryAt(0x01d0, 0xbb);
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(0xbb, cpu.Get_a());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(MoveGroup, MOV_H_M_VerifyContentsOfACorreclyLoaded) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_h(0x01);
+    cpu.Set_l(0xd0);
+    cpu.WriteMemoryAt(0x0000, 0x66); // MOV_H_M instruction
+    cpu.WriteMemoryAt(0x01d0, 0xbb);
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(0xbb, cpu.Get_h());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}

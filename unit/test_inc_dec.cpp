@@ -87,3 +87,27 @@ TEST(IncDecGroup, DCR_B_WhenBIs0ThenWrapToFf) {
     ASSERT_EQ(0xff, cpu.Get_b());
     ASSERT_EQ(0x01, cpu.Get_pc());
 }
+
+TEST(IncDecGroup, DCR_C_VerifyNormalDecrement) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_c(0x1a);
+    cpu.WriteMemoryAt(0x0000, 0x0d); // DCR_C
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(0x19, cpu.Get_c());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(IncDecGroup, DCR_C_WhenBIs0ThenWrapToFf) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_c(0x00);
+    cpu.WriteMemoryAt(0x0000, 0x0d); // DCR_C
+
+    cpu.EmulateCycle();
+
+    ASSERT_EQ(0xff, cpu.Get_c());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}

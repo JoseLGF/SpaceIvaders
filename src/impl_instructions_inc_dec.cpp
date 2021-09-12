@@ -41,3 +41,17 @@ void CPU_8080::DCR_B()
     b = result;
     pc += 1;
 }
+
+// Decrement C register
+void CPU_8080::DCR_C()
+{
+    uint8_t result = c - 1;
+
+    cc.z = (result == 0);
+    cc.s = ((result & 0x80) != 0);
+    cc.p = Parity(result);
+    // cc.c = Unaffected for this instruction
+
+    c = result;
+    pc += 1;
+}
