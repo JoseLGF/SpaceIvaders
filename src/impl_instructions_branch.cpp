@@ -9,6 +9,7 @@
 void CPU_8080::JMP(uint8_t hi, uint8_t lo)
 {
     uint16_t address = (hi << 8) | lo;
+    cycles += 10;
     pc = address;
 }
 
@@ -24,4 +25,5 @@ void CPU_8080::JNZ(uint8_t hi, uint8_t lo)
     {
         pc += 3;
     }
+    cycles += 10;
 }

@@ -11,6 +11,7 @@ void CPU_8080::LXI_SP(uint8_t hi, uint8_t lo)
     uint16_t address = (hi << 8) | lo;
     sp = address;
     pc += 3;
+    cycles += 10;
 }
 
 // Push Register Pair D & E on stack
@@ -29,6 +30,7 @@ void CPU_8080::PUSH_H()
     memory[sp-2] = l;
     sp = sp - 2;
     pc += 1;
+    cycles += 11;
 }
 
 // Pop Register Pair H & L off stack
@@ -38,6 +40,7 @@ void CPU_8080::POP_H()
     h = memory[sp+1];
     sp = sp + 2;
     pc += 1;
+    cycles += 10;
 }
 
 // Push Register Pair B & C on stack
@@ -47,6 +50,7 @@ void CPU_8080::PUSH_B()
     memory[sp-2] = c;
     sp = sp - 2;
     pc += 1;
+    cycles += 11;
 }
 
 // Pop Register Pair B & C off stack
@@ -56,6 +60,7 @@ void CPU_8080::POP_B()
     b = memory[sp+1];
     sp = sp + 2;
     pc += 1;
+    cycles += 10;
 }
 
 // Pop Register Pair D & E off stack
@@ -65,6 +70,7 @@ void CPU_8080::POP_D()
     d = memory[sp+1];
     sp = sp + 2;
     pc += 1;
+    cycles += 10;
 }
 
 // Push Flags and A on stack
@@ -84,6 +90,7 @@ void CPU_8080::PUSH_PSW()
     memory[sp-2] = flags;
     sp = sp - 2;
     pc += 1;
+    cycles += 11;
 }
 
 // Pop Flags and A Off Stack
@@ -99,4 +106,5 @@ void CPU_8080::POP_PSW()
     a = memory[sp+1];
     sp = sp + 2;
     pc += 1;
+    cycles += 10;
 }

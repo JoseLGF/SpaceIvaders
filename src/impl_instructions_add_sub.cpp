@@ -20,6 +20,7 @@ void CPU_8080::DAD_D()
 
     cc.cy = ( (result & 0x10000) != 0 );
 
+    cycles += 10;
     pc += 1;
 }
 
@@ -34,6 +35,7 @@ void CPU_8080::DAD_B()
 
     cc.cy = ( (result & 0x10000) != 0 );
 
+    cycles += 10;
     pc += 1;
 }
 
@@ -48,6 +50,7 @@ void CPU_8080::DAD_H()
 
     cc.cy = ( (result & 0x10000) != 0 );
 
+    cycles += 10;
     pc += 1;
 }
 
@@ -63,5 +66,6 @@ void CPU_8080::ADI(uint8_t data)
 
     a = (uint8_t) (result & 0xff);
 
+    cycles += 7;
     pc += 2;
 }

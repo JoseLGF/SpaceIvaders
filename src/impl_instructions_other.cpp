@@ -3,4 +3,5 @@
 void CPU_8080::NOP()
 {
     pc++;
+    cycles += 4;
 }

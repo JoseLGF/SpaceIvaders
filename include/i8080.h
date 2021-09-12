@@ -20,7 +20,8 @@ public:
 
     /* Public interface */
 	void Initialize();
-	void EmulateCycle();
+	void ExecuteInstruction();
+	void EmulateCycles(uint32_t cycles);
     void LoadRom();
     void PrintState();
     bool Running();
@@ -89,6 +90,7 @@ private:
     uint8_t     int_enable;
 
     long int instructions_executed;
+    long int cycles;
 
     // For debugging
     bool halted = false;

@@ -16,6 +16,7 @@ void CPU_8080::INX_H()
     h = (uint8_t) ((num >> 8) & 0xff);
     l = (uint8_t) (num & 0xff);
     pc += 1;
+    cycles += 5;
 }
 
 // Increment DE register pair
@@ -26,6 +27,7 @@ void CPU_8080::INX_D()
     d = (uint8_t) ((num >> 8) & 0xff);
     e = (uint8_t) (num & 0xff);
     pc += 1;
+    cycles += 5;
 }
 
 // Decrement B register
@@ -40,6 +42,7 @@ void CPU_8080::DCR_B()
 
     b = result;
     pc += 1;
+    cycles += 5;
 }
 
 // Decrement C register
@@ -54,4 +57,5 @@ void CPU_8080::DCR_C()
 
     c = result;
     pc += 1;
+    cycles += 5;
 }

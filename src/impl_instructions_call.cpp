@@ -16,12 +16,14 @@ void CPU_8080::CALL(uint8_t hi, uint8_t lo)
     memory[sp-2] = (ret & 0xff);
     sp = sp - 2;
     pc = (hi << 8) | lo;
+    cycles += 17;
 }
 
 void CPU_8080::RET()
 {
     pc = memory[sp] | (memory[sp+1] << 8);
     sp += 2;
+    cycles += 10;
 }
 
 void CPU_8080::RST(uint8_t exp)
@@ -31,4 +33,5 @@ void CPU_8080::RST(uint8_t exp)
     memory[sp-2] = (pc & 0xff);
     sp = sp - 2;
     pc = new_pc;
+    cycles += 11;
 }

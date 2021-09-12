@@ -99,7 +99,7 @@ void CPU_8080::UnimplementedInstruction(uint8_t opcode)
     halted = true;
 }
 
-void CPU_8080::EmulateCycle()
+void CPU_8080::ExecuteInstruction()
 {
     // Fetch opcode
     uint8_t opcode = memory[pc];

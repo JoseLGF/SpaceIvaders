@@ -22,7 +22,7 @@ int main(int argc, char** argv) {
     while(cpu.Running())
     {
         cpu.PrintState();
-        cpu.EmulateCycle();
+        cpu.ExecuteInstruction();
         /* instructions++; */
         /* std::cout << "Press any key for emulation cycle." << std::endl; */
         //getchar();

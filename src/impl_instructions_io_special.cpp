@@ -10,10 +10,12 @@ void CPU_8080::OUT(uint8_t byte)
     // Will need to re-implement later!
     (void) byte;
     pc += 2;
+    cycles += 10;
 }
 
 void CPU_8080::EI()
 {
     int_enable = true;
     pc += 1;
+    cycles += 4;
 }

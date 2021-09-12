@@ -20,6 +20,7 @@ void CPU_8080::XRA_A()
 
     a = result;
     pc += 1;
+    cycles += 4;
 }
 
 // ANA A, And register A with A
@@ -34,6 +35,7 @@ void CPU_8080::ANA_A()
 
     a = result;
     pc += 1;
+    cycles += 4;
 }
 
 // Compare immediate with accumulator
@@ -48,6 +50,7 @@ void CPU_8080::CPI(uint8_t data)
 
     a = result;
     pc += 2;
+    cycles += 7;
 }
 
 // Rotate A Right
@@ -59,6 +62,7 @@ void CPU_8080::RRC()
     cc.cy = lsb;
 
     pc += 1;
+    cycles += 4;
 }
 
 // And immediate with A
@@ -73,4 +77,5 @@ void CPU_8080::ANI(uint8_t data)
 
     a = result;
     pc += 2;
+    cycles += 7;
 }
