@@ -106,6 +106,34 @@ TEST(LogicalGroup, RRC) {
     ASSERT_EQ(0x0001, cpu.Get_pc());
 }
 
+TEST(LogicalGroup, RRC_CarrySet) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0b11110001);
+    cpu.Set_cy(false);
+    cpu.WriteMemoryAt(0x0000, 0x0f); // RRC instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(true, cpu.Get_cy());
+    ASSERT_EQ(0b11111000, cpu.Get_a());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}
+
+TEST(LogicalGroup, RLC) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0xf2);
+    cpu.Set_cy(false);
+    cpu.WriteMemoryAt(0x0000, 0x07); // RLC instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(true, cpu.Get_cy());
+    ASSERT_EQ(0xe5, cpu.Get_a());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}
+
 TEST(LogicalGroup, ANI) {
     CPU_8080 cpu;
     cpu.Initialize();

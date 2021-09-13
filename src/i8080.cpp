@@ -142,6 +142,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x03:    INX_B ();                           break;
         case 0x05:    DCR_B ();                           break;
         case 0x06:    MVI_B (memory[pc+1]);               break;
+        case 0x07:      RLC ();                           break;
         case 0x09:    DAD_B ();                           break;
         case 0x0a:   LDAX_B ();                           break;
         case 0x0d:    DCR_C ();                           break;
@@ -149,6 +150,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x0f:      RRC ();                           break;
         case 0x11:    LXI_D (memory[pc+2], memory[pc+1]); break;
         case 0x13:    INX_D ();                           break;
+        case 0x16:    MVI_D (memory[pc+1]);               break;
         case 0x19:    DAD_D ();                           break;
         case 0x29:    DAD_H ();                           break;
         case 0x1a:   LDAX_D ();                           break;
@@ -173,6 +175,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x66:  MOV_H_M ();                           break;
         case 0x67:  MOV_H_A ();                           break;
         case 0x6f:  MOV_L_A ();                           break;
+        case 0x78:  MOV_A_B ();                           break;
         case 0x79:  MOV_A_C ();                           break;
         case 0x7a:  MOV_A_D ();                           break;
         case 0x7b:  MOV_A_E ();                           break;
@@ -196,10 +199,12 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0xcd:     CALL (memory[pc+2], memory[pc+1]); break;
         case 0xcf:      RST (0x1);                        break;
         case 0xc8:       RZ ();                           break;
+        case 0xd0:      RNC ();                           break;
         case 0xd1:    POP_D ();                           break;
         case 0xd2:      JNC (memory[pc+2], memory[pc+1]); break;
         case 0xd3:      OUT (memory[pc+1]);               break;
         case 0xd5:   PUSH_D ();                           break;
+        case 0xd6:      SUI (memory[pc+1]);               break;
         case 0xd7:      RST (0x2);                        break;
         case 0xd8:       RC ();                           break;
         case 0xda:       JC (memory[pc+2], memory[pc+1]); break;

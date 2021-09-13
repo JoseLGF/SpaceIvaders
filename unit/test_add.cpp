@@ -1,5 +1,5 @@
 /*
- * Test file for add group instructions
+ * Test file for add and subtract groups instructions
  *
  */
 
@@ -89,5 +89,39 @@ TEST(AddGroup, ADI) {
     ASSERT_EQ(true, cpu.Get_cy());
     ASSERT_EQ(false, cpu.Get_z());
     ASSERT_EQ(false, cpu.Get_p());
+    ASSERT_EQ(0x0002, cpu.Get_pc());
+}
+
+TEST(AddGroup, SUI_WhenAIsGreaterThanDataThenThereIsNoBorrow) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x34);
+    cpu.WriteMemoryAt(0x0000, 0xd6); // SUI instruction
+    cpu.WriteMemoryAt(0x0001, 0x04);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x30, cpu.Get_a());
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(false, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0002, cpu.Get_pc());
+}
+
+TEST(AddGroup, SUI_WhenDataIsGreaterThanAThenThereIsBorrowAndUnderflow) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x00);
+    cpu.WriteMemoryAt(0x0000, 0xd6); // SUI instruction
+    cpu.WriteMemoryAt(0x0001, 0x01);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xff, cpu.Get_a());
+    ASSERT_EQ(true, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(true, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_p());
     ASSERT_EQ(0x0002, cpu.Get_pc());
 }

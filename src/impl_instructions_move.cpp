@@ -13,6 +13,14 @@ void CPU_8080::MVI_B(uint8_t data)
     cycles += 7;
 }
 
+// Move immediate register D
+void CPU_8080::MVI_D(uint8_t data)
+{
+    d = data;
+    pc += 2;
+    cycles += 7;
+}
+
 // Move immediate register L
 void CPU_8080::MVI_L(uint8_t data)
 {
@@ -103,6 +111,14 @@ void CPU_8080::MOV_M_A()
 void CPU_8080::MOV_A_H()
 {
     a = h;
+    pc += 1;
+    cycles += 5;
+}
+
+// Move the value of B into A
+void CPU_8080::MOV_A_B()
+{
+    a = b;
     pc += 1;
     cycles += 5;
 }

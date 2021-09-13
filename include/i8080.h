@@ -129,6 +129,7 @@ private:
     void MVI_B(uint8_t data);                       // Skip
     void MVI_A(uint8_t data);                       // Skip
     void MVI_C(uint8_t data);                       // Skip
+    void MVI_D(uint8_t data);                       // Skip
     void MVI_L(uint8_t data);                       // Skip
     void MVI_H(uint8_t data);                       // Skip
     void MOV_M_A();                                 // Tested
@@ -138,6 +139,7 @@ private:
     void MOV_D_M();                                 // Tested
     void MOV_H_M();                                 // Tested
     void MOV_A_H();                                 // Skip
+    void MOV_A_B();                                 // Skip
     void MOV_H_A();                                 // Tested
     void MOV_E_A();                                 // Tested
     void MOV_C_A();                                 // Skip
@@ -164,6 +166,7 @@ private:
     void RZ();                                      // Tested
     void RNZ();                                     // Tested
     void RC();                                      // Tested
+    void RNC();                                     // Skip
     // Increment and decrement group
     void INX_H();                                   // Tested
     void INX_D();                                   // Tested
@@ -177,14 +180,16 @@ private:
     void DAD_D();                                   // Tested
     void DAD_H();                                   // Tested
     void ADI(uint8_t data);
+    void SUI(uint8_t data);                         // Tested
     // Logical and rotate groups
     void XRA_A();                                   // Tested
     void ORA_M();                                   // Tested
-    void ORA_B();                                   //
+    void ORA_B();                                   // Tested
     void ANA_A();                                   // Tested
     void ANI(uint8_t data);                         // Tested
     void CPI(uint8_t data);                         // Tested
     void RRC();                                     // Tested
+    void RLC();                                     //
     // IO and special groups
     void OUT(uint8_t byte);                         // Pending
     void IN(uint8_t device);                        // Pending

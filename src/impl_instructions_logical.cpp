@@ -97,6 +97,18 @@ void CPU_8080::RRC()
     cycles += 4;
 }
 
+// Rotate A Left
+void CPU_8080::RLC()
+{
+    uint8_t msb = a & 0x80;
+    a = (a << 1) | (msb >> 7);
+
+    cc.cy = msb != 0;
+
+    pc += 1;
+    cycles += 4;
+}
+
 // And immediate with A
 void CPU_8080::ANI(uint8_t data)
 {
