@@ -140,6 +140,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x01:    LXI_B (memory[pc+2], memory[pc+1]); break;
         case 0x02:   STAX_B ();                           break;
         case 0x03:    INX_B ();                           break;
+        case 0x04:    INR_B ();                           break;
         case 0x05:    DCR_B ();                           break;
         case 0x06:    MVI_B (memory[pc+1]);               break;
         case 0x07:      RLC ();                           break;
@@ -154,9 +155,12 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x19:    DAD_D ();                           break;
         case 0x29:    DAD_H ();                           break;
         case 0x1a:   LDAX_D ();                           break;
+        case 0x1f:      RAR ();                           break;
         case 0x21:    LXI_H (memory[pc+2], memory[pc+1]); break;
         case 0x23:    INX_H ();                           break;
         case 0x26:    MVI_H (memory[pc+1]);               break;
+        case 0x2a:     LHLD (memory[pc+2], memory[pc+1]); break;
+        case 0x2b:    DCX_H ();                           break;
         case 0x2e:    MVI_L (memory[pc+1]);               break;
         case 0x31:   LXI_SP (memory[pc+2], memory[pc+1]); break;
         case 0x32:      STA (memory[pc+2], memory[pc+1]); break;
@@ -164,9 +168,11 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x36:    MVI_M (memory[pc+1]);               break;
         case 0x37:      STC ();                           break;
         case 0x3a:      LDA (memory[pc+2], memory[pc+1]); break;
+        case 0x3c:    INR_A ();                           break;
         case 0x3d:    DCR_A ();                           break;
         case 0x3e:    MVI_A (memory[pc+1]);               break;
         case 0x46:  MOV_B_M ();                           break;
+        case 0x4e:  MOV_C_M ();                           break;
         case 0x4f:  MOV_C_A ();                           break;
         case 0x56:  MOV_D_M ();                           break;
         case 0x57:  MOV_D_A ();                           break;
@@ -175,6 +181,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x66:  MOV_H_M ();                           break;
         case 0x67:  MOV_H_A ();                           break;
         case 0x6f:  MOV_L_A ();                           break;
+        case 0x70:  MOV_M_B ();                           break;
         case 0x78:  MOV_A_B ();                           break;
         case 0x79:  MOV_A_C ();                           break;
         case 0x7a:  MOV_A_D ();                           break;
@@ -191,11 +198,13 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0xc1:    POP_B ();                           break;
         case 0xc2:      JNZ (memory[pc+2], memory[pc+1]); break;
         case 0xc3:      JMP (memory[pc+2], memory[pc+1]); break;
+        case 0xc4:      CNZ (memory[pc+2], memory[pc+1]); break;
         case 0xc5:   PUSH_B ();                           break;
         case 0xc6:      ADI (memory[pc+1]);               break;
         case 0xc7:      RST (0x0);                        break;
         case 0xc9:      RET ();                           break;
         case 0xca:       JZ (memory[pc+2], memory[pc+1]); break;
+        case 0xcc:       CZ (memory[pc+2], memory[pc+1]); break;
         case 0xcd:     CALL (memory[pc+2], memory[pc+1]); break;
         case 0xcf:      RST (0x1);                        break;
         case 0xc8:       RZ ();                           break;
@@ -218,7 +227,9 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0xef:      RST (0x5);                        break;
         case 0xf1:  POP_PSW ();                           break;
         case 0xf5: PUSH_PSW ();                           break;
+        case 0xf6:      ORI (memory[pc+1]);               break;
         case 0xf7:      RST (0x6);                        break;
+        case 0xfa:       JM (memory[pc+2], memory[pc+1]); break;
         case 0xfe:      CPI (memory[pc+1]);               break;
         case 0xfb:       EI ();                           break;
         case 0xff:      RST (0x7);                        break;

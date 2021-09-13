@@ -107,6 +107,15 @@ void CPU_8080::MOV_M_A()
     cycles += 7;
 }
 
+// The contents of B are loaded to the address pointed to by the pair HL
+void CPU_8080::MOV_M_B()
+{
+    uint16_t address = (h << 8) | l;
+    MemoryWrite(address, b);
+    pc += 1;
+    cycles += 7;
+}
+
 // Move the value of H into A
 void CPU_8080::MOV_A_H()
 {
@@ -222,6 +231,15 @@ void CPU_8080::MOV_E_M()
     cycles += 7;
 }
 
+// Contents of the address pointed to by the pair HL are loaded to C
+void CPU_8080::MOV_C_M()
+{
+    uint16_t address = (h << 8) | l;
+    c = MemoryRead(address);
+    pc += 1;
+    cycles += 7;
+}
+
 // Contents of the address pointed to by the pair HL are loaded to D
 void CPU_8080::MOV_D_M()
 {
@@ -289,4 +307,14 @@ void CPU_8080::STAX_B()
     MemoryWrite(address, a);
     pc += 1;
     cycles += 7;
+}
+
+// Load HL pair direct
+void CPU_8080::LHLD(uint8_t hi, uint8_t lo)
+{
+    uint16_t address = (hi << 8) | lo;
+    l = MemoryRead(address);
+    h = MemoryRead(address+1);
+    pc += 3;
+    cycles += 16;
 }

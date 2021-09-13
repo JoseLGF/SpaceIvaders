@@ -109,6 +109,7 @@ private:
     // Implementations for the opcodes
     // Branch group
     void JMP(uint8_t hi, uint8_t lo);               // Tested
+    void JM(uint8_t hi, uint8_t lo);                //
     void JNZ(uint8_t hi, uint8_t lo);               // Tested
     void JNC(uint8_t hi, uint8_t lo);               // Tested
     void JC(uint8_t hi, uint8_t lo);                // Tested
@@ -133,7 +134,9 @@ private:
     void MVI_L(uint8_t data);                       // Skip
     void MVI_H(uint8_t data);                       // Skip
     void MOV_M_A();                                 // Tested
+    void MOV_M_B();                                 //
     void MOV_A_M();                                 // Tested
+    void MOV_C_M();                                 // Skip
     void MOV_B_M();                                 // tested
     void MOV_E_M();                                 // Tested
     void MOV_D_M();                                 // Tested
@@ -159,8 +162,11 @@ private:
     void LDA(uint8_t byte_h, uint8_t byte_l);       // Tested
     void XCHG();                                    // Tested
     void STAX_B();                                  //
+    void LHLD(uint8_t byte_h, uint8_t byte_l);      //
     // Call group
     void CALL(uint8_t hi, uint8_t lo);              // Tested
+    void CNZ(uint8_t hi, uint8_t lo);               // Skip
+    void CZ(uint8_t hi, uint8_t lo);                // Skip
     void RET();                                     // Tested
     void RST(uint8_t exp);                          // Pending
     void RZ();                                      // Tested
@@ -169,9 +175,12 @@ private:
     void RNC();                                     // Skip
     // Increment and decrement group
     void INX_H();                                   // Tested
+    void DCX_H();                                   // Skip
     void INX_D();                                   // Tested
     void INX_B();                                   // Tested
     void DCR_B();                                   // Tested
+    void INR_B();                                   // Skip
+    void INR_A();                                   // Skip
     void DCR_C();                                   // Tested
     void DCR_A();                                   // Tested
     void DCR_M();                                   // Tested
@@ -185,11 +194,13 @@ private:
     void XRA_A();                                   // Tested
     void ORA_M();                                   // Tested
     void ORA_B();                                   // Tested
+    void ORI(uint8_t data);                         // Tested
     void ANA_A();                                   // Tested
     void ANI(uint8_t data);                         // Tested
     void CPI(uint8_t data);                         // Tested
     void RRC();                                     // Tested
-    void RLC();                                     //
+    void RLC();                                     // Tested
+    void RAR();                                     // Tested
     // IO and special groups
     void OUT(uint8_t byte);                         // Pending
     void IN(uint8_t device);                        // Pending

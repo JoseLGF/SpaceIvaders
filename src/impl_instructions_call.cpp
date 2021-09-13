@@ -19,6 +19,44 @@ void CPU_8080::CALL(uint8_t hi, uint8_t lo)
     cycles += 17;
 }
 
+// Call on no zero
+void CPU_8080::CNZ(uint8_t hi, uint8_t lo)
+{
+    if (not cc.z)
+    {
+        uint16_t ret = pc+3;
+        MemoryWrite(sp-1 , (ret >> 8) & 0xff);
+        MemoryWrite(sp-2 , (ret & 0xff));
+        sp = sp - 2;
+        pc = (hi << 8) | lo;
+        cycles += 17;
+    }
+    else
+    {
+        pc += 3;
+        cycles += 11;
+    }
+}
+
+// Call on zero
+void CPU_8080::CZ(uint8_t hi, uint8_t lo)
+{
+    if (cc.z)
+    {
+        uint16_t ret = pc+3;
+        MemoryWrite(sp-1 , (ret >> 8) & 0xff);
+        MemoryWrite(sp-2 , (ret & 0xff));
+        sp = sp - 2;
+        pc = (hi << 8) | lo;
+        cycles += 17;
+    }
+    else
+    {
+        pc += 3;
+        cycles += 11;
+    }
+}
+
 void CPU_8080::RET()
 {
     pc = MemoryRead(sp) | (MemoryRead(sp+1) << 8);

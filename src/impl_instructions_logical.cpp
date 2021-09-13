@@ -97,6 +97,19 @@ void CPU_8080::RRC()
     cycles += 4;
 }
 
+// Rotate A Right through carry
+void CPU_8080::RAR()
+{
+    uint8_t prev_cy = cc.cy;
+    uint8_t lsb = a & 0x01;
+    a = (a >> 1) | (prev_cy << 7);
+
+    cc.cy = lsb;
+
+    pc += 1;
+    cycles += 4;
+}
+
 // Rotate A Left
 void CPU_8080::RLC()
 {
@@ -118,6 +131,21 @@ void CPU_8080::ANI(uint8_t data)
     cc.z  = (result == 0);
     cc.s  = ((result & 0x80) != 0);
     cc.p  = Parity(result);
+
+    a = result;
+    pc += 2;
+    cycles += 7;
+}
+
+// ORI, Or immediate with A
+void CPU_8080::ORI(uint8_t data)
+{
+    uint8_t result = a | data;
+
+    cc.z  = (result == 0);
+    cc.s  = ((result & 0x80) != 0);
+    cc.p  = Parity(result);
+    cc.cy = 0; // Reset according to programmer's manual.
 
     a = result;
     pc += 2;
