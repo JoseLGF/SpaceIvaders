@@ -25,7 +25,7 @@ INCLIST   := $(patsubst include/%,-I include/%,$(INCDIRS))
 BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
 
 # Shared Compiler Flags
-CFLAGS := -g
+CFLAGS := -ggdb -O0
 OFLAGS  = $(LIBDIRS) -lm -lpthread -lncurses \
 		  -lsfml-graphics -lsfml-window -lsfml-system
 

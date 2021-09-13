@@ -17,7 +17,7 @@ void CPU_8080::Initialize()
     cc = {0,0,0,0,0,0};
     int_enable = 0;
 
-    for(int i=0; i<0x3fff; i++)
+    for(int i=0; i<0x4000; i++)
     {
         memory[i] = 0;
     }
@@ -110,6 +110,13 @@ void CPU_8080::EmulateCycles(uint32_t num_cycles)
 
 void CPU_8080::RegularInstruction()
 {
+    // Check PC boundary
+    if (pc > 0x3fff)
+    {
+        std::cout << "Error, PC out of bounds" << std::endl;
+        halted = true;
+        return;
+    }
     // Fetch opcode
     uint8_t opcode = memory[pc];
     ExecuteInstruction(opcode);
@@ -250,6 +257,27 @@ bool CPU_8080::Parity(uint8_t byte)
     /* } */
 
     /* return parity; */
+}
+
+uint8_t CPU_8080::MemoryRead(uint16_t address)
+{
+    /* Implement RAM mirroring by dropping the two MSBs from the */
+    /* provided address */
+    return memory[address & 0x3fff];
+}
+
+void CPU_8080::MemoryWrite(uint16_t address, uint8_t data)
+{
+    // Signal an error if the address points to a ROM area
+    // 0x0000 - 0x1fff : ROM
+    if ((address & 0x3fff) < 0x2000)
+    {
+        std::cout << "Error, attempting to write to ROM" << std::endl;
+        halted = true;
+        return;
+    }
+
+    memory[address & 0x3fff] = data;
 }
 
 void CPU_8080::WriteMemoryAt(uint16_t address, uint8_t data)

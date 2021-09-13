@@ -122,7 +122,7 @@ TEST(StackGroup, PUSH_PSW_VerifyNormalAddition) {
     CPU_8080 cpu;
     cpu.Initialize();
     cpu.Set_a(0x1f);
-    cpu.Set_sp(0x502a);
+    cpu.Set_sp(0x202a);
     cpu.Set_cy(true);
     cpu.Set_z(true);
     cpu.Set_p(true);
@@ -132,9 +132,9 @@ TEST(StackGroup, PUSH_PSW_VerifyNormalAddition) {
 
     cpu.RegularInstruction();
 
-    ASSERT_EQ(0x1f, cpu.ReadMemoryAt(0x5029));
-    ASSERT_EQ(0x47, cpu.ReadMemoryAt(0x5028));
-    ASSERT_EQ(0x5028, cpu.Get_sp());
+    ASSERT_EQ(0x1f, cpu.ReadMemoryAt(0x2029));
+    ASSERT_EQ(0x47, cpu.ReadMemoryAt(0x2028));
+    ASSERT_EQ(0x2028, cpu.Get_sp());
     ASSERT_EQ(0x0001, cpu.Get_pc());
 }
 

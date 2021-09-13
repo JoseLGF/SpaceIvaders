@@ -28,6 +28,11 @@ public:
     void Interrupt(uint8_t opcode);
 
 public:
+    /* Memory Read and Write interface */
+    uint8_t MemoryRead(uint16_t address);
+    void MemoryWrite(uint16_t address, uint8_t data);
+
+public:
     /* Internal functions */
     void RegularInstruction();
 

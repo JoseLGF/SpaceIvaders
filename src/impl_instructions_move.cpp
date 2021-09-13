@@ -68,7 +68,7 @@ void CPU_8080::LXI_H(uint8_t byte_h, uint8_t byte_l)
 void CPU_8080::LDAX_D()
 {
     uint16_t address = (d << 8) | e;
-    a = memory[address];
+    a = MemoryRead(address);
     pc += 1;
     cycles += 7;
 }
@@ -77,7 +77,7 @@ void CPU_8080::LDAX_D()
 void CPU_8080::MOV_M_A()
 {
     uint16_t address = (h << 8) | l;
-    memory[address] = a;
+    MemoryWrite(address, a);
     pc += 1;
     cycles += 7;
 }
@@ -102,7 +102,7 @@ void CPU_8080::MOV_L_A()
 void CPU_8080::STA(uint8_t byte_h, uint8_t byte_l)
 {
     uint16_t address = (byte_h << 8) | byte_l;
-    memory[address] = a;
+    MemoryWrite(address, a);
     pc += 3;
     cycles += 13;
 }
@@ -111,7 +111,7 @@ void CPU_8080::STA(uint8_t byte_h, uint8_t byte_l)
 void CPU_8080::LDA(uint8_t byte_h, uint8_t byte_l)
 {
     uint16_t address = (byte_h << 8) | byte_l;
-    a = memory[address];
+    a = MemoryRead(address);
     pc += 3;
     cycles += 13;
 }
@@ -120,7 +120,7 @@ void CPU_8080::LDA(uint8_t byte_h, uint8_t byte_l)
 void CPU_8080::MVI_M(uint8_t data)
 {
     uint16_t address = (h << 8) | l;
-    memory[address] = data;
+    MemoryWrite(address, data);
     pc += 2;
     cycles += 10;
 }
@@ -144,7 +144,7 @@ void CPU_8080::XCHG()
 void CPU_8080::MOV_E_M()
 {
     uint16_t address = (h << 8) | l;
-    e = memory[address];
+    e = MemoryRead(address);
     pc += 1;
     cycles += 7;
 }
@@ -153,7 +153,7 @@ void CPU_8080::MOV_E_M()
 void CPU_8080::MOV_D_M()
 {
     uint16_t address = (h << 8) | l;
-    d = memory[address];
+    d = MemoryRead(address);
     pc += 1;
     cycles += 7;
 }
@@ -162,7 +162,7 @@ void CPU_8080::MOV_D_M()
 void CPU_8080::MOV_A_M()
 {
     uint16_t address = (h << 8) | l;
-    a = memory[address];
+    a = MemoryRead(address);
     pc += 1;
     cycles += 7;
 }
@@ -171,7 +171,7 @@ void CPU_8080::MOV_A_M()
 void CPU_8080::MOV_H_M()
 {
     uint16_t address = (h << 8) | l;
-    h = memory[address];
+    h = MemoryRead(address);
     pc += 1;
     cycles += 7;
 }
@@ -196,7 +196,7 @@ void CPU_8080::MOV_A_E()
 void CPU_8080::STAX_B()
 {
     uint16_t address = (b << 8) | c;
-    memory[address] = a;
+    MemoryWrite(address, a);
     pc += 1;
     cycles += 7;
 }

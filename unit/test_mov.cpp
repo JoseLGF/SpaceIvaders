@@ -11,14 +11,14 @@
 TEST(MoveGroup, MOV_M_A_VerifyContentsOfACorreclyLoaded) {
     CPU_8080 cpu;
     cpu.Initialize();
-    cpu.Set_h(0x01);
+    cpu.Set_h(0x21);
     cpu.Set_l(0xd0);
     cpu.Set_a(0xad);
     cpu.WriteMemoryAt(0x0000, 0x77); // MOV_M_A instruction
 
     cpu.RegularInstruction();
 
-    ASSERT_EQ(0xad, cpu.ReadMemoryAt(0x01d0));
+    ASSERT_EQ(0xad, cpu.ReadMemoryAt(0x21d0));
     ASSERT_EQ(0x01, cpu.Get_pc());
 }
 
@@ -54,17 +54,17 @@ TEST(MoveGroup, LDA_VerifyACorrectlyLoaded) {
 TEST(MoveGroup, MVI_M_VerifyContentsCorrectlyTransferred) {
     CPU_8080 cpu;
     cpu.Initialize();
-    cpu.Set_h(0x12);
-    cpu.Set_l(0x34);
+    cpu.Set_h(0x23);
+    cpu.Set_l(0x45);
 
-    ASSERT_EQ(0x00, cpu.ReadMemoryAt(0x1234));
+    ASSERT_EQ(0x00, cpu.ReadMemoryAt(0x2345));
 
     cpu.WriteMemoryAt(0x0000, 0x36); // MVI_M instruction
     cpu.WriteMemoryAt(0x0001, 0xcc); // Operand
 
     cpu.RegularInstruction();
 
-    ASSERT_EQ(0xcc, cpu.ReadMemoryAt(0x1234));
+    ASSERT_EQ(0xcc, cpu.ReadMemoryAt(0x2345));
     ASSERT_EQ(0x02, cpu.Get_pc());
 }
 
