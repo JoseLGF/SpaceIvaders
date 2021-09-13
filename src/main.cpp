@@ -9,7 +9,8 @@
 #include "i8080.h"
 
 
-void captureInputs(sf::RenderWindow& window){
+void captureInputs(sf::RenderWindow& window)
+{
 
     using sf::Keyboard;
 
@@ -44,7 +45,63 @@ void captureInputs(sf::RenderWindow& window){
     }
 }
 
-int main(int argc, char** argv) {
+
+void drawGraphics(CPU_8080& cpu, sf::RenderWindow& window)
+{
+    // Create a 256x224 image filled with black color
+    sf::Image image;
+    image.create(224, 256, sf::Color::Black);
+
+    // Draw the pixels from the memory locations 0x2400 - 0x3fff
+    // into the window screen
+    for(uint16_t v=0; v<224; v++){
+        for(int16_t h=0; h<256; h++){
+            uint16_t base_offset = 0x2400;
+            uint16_t vertical_offset = 0x20 * v;
+            uint16_t horizontal_offset = (h >> 3);
+            uint16_t current_byte = base_offset
+                                 + vertical_offset
+                                 + horizontal_offset;
+            uint8_t current_bit = (h % 8);
+
+
+            bool thisPixel =
+                (cpu.MemoryRead(current_byte) & (1 << current_bit)) != 0;
+            sf::Color thisColor;
+
+            // retrieve the current pixel color
+            if(thisPixel){
+                thisColor = sf::Color::White;
+            }
+            else{
+                thisColor = sf::Color::Black;
+            }
+
+            // Rotate coordinates counter clockwise
+            image.setPixel(v, 256 - h - 1, thisColor);
+            // Draw the corresponding pixel
+            /* for(int ii=0; ii<config_DotSize; ii++){ */
+            /* for(int jj=0; jj<config_DotSize; jj++){ */
+            /*     image.setPixel(config_DotSize*i+ii, config_DotSize*j+jj, thisColor); */
+            /* } */
+            /* } */
+
+        }
+    }
+
+    // load image to texture
+    sf::Texture texture;
+    texture.loadFromImage(image);
+    sf::Sprite sprite;
+    sprite.setPosition(0, 0);
+    sprite.setTexture(texture, false);
+
+    // draw image in window
+    window.draw(sprite);
+}
+
+int main(int argc, char** argv)
+{
 
     std::cout << "Space Invaders Emulator!" << std::endl;
 
@@ -52,7 +109,7 @@ int main(int argc, char** argv) {
     sf::ContextSettings settings;
     settings.antialiasingLevel = 8;
     sf::RenderWindow window(
-            sf::VideoMode(256, 224),
+            sf::VideoMode(224, 256),
             "I8080 Emulator",
             sf::Style::Default, settings);
     window.setFramerateLimit(60);
@@ -83,7 +140,8 @@ int main(int argc, char** argv) {
             // Generate Full screen interrupt (2)
             cpu.Interrupt(0xd7 /* RST 2 */);
             // Draw Screen?
-            // TODO
+            drawGraphics(cpu, window);
+            window.display();
         }
         //cpu.PrintState();
         //cpu.ExecuteInstruction();
