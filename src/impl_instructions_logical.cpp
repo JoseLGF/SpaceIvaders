@@ -23,6 +23,38 @@ void CPU_8080::XRA_A()
     cycles += 4;
 }
 
+// ORA M, Or memory with A
+void CPU_8080::ORA_M()
+{
+    uint16_t address = (h << 8) | l;
+    uint8_t hl_content = MemoryRead(address);
+    uint8_t result = a | hl_content;
+
+    cc.z  = (result == 0);
+    cc.s  = ((result & 0x80) != 0);
+    cc.p  = Parity(result);
+    cc.cy = 0; // Reset according to programmer's manual.
+
+    a = result;
+    pc += 1;
+    cycles += 7;
+}
+
+// ORA B, Or memory with B
+void CPU_8080::ORA_B()
+{
+    uint8_t result = a | b;
+
+    cc.z  = (result == 0);
+    cc.s  = ((result & 0x80) != 0);
+    cc.p  = Parity(result);
+    cc.cy = 0; // Reset according to programmer's manual.
+
+    a = result;
+    pc += 1;
+    cycles += 4;
+}
+
 // ANA A, And register A with A
 void CPU_8080::ANA_A()
 {

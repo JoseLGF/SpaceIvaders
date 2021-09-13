@@ -42,6 +42,22 @@ void CPU_8080::RZ()
     }
 }
 
+// Return on no zero
+void CPU_8080::RNZ()
+{
+    if(not cc.z)
+    {
+        RET();
+        // 10 cycles of RET + 1 cycle of RNZ = 11 cycles
+        cycles += 1;
+    }
+    else
+    {
+        cycles += 5;
+        pc ++;
+    }
+}
+
 // Return on carry
 void CPU_8080::RC()
 {

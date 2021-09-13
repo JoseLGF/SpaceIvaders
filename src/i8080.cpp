@@ -155,6 +155,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x21:    LXI_H (memory[pc+2], memory[pc+1]); break;
         case 0x23:    INX_H ();                           break;
         case 0x26:    MVI_H (memory[pc+1]);               break;
+        case 0x2e:    MVI_L (memory[pc+1]);               break;
         case 0x31:   LXI_SP (memory[pc+2], memory[pc+1]); break;
         case 0x32:      STA (memory[pc+2], memory[pc+1]); break;
         case 0x35:    DCR_M ();                           break;
@@ -163,6 +164,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x3a:      LDA (memory[pc+2], memory[pc+1]); break;
         case 0x3d:    DCR_A ();                           break;
         case 0x3e:    MVI_A (memory[pc+1]);               break;
+        case 0x46:  MOV_B_M ();                           break;
         case 0x4f:  MOV_C_A ();                           break;
         case 0x56:  MOV_D_M ();                           break;
         case 0x57:  MOV_D_A ();                           break;
@@ -171,6 +173,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x66:  MOV_H_M ();                           break;
         case 0x67:  MOV_H_A ();                           break;
         case 0x6f:  MOV_L_A ();                           break;
+        case 0x79:  MOV_A_C ();                           break;
         case 0x7a:  MOV_A_D ();                           break;
         case 0x7b:  MOV_A_E ();                           break;
         case 0x7c:  MOV_A_H ();                           break;
@@ -179,6 +182,9 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x7e:  MOV_A_M ();                           break;
         case 0xaf:    XRA_A ();                           break;
         case 0xa7:    ANA_A ();                           break;
+        case 0xb0:    ORA_B ();                           break;
+        case 0xb6:    ORA_M ();                           break;
+        case 0xc0:      RNZ ();                           break;
         case 0xc1:    POP_B ();                           break;
         case 0xc2:      JNZ (memory[pc+2], memory[pc+1]); break;
         case 0xc3:      JMP (memory[pc+2], memory[pc+1]); break;

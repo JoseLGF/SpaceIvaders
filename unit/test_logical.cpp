@@ -122,3 +122,47 @@ TEST(LogicalGroup, ANI) {
     ASSERT_EQ(0x0a, cpu.Get_a());
     ASSERT_EQ(0x0002, cpu.Get_pc());
 }
+
+TEST(LogicalGroup, ORA_M_VerifyNormalOperation) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x33);
+    cpu.Set_h(0x23);
+    cpu.Set_l(0x45);
+    cpu.Set_cy(true);
+    cpu.Set_z(true);
+    cpu.Set_s(true);
+    cpu.Set_p(false);
+    cpu.WriteMemoryAt(0x0000, 0xb6); // ORA_M instruction
+    cpu.WriteMemoryAt(0x2345, 0x0f);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x3f, cpu.Get_a());
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(false, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}
+
+TEST(LogicalGroup, ORA_B_VerifyNormalOperation) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x33);
+    cpu.Set_b(0x0f);
+    cpu.Set_cy(true);
+    cpu.Set_z(true);
+    cpu.Set_s(true);
+    cpu.Set_p(false);
+    cpu.WriteMemoryAt(0x0000, 0xb0); // ORA_B instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x3f, cpu.Get_a());
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(false, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}

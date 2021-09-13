@@ -13,6 +13,14 @@ void CPU_8080::MVI_B(uint8_t data)
     cycles += 7;
 }
 
+// Move immediate register L
+void CPU_8080::MVI_L(uint8_t data)
+{
+    l = data;
+    pc += 2;
+    cycles += 7;
+}
+
 // Move immediate register A
 void CPU_8080::MVI_A(uint8_t data)
 {
@@ -95,6 +103,14 @@ void CPU_8080::MOV_M_A()
 void CPU_8080::MOV_A_H()
 {
     a = h;
+    pc += 1;
+    cycles += 5;
+}
+
+// Move the value of C into A
+void CPU_8080::MOV_A_C()
+{
+    a = c;
     pc += 1;
     cycles += 5;
 }
@@ -204,6 +220,15 @@ void CPU_8080::MOV_A_M()
 {
     uint16_t address = (h << 8) | l;
     a = MemoryRead(address);
+    pc += 1;
+    cycles += 7;
+}
+
+// Contents of the address pointed to by the pair HL are loaded to B
+void CPU_8080::MOV_B_M()
+{
+    uint16_t address = (h << 8) | l;
+    b = MemoryRead(address);
     pc += 1;
     cycles += 7;
 }

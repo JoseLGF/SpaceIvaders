@@ -129,9 +129,11 @@ private:
     void MVI_B(uint8_t data);                       // Skip
     void MVI_A(uint8_t data);                       // Skip
     void MVI_C(uint8_t data);                       // Skip
+    void MVI_L(uint8_t data);                       // Skip
     void MVI_H(uint8_t data);                       // Skip
     void MOV_M_A();                                 // Tested
     void MOV_A_M();                                 // Tested
+    void MOV_B_M();                                 // tested
     void MOV_E_M();                                 // Tested
     void MOV_D_M();                                 // Tested
     void MOV_H_M();                                 // Tested
@@ -141,6 +143,7 @@ private:
     void MOV_C_A();                                 // Skip
     void MOV_D_A();                                 // Skipped
     void MOV_A_D();                                 // Skip
+    void MOV_A_C();                                 // Skip
     void MOV_A_E();                                 // Skip
     void MOV_A_L();                                 // Skip
     void MOV_L_A();                                 // Skip
@@ -159,6 +162,7 @@ private:
     void RET();                                     // Tested
     void RST(uint8_t exp);                          // Pending
     void RZ();                                      // Tested
+    void RNZ();                                     // Tested
     void RC();                                      // Tested
     // Increment and decrement group
     void INX_H();                                   // Tested
@@ -175,6 +179,8 @@ private:
     void ADI(uint8_t data);
     // Logical and rotate groups
     void XRA_A();                                   // Tested
+    void ORA_M();                                   // Tested
+    void ORA_B();                                   //
     void ANA_A();                                   // Tested
     void ANI(uint8_t data);                         // Tested
     void CPI(uint8_t data);                         // Tested
