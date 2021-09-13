@@ -163,13 +163,18 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x3a:      LDA (memory[pc+2], memory[pc+1]); break;
         case 0x3d:    DCR_A ();                           break;
         case 0x3e:    MVI_A (memory[pc+1]);               break;
+        case 0x4f:  MOV_C_A ();                           break;
         case 0x56:  MOV_D_M ();                           break;
+        case 0x57:  MOV_D_A ();                           break;
         case 0x5e:  MOV_E_M ();                           break;
+        case 0x5f:  MOV_E_A ();                           break;
         case 0x66:  MOV_H_M ();                           break;
+        case 0x67:  MOV_H_A ();                           break;
         case 0x6f:  MOV_L_A ();                           break;
         case 0x7a:  MOV_A_D ();                           break;
         case 0x7b:  MOV_A_E ();                           break;
         case 0x7c:  MOV_A_H ();                           break;
+        case 0x7d:  MOV_A_L ();                           break;
         case 0x77:  MOV_M_A ();                           break;
         case 0x7e:  MOV_A_M ();                           break;
         case 0xaf:    XRA_A ();                           break;
@@ -190,6 +195,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0xd3:      OUT (memory[pc+1]);               break;
         case 0xd5:   PUSH_D ();                           break;
         case 0xd7:      RST (0x2);                        break;
+        case 0xd8:       RC ();                           break;
         case 0xda:       JC (memory[pc+2], memory[pc+1]); break;
         case 0xdb:       IN (memory[pc+1]);               break;
         case 0xdf:      RST (0x3);                        break;

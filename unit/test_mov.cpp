@@ -170,3 +170,29 @@ TEST(MoveGroup, LDAX_B_VerifyNormalOperation) {
     ASSERT_EQ(0xbb, cpu.Get_a());
     ASSERT_EQ(0x01, cpu.Get_pc());
 }
+
+TEST(MoveGroup, MOV_H_A_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_h(0x21);
+    cpu.Set_a(0xad);
+    cpu.WriteMemoryAt(0x0000, 0x67); // MOV_H_A instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xad, cpu.Get_h());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(MoveGroup, MOV_E_A_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_e(0x21);
+    cpu.Set_a(0xad);
+    cpu.WriteMemoryAt(0x0000, 0x5f); // MOV_E_A instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xad, cpu.Get_e());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}

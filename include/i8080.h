@@ -136,8 +136,13 @@ private:
     void MOV_D_M();                                 // Tested
     void MOV_H_M();                                 // Tested
     void MOV_A_H();                                 // Skip
+    void MOV_H_A();                                 // Tested
+    void MOV_E_A();                                 // Tested
+    void MOV_C_A();                                 // Skip
+    void MOV_D_A();                                 // Skipped
     void MOV_A_D();                                 // Skip
     void MOV_A_E();                                 // Skip
+    void MOV_A_L();                                 // Skip
     void MOV_L_A();                                 // Skip
     void MVI_M(uint8_t data);                       // Tested
     void LXI_B(uint8_t byte_b, uint8_t byte_c);     // Skip
@@ -154,6 +159,7 @@ private:
     void RET();                                     // Tested
     void RST(uint8_t exp);                          // Pending
     void RZ();                                      // Tested
+    void RC();                                      // Tested
     // Increment and decrement group
     void INX_H();                                   // Tested
     void INX_D();                                   // Tested

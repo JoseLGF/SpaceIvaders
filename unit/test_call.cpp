@@ -100,3 +100,39 @@ TEST(CallGroup, RZ_WhenZIsClearedThenDontRet) {
     ASSERT_EQ(0x2021, cpu.Get_pc());
     ASSERT_EQ(0x200d, cpu.Get_sp());
 }
+
+TEST(CallGroup, RC_WhenCIsSetThenRet) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_cy(true);
+    cpu.Set_sp(0x200f);
+    cpu.WriteMemoryAt(0x0000, 0xcd); // CALL instruction
+    cpu.WriteMemoryAt(0x0001, 0x20);
+    cpu.WriteMemoryAt(0x0002, 0x20);
+    cpu.WriteMemoryAt(0x2020, 0xd8); // RC instruction
+
+    cpu.RegularInstruction(); // Executes CALL
+    cpu.RegularInstruction(); // Executes RC
+
+
+    ASSERT_EQ(0x0003, cpu.Get_pc());
+    ASSERT_EQ(0x200f, cpu.Get_sp());
+}
+
+TEST(CallGroup, RC_WhenCyIsClearedThenDontRet) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_cy(false);
+    cpu.Set_sp(0x200f);
+    cpu.WriteMemoryAt(0x0000, 0xcd); // CALL instruction
+    cpu.WriteMemoryAt(0x0001, 0x20);
+    cpu.WriteMemoryAt(0x0002, 0x20);
+    cpu.WriteMemoryAt(0x2020, 0xd8); // RC instruction
+
+    cpu.RegularInstruction(); // Executes CALL
+    cpu.RegularInstruction(); // Executes RC
+
+
+    ASSERT_EQ(0x2021, cpu.Get_pc());
+    ASSERT_EQ(0x200d, cpu.Get_sp());
+}

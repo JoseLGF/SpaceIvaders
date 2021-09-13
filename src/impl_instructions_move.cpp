@@ -99,6 +99,38 @@ void CPU_8080::MOV_A_H()
     cycles += 5;
 }
 
+// Move A into H
+void CPU_8080::MOV_H_A()
+{
+    h = a;
+    pc += 1;
+    cycles += 5;
+}
+
+// Move A into E
+void CPU_8080::MOV_E_A()
+{
+    e = a;
+    pc += 1;
+    cycles += 5;
+}
+
+// Move A into D
+void CPU_8080::MOV_D_A()
+{
+    d = a;
+    pc += 1;
+    cycles += 5;
+}
+
+// Move A into C
+void CPU_8080::MOV_C_A()
+{
+    c = a;
+    pc += 1;
+    cycles += 5;
+}
+
 // Move the value of A into L
 void CPU_8080::MOV_L_A()
 {
@@ -189,6 +221,14 @@ void CPU_8080::MOV_H_M()
 void CPU_8080::MOV_A_D()
 {
     a = d;
+    pc += 1;
+    cycles += 5;
+}
+
+// Move L to A
+void CPU_8080::MOV_A_L()
+{
+    a = l;
     pc += 1;
     cycles += 5;
 }
