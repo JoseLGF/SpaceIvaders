@@ -134,3 +134,31 @@ TEST(BranchGroup, JNC_WhenCyIsSetThenDontJmpToSpecifiedAddress) {
 
     ASSERT_EQ(0x0003, cpu.Get_pc());
 }
+
+TEST(BranchGroup, JM_WhenSIsSetThenJmpToSpecifiedAddress) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_s(true);
+
+    cpu.WriteMemoryAt(0x0000, 0xfa); // JM instruction
+    cpu.WriteMemoryAt(0x0001, 0xd4); // Lo byte of jmp adr
+    cpu.WriteMemoryAt(0x0002, 0x18); // Hi byte of jmp adr
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x18d4, cpu.Get_pc());
+}
+
+TEST(BranchGroup, JM_WhenSIsClearedThenDontJmpToSpecifiedAddress) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_s(false);
+
+    cpu.WriteMemoryAt(0x0000, 0xfa); // JM instruction
+    cpu.WriteMemoryAt(0x0001, 0xd4); // Lo byte of jmp adr
+    cpu.WriteMemoryAt(0x0002, 0x18); // Hi byte of jmp adr
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x0003, cpu.Get_pc());
+}

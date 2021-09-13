@@ -138,7 +138,8 @@ TEST(StackGroup, PUSH_PSW_VerifyNormalAddition) {
     ASSERT_EQ(0x0001, cpu.Get_pc());
 }
 
-TEST(StackGroup, POP_PSW_VerifyDataRestored) {
+TEST(StackGroup, POP_PSW_VerifyDataRestored)
+{
     CPU_8080 cpu;
     cpu.Initialize();
     cpu.Set_sp(0x2c00);
@@ -156,4 +157,19 @@ TEST(StackGroup, POP_PSW_VerifyDataRestored) {
     ASSERT_EQ(false, cpu.Get_p());
     ASSERT_EQ(0x2c02, cpu.Get_sp());
     ASSERT_EQ(0x0001, cpu.Get_pc());
+}
+
+TEST(StackGroup, LXI_SP)
+{
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_sp(0x2c00);
+    cpu.WriteMemoryAt(0x0000, 0x31); // LXI_SP instruction
+    cpu.WriteMemoryAt(0x0001, 0x45);
+    cpu.WriteMemoryAt(0x0002, 0x23);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x2345, cpu.Get_sp());
+    ASSERT_EQ(0x0003, cpu.Get_pc());
 }

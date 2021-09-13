@@ -108,9 +108,12 @@ void CPU_8080::SUI(uint8_t data)
 // Subtract immediate from A with borrow
 void CPU_8080::SBI(uint8_t data)
 {
-    uint16_t result  = a - data - cc.cy;
+    uint16_t data_plus_carry = data + cc.cy;
+    uint8_t twos_complement_data_plus_carry =
+        -(unsigned int)data_plus_carry;
+    uint16_t result  = a + twos_complement_data_plus_carry;
 
-    cc.cy = ( (result & 0x100) != 0 );
+    cc.cy = (result & 0x100) == 0;
     cc.z = (result == 0);
     cc.s = ((result & 0x80) != 0);
     cc.p = Parity(result);

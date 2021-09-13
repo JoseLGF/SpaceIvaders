@@ -109,7 +109,7 @@ private:
     // Implementations for the opcodes
     // Branch group
     void JMP(uint8_t hi, uint8_t lo);               // Tested
-    void JM(uint8_t hi, uint8_t lo);                //
+    void JM(uint8_t hi, uint8_t lo);                // Tested
     void JNZ(uint8_t hi, uint8_t lo);               // Tested
     void JNC(uint8_t hi, uint8_t lo);               // Tested
     void JC(uint8_t hi, uint8_t lo);                // Tested
@@ -117,7 +117,7 @@ private:
     // Other group
     void NOP();                                     // Skip
     // Stack group
-    void LXI_SP(uint8_t hi, uint8_t lo);            // Skip
+    void LXI_SP(uint8_t hi, uint8_t lo);            // Tested
     void PUSH_B();                                  // Tested
     void PUSH_D();                                  // Tested
     void PUSH_H();                                  // Tested
@@ -125,18 +125,18 @@ private:
     void POP_H();                                   // Tested
     void POP_B();                                   // Tested
     void POP_D();                                   // Tested
-    void POP_PSW();                                 //
+    void POP_PSW();                                 // Tested
     // Move group
-    void MVI_B(uint8_t data);                       // Skip
-    void MVI_A(uint8_t data);                       // Skip
-    void MVI_C(uint8_t data);                       // Skip
-    void MVI_D(uint8_t data);                       // Skip
-    void MVI_L(uint8_t data);                       // Skip
-    void MVI_H(uint8_t data);                       // Skip
+    void MVI_B(uint8_t data);                       // Tested
+    void MVI_A(uint8_t data);                       // Tested
+    void MVI_C(uint8_t data);                       // Tested
+    void MVI_D(uint8_t data);                       // Tested
+    void MVI_L(uint8_t data);                       // Tested
+    void MVI_H(uint8_t data);                       // Tested
     void MOV_M_A();                                 // Tested
-    void MOV_M_B();                                 //
+    void MOV_M_B();                                 // Tested
     void MOV_A_M();                                 // Tested
-    void MOV_C_M();                                 // Skip
+    void MOV_C_M();                                 // Tested
     void MOV_B_M();                                 // tested
     void MOV_B_A();                                 // Skip
     void MOV_E_M();                                 // Tested
@@ -176,17 +176,17 @@ private:
     void RZ();                                      // Tested
     void RNZ();                                     // Tested
     void RC();                                      // Tested
-    void RNC();                                     // Skip
+    void RNC();                                     // Tested
     // Increment and decrement group
     void INX_H();                                   // Tested
-    void DCX_H();                                   // Skip
+    void DCX_H();                                   // Tested
     void INX_D();                                   // Tested
     void INX_B();                                   // Tested
     void DCR_B();                                   // Tested
-    void DCR_D();                                   // Skip
-    void INR_B();                                   // Skip
-    void INR_A();                                   // Skip
-    void INR_D();                                   // Skip
+    void DCR_D();                                   // Tested
+    void INR_B();                                   // Tested
+    void INR_A();                                   // Tested
+    void INR_D();                                   // Tested
     void DCR_C();                                   // Tested
     void DCR_A();                                   // Tested
     void DCR_M();                                   // Tested
@@ -195,14 +195,14 @@ private:
     void DAD_B();                                   // Tested
     void DAD_D();                                   // Tested
     void DAD_H();                                   // Tested
-    void ADI(uint8_t data);
+    void ADI(uint8_t data);                         // Tested
     void SUI(uint8_t data);                         // Tested
-    void SBI(uint8_t data);                         //
+    void SBI(uint8_t data);                         // Tested
     // Logical and rotate groups
     void XRA_A();                                   // Tested
     void ORA_M();                                   // Tested
     void ORA_B();                                   // Tested
-    void ORA_H();                                   //
+    void ORA_H();                                   // Tested
     void ORI(uint8_t data);                         // Tested
     void ANA_A();                                   // Tested
     void ANI(uint8_t data);                         // Tested

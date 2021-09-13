@@ -212,3 +212,146 @@ TEST(IncDecGroup, INX_B_VerifyIncrementResetsRegWhenOverflow)
     ASSERT_EQ(0x01, cpu.Get_pc());
 }
 
+
+TEST(IncDecGroup, DCX_H_VerifyDecrementNoUnderflow)
+{
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_h(0xde);
+    cpu.Set_l(0xad);
+    cpu.WriteMemoryAt(0x0000, 0x2b); // DCX_H instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xde, cpu.Get_h());
+    ASSERT_EQ(0xac, cpu.Get_l());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(IncDecGroup, DCX_H_VerifyDecrementWithUnderflow)
+{
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_h(0x00);
+    cpu.Set_l(0x00);
+    cpu.WriteMemoryAt(0x0000, 0x2b); // DCX_H instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xff, cpu.Get_h());
+    ASSERT_EQ(0xff, cpu.Get_l());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(IncDecGroup, DCR_D_VerifyNormalDecrement)
+{
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_d(0x1a);
+    cpu.WriteMemoryAt(0x0000, 0x15); // DCR_D
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x19, cpu.Get_d());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(IncDecGroup, DCR_D_WhenBIs0ThenWrapToFf)
+{
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_d(0x00);
+    cpu.WriteMemoryAt(0x0000, 0x15); // DCR_D
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xff, cpu.Get_d());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(IncDecGroup, INR_B_VerifyNormalIncrement)
+{
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_b(0x1a);
+    cpu.WriteMemoryAt(0x0000, 0x04); // INR_B
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x1b, cpu.Get_b());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(IncDecGroup, INR_B_WhenBIsFfThenWrapTo00)
+{
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_b(0xff);
+    cpu.WriteMemoryAt(0x0000, 0x04); // INR_B
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x00, cpu.Get_b());
+    ASSERT_EQ(true, cpu.Get_z());
+    ASSERT_EQ(false, cpu.Get_s());
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(IncDecGroup, INR_A_VerifyNormalIncrement)
+{
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x1a);
+    cpu.WriteMemoryAt(0x0000, 0x3c); // INR_A
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x1b, cpu.Get_a());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(IncDecGroup, INR_A_WhenAIsFfThenWrapTo00)
+{
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0xff);
+    cpu.WriteMemoryAt(0x0000, 0x3c); // INR_A
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x00, cpu.Get_a());
+    ASSERT_EQ(true, cpu.Get_z());
+    ASSERT_EQ(false, cpu.Get_s());
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(IncDecGroup, INR_D_VerifyNormalIncrement)
+{
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_d(0x1a);
+    cpu.WriteMemoryAt(0x0000, 0x14); // INR_D
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x1b, cpu.Get_d());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(IncDecGroup, INR_D_WhenDIsFfThenWrapTo00)
+{
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_d(0xff);
+    cpu.WriteMemoryAt(0x0000, 0x14); // INR_D
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x00, cpu.Get_d());
+    ASSERT_EQ(true, cpu.Get_z());
+    ASSERT_EQ(false, cpu.Get_s());
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}

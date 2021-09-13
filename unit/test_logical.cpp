@@ -195,6 +195,27 @@ TEST(LogicalGroup, ORA_B_VerifyNormalOperation) {
     ASSERT_EQ(0x0001, cpu.Get_pc());
 }
 
+TEST(LogicalGroup, ORA_H_VerifyNormalOperation) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x33);
+    cpu.Set_h(0x0f);
+    cpu.Set_cy(true);
+    cpu.Set_z(true);
+    cpu.Set_s(true);
+    cpu.Set_p(false);
+    cpu.WriteMemoryAt(0x0000, 0xb4); // ORA_H instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x3f, cpu.Get_a());
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(false, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}
+
 TEST(LogicalGroup, RAR) {
     CPU_8080 cpu;
     cpu.Initialize();

@@ -92,6 +92,36 @@ TEST(AddGroup, ADI) {
     ASSERT_EQ(0x0002, cpu.Get_pc());
 }
 
+TEST(AddGroup, ADI_2) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x14);
+    cpu.WriteMemoryAt(0x0000, 0xc6); // ADI instruction
+    cpu.WriteMemoryAt(0x0001, 0x42);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x56, cpu.Get_a());
+    ASSERT_EQ(false, cpu.Get_s());
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0002, cpu.Get_pc());
+
+    cpu.WriteMemoryAt(0x0002, 0xc6); // Another ADI
+    cpu.WriteMemoryAt(0x0003, 0xbe); // -66 (add negative number)
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x14, cpu.Get_a());
+    ASSERT_EQ(false, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0004, cpu.Get_pc());
+}
+
+
 TEST(AddGroup, SUI_WhenAIsGreaterThanDataThenThereIsNoBorrow) {
     CPU_8080 cpu;
     cpu.Initialize();
@@ -144,3 +174,40 @@ TEST(AddGroup, ADD_M) {
     ASSERT_EQ(true, cpu.Get_p());
     ASSERT_EQ(0x0001, cpu.Get_pc());
 }
+
+TEST(AddGroup, SBI_WhenResultIsNegativeThenTheCarryBitIsSet) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x00);
+    cpu.Set_cy(false);
+    cpu.WriteMemoryAt(0x0000, 0xde); // SBI instruction
+    cpu.WriteMemoryAt(0x0001, 0x01);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xff, cpu.Get_a());
+    ASSERT_EQ(true, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(true, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0002, cpu.Get_pc());
+}
+
+TEST(AddGroup, SBI_WhenResultIsPositiveThenTheCarryBitIsReset) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x00);
+    cpu.Set_cy(true);
+    cpu.WriteMemoryAt(0x0000, 0xde); // SBI instruction
+    cpu.WriteMemoryAt(0x0001, 0x01);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xfe, cpu.Get_a());
+    ASSERT_EQ(true, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(true, cpu.Get_s());
+    ASSERT_EQ(false, cpu.Get_p());
+    ASSERT_EQ(0x0002, cpu.Get_pc());
+}
+
