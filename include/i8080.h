@@ -138,6 +138,7 @@ private:
     void MOV_A_M();                                 // Tested
     void MOV_C_M();                                 // Skip
     void MOV_B_M();                                 // tested
+    void MOV_B_A();                                 // Skip
     void MOV_E_M();                                 // Tested
     void MOV_D_M();                                 // Tested
     void MOV_H_M();                                 // Tested
@@ -152,6 +153,8 @@ private:
     void MOV_A_E();                                 // Skip
     void MOV_A_L();                                 // Skip
     void MOV_L_A();                                 // Skip
+    void MOV_L_B();                                 // Skip
+    void MOV_H_C();                                 // Skip
     void MVI_M(uint8_t data);                       // Tested
     void LXI_B(uint8_t byte_b, uint8_t byte_c);     // Skip
     void LXI_D(uint8_t byte_d, uint8_t byte_e);     // Skip
@@ -163,6 +166,7 @@ private:
     void XCHG();                                    // Tested
     void STAX_B();                                  //
     void LHLD(uint8_t byte_h, uint8_t byte_l);      //
+    void SHLD(uint8_t byte_h, uint8_t byte_l);      //
     // Call group
     void CALL(uint8_t hi, uint8_t lo);              // Tested
     void CNZ(uint8_t hi, uint8_t lo);               // Skip
@@ -179,21 +183,26 @@ private:
     void INX_D();                                   // Tested
     void INX_B();                                   // Tested
     void DCR_B();                                   // Tested
+    void DCR_D();                                   // Skip
     void INR_B();                                   // Skip
     void INR_A();                                   // Skip
+    void INR_D();                                   // Skip
     void DCR_C();                                   // Tested
     void DCR_A();                                   // Tested
     void DCR_M();                                   // Tested
     // Add and Subtract groups
+    void ADD_M();                                   // Tested
     void DAD_B();                                   // Tested
     void DAD_D();                                   // Tested
     void DAD_H();                                   // Tested
     void ADI(uint8_t data);
     void SUI(uint8_t data);                         // Tested
+    void SBI(uint8_t data);                         //
     // Logical and rotate groups
     void XRA_A();                                   // Tested
     void ORA_M();                                   // Tested
     void ORA_B();                                   // Tested
+    void ORA_H();                                   //
     void ORI(uint8_t data);                         // Tested
     void ANA_A();                                   // Tested
     void ANI(uint8_t data);                         // Tested

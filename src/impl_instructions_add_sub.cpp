@@ -24,6 +24,25 @@ void CPU_8080::DAD_D()
     pc += 1;
 }
 
+// Add memory to A
+void CPU_8080::ADD_M()
+{
+    uint16_t address = (h << 8) | l;
+    uint8_t hl_content = MemoryRead(address);
+    uint16_t result  = a + hl_content;
+
+    cc.cy = ( (result & 0x100) != 0 );
+    cc.z = (result == 0);
+    cc.s = ((result & 0x80) != 0);
+    cc.p = Parity(result);
+    //cc.ac
+
+    a = result;
+
+    cycles += 7;
+    pc += 1;
+}
+
 // Add B&C to H&L
 void CPU_8080::DAD_B()
 {
@@ -74,6 +93,22 @@ void CPU_8080::ADI(uint8_t data)
 void CPU_8080::SUI(uint8_t data)
 {
     uint16_t result  = a - data;
+
+    cc.cy = ( (result & 0x100) != 0 );
+    cc.z = (result == 0);
+    cc.s = ((result & 0x80) != 0);
+    cc.p = Parity(result);
+
+    a = (uint8_t) (result & 0xff);
+
+    cycles += 7;
+    pc += 2;
+}
+
+// Subtract immediate from A with borrow
+void CPU_8080::SBI(uint8_t data)
+{
+    uint16_t result  = a - data - cc.cy;
 
     cc.cy = ( (result & 0x100) != 0 );
     cc.z = (result == 0);

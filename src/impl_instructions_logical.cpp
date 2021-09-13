@@ -40,10 +40,25 @@ void CPU_8080::ORA_M()
     cycles += 7;
 }
 
-// ORA B, Or memory with B
+// ORA B, Or accumulator with B
 void CPU_8080::ORA_B()
 {
     uint8_t result = a | b;
+
+    cc.z  = (result == 0);
+    cc.s  = ((result & 0x80) != 0);
+    cc.p  = Parity(result);
+    cc.cy = 0; // Reset according to programmer's manual.
+
+    a = result;
+    pc += 1;
+    cycles += 4;
+}
+
+// ORA H, Or memory with H
+void CPU_8080::ORA_H()
+{
+    uint8_t result = a | h;
 
     cc.z  = (result == 0);
     cc.s  = ((result & 0x80) != 0);

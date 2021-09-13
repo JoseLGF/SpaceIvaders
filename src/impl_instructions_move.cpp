@@ -172,10 +172,26 @@ void CPU_8080::MOV_C_A()
     cycles += 5;
 }
 
+// Move C into H
+void CPU_8080::MOV_H_C()
+{
+    h = c;
+    pc += 1;
+    cycles += 5;
+}
+
 // Move the value of A into L
 void CPU_8080::MOV_L_A()
 {
     l = a;
+    pc += 1;
+    cycles += 5;
+}
+
+// Move the value of B into L
+void CPU_8080::MOV_L_B()
+{
+    l = b;
     pc += 1;
     cycles += 5;
 }
@@ -284,6 +300,14 @@ void CPU_8080::MOV_A_D()
     cycles += 5;
 }
 
+// Move A to B
+void CPU_8080::MOV_B_A()
+{
+    b = a;
+    pc += 1;
+    cycles += 5;
+}
+
 // Move L to A
 void CPU_8080::MOV_A_L()
 {
@@ -315,6 +339,16 @@ void CPU_8080::LHLD(uint8_t hi, uint8_t lo)
     uint16_t address = (hi << 8) | lo;
     l = MemoryRead(address);
     h = MemoryRead(address+1);
+    pc += 3;
+    cycles += 16;
+}
+
+// Store HL pair direct
+void CPU_8080::SHLD(uint8_t hi, uint8_t lo)
+{
+    uint16_t address = (hi << 8) | lo;
+    MemoryWrite(address, l);
+    MemoryWrite(address+1, h);
     pc += 3;
     cycles += 16;
 }

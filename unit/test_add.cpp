@@ -125,3 +125,22 @@ TEST(AddGroup, SUI_WhenDataIsGreaterThanAThenThereIsBorrowAndUnderflow) {
     ASSERT_EQ(true, cpu.Get_p());
     ASSERT_EQ(0x0002, cpu.Get_pc());
 }
+
+TEST(AddGroup, ADD_M) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x6c);
+    cpu.Set_h(0x23);
+    cpu.Set_l(0x45);
+    cpu.WriteMemoryAt(0x0000, 0x86); // ADD_M instruction
+    cpu.WriteMemoryAt(0x2345, 0x2e);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x9a, cpu.Get_a());
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(true, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}

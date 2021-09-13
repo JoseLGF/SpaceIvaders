@@ -114,6 +114,21 @@ void CPU_8080::INR_A()
     cycles += 5;
 }
 
+// Increment D register
+void CPU_8080::INR_D()
+{
+    uint8_t result = d + 1;
+
+    cc.z = (result == 0);
+    cc.s = ((result & 0x80) != 0);
+    cc.p = Parity(result);
+    // cc.c = Unaffected for this instruction
+
+    d = result;
+    pc += 1;
+    cycles += 5;
+}
+
 // Decrement C register
 void CPU_8080::DCR_C()
 {
@@ -125,6 +140,21 @@ void CPU_8080::DCR_C()
     // cc.c = Unaffected for this instruction
 
     c = result;
+    pc += 1;
+    cycles += 5;
+}
+
+// Decrement D register
+void CPU_8080::DCR_D()
+{
+    uint8_t result = d - 1;
+
+    cc.z = (result == 0);
+    cc.s = ((result & 0x80) != 0);
+    cc.p = Parity(result);
+    // cc.c = Unaffected for this instruction
+
+    d = result;
     pc += 1;
     cycles += 5;
 }
