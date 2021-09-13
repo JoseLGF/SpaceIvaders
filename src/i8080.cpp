@@ -273,6 +273,7 @@ void CPU_8080::MemoryWrite(uint16_t address, uint8_t data)
     if ((address & 0x3fff) < 0x2000)
     {
         std::cout << "Error, attempting to write to ROM" << std::endl;
+        PrintState();
         halted = true;
         return;
     }

@@ -78,10 +78,10 @@ int main(int argc, char** argv) {
 
             cpu.EmulateCycles(33333);
             // Generate Half screen interrupt (1)
-            cpu.Interrupt(1);
+            cpu.Interrupt(0xcf /*RST 1*/);
             cpu.EmulateCycles(33333);
             // Generate Full screen interrupt (2)
-            cpu.Interrupt(2);
+            cpu.Interrupt(0xd7 /* RST 2 */);
             // Draw Screen?
             // TODO
         }
