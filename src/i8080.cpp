@@ -155,6 +155,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x26:    MVI_H (memory[pc+1]);               break;
         case 0x31:   LXI_SP (memory[pc+2], memory[pc+1]); break;
         case 0x32:      STA (memory[pc+2], memory[pc+1]); break;
+        case 0x35:    DCR_M ();                           break;
         case 0x36:    MVI_M (memory[pc+1]);               break;
         case 0x3a:      LDA (memory[pc+2], memory[pc+1]); break;
         case 0x3e:    MVI_A (memory[pc+1]);               break;
@@ -178,10 +179,12 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0xc9:      RET ();                           break;
         case 0xcd:     CALL (memory[pc+2], memory[pc+1]); break;
         case 0xcf:      RST (0x1);                        break;
+        case 0xc8:       RZ ();                           break;
         case 0xd1:    POP_D ();                           break;
         case 0xd3:      OUT (memory[pc+1]);               break;
         case 0xd5:   PUSH_D ();                           break;
         case 0xd7:      RST (0x2);                        break;
+        case 0xdb:       IN (memory[pc+1]);               break;
         case 0xdf:      RST (0x3);                        break;
         case 0xeb:     XCHG ();                           break;
         case 0xe1:    POP_H ();                           break;

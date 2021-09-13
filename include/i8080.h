@@ -148,12 +148,14 @@ private:
     // Call group
     void CALL(uint8_t hi, uint8_t lo);              // Tested
     void RET();                                     // Tested
-    void RST(uint8_t exp);                          //
+    void RST(uint8_t exp);                          // Pending
+    void RZ();                                      //
     // Increment and decrement group
     void INX_H();                                   // Tested
     void INX_D();                                   // Tested
     void DCR_B();                                   // Tested
     void DCR_C();                                   // Tested
+    void DCR_M();                                   // Tested
     // Add and Subtract groups
     void DAD_B();                                   // Tested
     void DAD_D();                                   // Tested
@@ -166,7 +168,8 @@ private:
     void CPI(uint8_t data);                         // Tested
     void RRC();                                     // Tested
     // IO and special groups
-    void OUT(uint8_t byte);
+    void OUT(uint8_t byte);                         // Pending
+    void IN(uint8_t device);                        // Pending
     void EI();
 
     // Internal

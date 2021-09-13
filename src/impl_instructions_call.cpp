@@ -26,6 +26,22 @@ void CPU_8080::RET()
     cycles += 10;
 }
 
+// Return on zero
+void CPU_8080::RZ()
+{
+    if(cc.z)
+    {
+        RET();
+        // 10 cycles of RET + 1 cycle of RZ = 11 cycles
+        cycles += 1;
+    }
+    else
+    {
+        cycles += 5;
+        pc ++;
+    }
+}
+
 void CPU_8080::RST(uint8_t exp)
 {
     uint16_t new_pc = (exp << 3);

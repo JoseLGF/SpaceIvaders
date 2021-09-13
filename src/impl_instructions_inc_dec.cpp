@@ -30,6 +30,23 @@ void CPU_8080::INX_D()
     cycles += 5;
 }
 
+// Decrement memory
+void CPU_8080::DCR_M()
+{
+    uint16_t address = (h << 8) | l;
+    uint8_t num = MemoryRead(address);
+    num--;
+    MemoryWrite(address, num);
+
+    cc.z = (num == 0);
+    cc.s = ((num & 0x80) != 0);
+    cc.p = Parity(num);
+    // cc.c = Unaffected for this instruction
+
+    pc += 1;
+    cycles += 10;
+}
+
 // Decrement B register
 void CPU_8080::DCR_B()
 {

@@ -13,6 +13,14 @@ void CPU_8080::OUT(uint8_t byte)
     cycles += 10;
 }
 
+void CPU_8080::IN(uint8_t device_number)
+{
+    // Will need to re-implement later!
+    (void) device_number;
+    pc += 2;
+    cycles += 10;
+}
+
 void CPU_8080::EI()
 {
     int_enable = true;
