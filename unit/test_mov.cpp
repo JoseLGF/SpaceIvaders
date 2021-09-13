@@ -155,3 +155,18 @@ TEST(MoveGroup, STAX_B) {
     ASSERT_EQ(0xcc, cpu.ReadMemoryAt(0x3f16));
     ASSERT_EQ(0x01, cpu.Get_pc());
 }
+
+TEST(MoveGroup, LDAX_B_VerifyNormalOperation) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_b(0x23);
+    cpu.Set_c(0x45);
+    cpu.WriteMemoryAt(0x0000, 0x0a); // LDAX_B instruction
+    cpu.WriteMemoryAt(0x2345, 0xbb);
+    ASSERT_EQ(0x00, cpu.Get_a());
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xbb, cpu.Get_a());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}

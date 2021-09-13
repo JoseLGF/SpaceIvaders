@@ -73,6 +73,15 @@ void CPU_8080::LDAX_D()
     cycles += 7;
 }
 
+// Load A indirect from the address pointed to by the register pair BC
+void CPU_8080::LDAX_B()
+{
+    uint16_t address = (b << 8) | c;
+    a = MemoryRead(address);
+    pc += 1;
+    cycles += 7;
+}
+
 // The contents of A are loaded to the address pointed to by the pair HL
 void CPU_8080::MOV_M_A()
 {

@@ -27,3 +27,11 @@ void CPU_8080::EI()
     pc += 1;
     cycles += 4;
 }
+
+// Set carry
+void CPU_8080::STC()
+{
+    cc.cy = true;
+    pc += 1;
+    cycles += 4;
+}

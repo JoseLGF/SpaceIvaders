@@ -23,6 +23,7 @@ TESTOBJ= test_add.o \
 	 test_call.o \
 	 test_inc_dec.o \
 	 test_logical.o \
+	 test_io_special.o \
 	 test_stack.o
 
 %.o: %.cpp $(DEPS)

@@ -30,6 +30,17 @@ void CPU_8080::INX_D()
     cycles += 5;
 }
 
+// Increment BC register pair
+void CPU_8080::INX_B()
+{
+    uint16_t num = (b << 8) | c;
+    num++;
+    b = (uint8_t) ((num >> 8) & 0xff);
+    c = (uint8_t) (num & 0xff);
+    pc += 1;
+    cycles += 5;
+}
+
 // Decrement memory
 void CPU_8080::DCR_M()
 {
@@ -73,6 +84,21 @@ void CPU_8080::DCR_C()
     // cc.c = Unaffected for this instruction
 
     c = result;
+    pc += 1;
+    cycles += 5;
+}
+
+// Decrement A register
+void CPU_8080::DCR_A()
+{
+    uint8_t result = a - 1;
+
+    cc.z = (result == 0);
+    cc.s = ((result & 0x80) != 0);
+    cc.p = Parity(result);
+    // cc.c = Unaffected for this instruction
+
+    a = result;
     pc += 1;
     cycles += 5;
 }

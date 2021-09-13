@@ -110,6 +110,9 @@ private:
     // Branch group
     void JMP(uint8_t hi, uint8_t lo);               // Tested
     void JNZ(uint8_t hi, uint8_t lo);               // Tested
+    void JNC(uint8_t hi, uint8_t lo);               // Tested
+    void JC(uint8_t hi, uint8_t lo);                // Tested
+    void JZ(uint8_t hi, uint8_t lo);                // Tested
     // Other group
     void NOP();                                     // Skip
     // Stack group
@@ -141,6 +144,7 @@ private:
     void LXI_D(uint8_t byte_d, uint8_t byte_e);     // Skip
     void LXI_H(uint8_t byte_h, uint8_t byte_l);     // Skip
     void LDAX_D();                                  // Skip
+    void LDAX_B();                                  // Tested
     void STA(uint8_t byte_h, uint8_t byte_l);       // Tested
     void LDA(uint8_t byte_h, uint8_t byte_l);       // Tested
     void XCHG();                                    // Tested
@@ -149,12 +153,14 @@ private:
     void CALL(uint8_t hi, uint8_t lo);              // Tested
     void RET();                                     // Tested
     void RST(uint8_t exp);                          // Pending
-    void RZ();                                      //
+    void RZ();                                      // Tested
     // Increment and decrement group
     void INX_H();                                   // Tested
     void INX_D();                                   // Tested
+    void INX_B();                                   // Tested
     void DCR_B();                                   // Tested
     void DCR_C();                                   // Tested
+    void DCR_A();                                   // Tested
     void DCR_M();                                   // Tested
     // Add and Subtract groups
     void DAD_B();                                   // Tested
@@ -171,6 +177,7 @@ private:
     void OUT(uint8_t byte);                         // Pending
     void IN(uint8_t device);                        // Pending
     void EI();
+    void STC();                                     // Tested
 
     // Internal
     bool Parity(uint8_t byte);
