@@ -16,6 +16,7 @@ BUILDOBJ= ../build/i8080.o \
 		  ../build/impl_instructions_move.o \
 		  ../build/impl_instructions_other.o \
 		  ../build/impl_instructions_stack.o \
+		  ../build/io_devices.o \
 
 TESTOBJ= test_add.o \
 	 test_mov.o \

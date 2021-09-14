@@ -199,6 +199,21 @@ TEST(MoveGroup, LDAX_B_VerifyNormalOperation) {
     ASSERT_EQ(0x01, cpu.Get_pc());
 }
 
+TEST(MoveGroup, LDAX_D_VerifyNormalOperation) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_d(0x23);
+    cpu.Set_e(0x45);
+    cpu.WriteMemoryAt(0x0000, 0x1a); // LDAX_D instruction
+    cpu.WriteMemoryAt(0x2345, 0xbb);
+    ASSERT_EQ(0x00, cpu.Get_a());
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xbb, cpu.Get_a());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
 TEST(MoveGroup, MOV_H_A_VerifyContentsTransferred) {
     CPU_8080 cpu;
     cpu.Initialize();
@@ -209,6 +224,84 @@ TEST(MoveGroup, MOV_H_A_VerifyContentsTransferred) {
     cpu.RegularInstruction();
 
     ASSERT_EQ(0xad, cpu.Get_h());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(MoveGroup, MOV_B_A_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_b(0x21);
+    cpu.Set_a(0xad);
+    cpu.WriteMemoryAt(0x0000, 0x47); // MOV_B_A instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xad, cpu.Get_b());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(MoveGroup, MOV_C_A_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_c(0x21);
+    cpu.Set_a(0xad);
+    cpu.WriteMemoryAt(0x0000, 0x4f); // MOV_C_A instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xad, cpu.Get_c());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(MoveGroup, MOV_D_A_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_d(0x21);
+    cpu.Set_a(0xad);
+    cpu.WriteMemoryAt(0x0000, 0x57); // MOV_D_A instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xad, cpu.Get_d());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(MoveGroup, MOV_A_H_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x21);
+    cpu.Set_h(0xad);
+    cpu.WriteMemoryAt(0x0000, 0x7c); // MOV_A_H instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xad, cpu.Get_a());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(MoveGroup, MOV_A_D_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x21);
+    cpu.Set_d(0xad);
+    cpu.WriteMemoryAt(0x0000, 0x7a); // MOV_A_D instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xad, cpu.Get_a());
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
+
+TEST(MoveGroup, MOV_A_B_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x21);
+    cpu.Set_b(0xad);
+    cpu.WriteMemoryAt(0x0000, 0x78); // MOV_A_B instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xad, cpu.Get_a());
     ASSERT_EQ(0x01, cpu.Get_pc());
 }
 
@@ -301,4 +394,80 @@ TEST(MoveGroup, MVI_H_VerifyContentsTransferred) {
 
     ASSERT_EQ(0xbb, cpu.Get_h());
     ASSERT_EQ(0x02, cpu.Get_pc());
+}
+
+TEST(MoveGroup, LXI_H_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.WriteMemoryAt(0x0000, 0x21); // LXI_H instruction
+    cpu.WriteMemoryAt(0x0001, 0x03);
+    cpu.WriteMemoryAt(0x0002, 0x01);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x01, cpu.Get_h());
+    ASSERT_EQ(0x03, cpu.Get_l());
+    ASSERT_EQ(0x03, cpu.Get_pc());
+}
+
+TEST(MoveGroup, LXI_B_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.WriteMemoryAt(0x0000, 0x01); // LXI_B instruction
+    cpu.WriteMemoryAt(0x0001, 0x03);
+    cpu.WriteMemoryAt(0x0002, 0x01);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x01, cpu.Get_b());
+    ASSERT_EQ(0x03, cpu.Get_c());
+    ASSERT_EQ(0x03, cpu.Get_pc());
+}
+
+TEST(MoveGroup, LXI_D_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.WriteMemoryAt(0x0000, 0x11); // LXI_D instruction
+    cpu.WriteMemoryAt(0x0001, 0x03);
+    cpu.WriteMemoryAt(0x0002, 0x01);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x01, cpu.Get_d());
+    ASSERT_EQ(0x03, cpu.Get_e());
+    ASSERT_EQ(0x03, cpu.Get_pc());
+}
+
+TEST(MoveGroup, LHLD_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.WriteMemoryAt(0x0000, 0x2a); // LHLD instruction
+    cpu.WriteMemoryAt(0x0001, 0x33);
+    cpu.WriteMemoryAt(0x0002, 0x20);
+    cpu.WriteMemoryAt(0x2033, 0xbb);
+    cpu.WriteMemoryAt(0x2034, 0xcc);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xbb, cpu.Get_l());
+    ASSERT_EQ(0xcc, cpu.Get_h());
+    ASSERT_EQ(0x03, cpu.Get_pc());
+}
+
+TEST(MoveGroup, SHLD_VerifyContentsTransferred) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_h(0xde);
+    cpu.Set_l(0xad);
+    cpu.WriteMemoryAt(0x0000, 0x22); // SHLD instruction
+    cpu.WriteMemoryAt(0x0001, 0x33);
+    cpu.WriteMemoryAt(0x0002, 0x20);
+    cpu.WriteMemoryAt(0x2033, 0xbb);
+    cpu.WriteMemoryAt(0x2034, 0xcc);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xad, cpu.ReadMemoryAt(0x2033));
+    ASSERT_EQ(0xde, cpu.ReadMemoryAt(0x2034));
+    ASSERT_EQ(0x03, cpu.Get_pc());
 }
