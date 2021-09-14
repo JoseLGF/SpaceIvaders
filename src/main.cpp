@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cstdio>
 #include "i8080.h"
+#include "io_devices.h"
 
 
 void captureInputs(sf::RenderWindow& window)
@@ -114,11 +115,17 @@ int main(int argc, char** argv)
             sf::Style::Default, settings);
     window.setFramerateLimit(60);
 
+    // Setup io devices
+    Io_devices devices;
+    devices.Initialize();
+
+
     // Setup cpu
     std::cout << "Setup CPU..." << std::endl;
     CPU_8080 cpu;
     cpu.Initialize();
     cpu.LoadRom();
+    cpu.Connect_io_dev(&devices);
 
     // System Time
     sf::Clock System_time_clock;
@@ -133,7 +140,9 @@ int main(int argc, char** argv)
         if (System_elapsed_time.asMilliseconds() > 17/*TimePerFrame*/){
             System_elapsed_time = sf::Time::Zero;
 
+            std::cout << "First processor instruction..." << std::endl;
             cpu.EmulateCycles(33333);
+            std::cout << "First interrupt..." << std::endl;
             // Generate Half screen interrupt (1)
             cpu.Interrupt(0xcf /*RST 1*/);
             cpu.EmulateCycles(33333);

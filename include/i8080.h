@@ -3,7 +3,8 @@
  * Description: Header definitions for the i8080 cpu class.
  * */
 
- #include <string>
+#include <string>
+#include "io_devices.h"
 
 // Processor flags
 typedef struct ConditionCodes {
@@ -26,6 +27,7 @@ public:
     bool Running();
     void DumpMemory();
     void Interrupt(uint8_t opcode);
+    void Connect_io_dev(Io_devices* devices);
 
 public:
     /* Memory Read and Write interface */
@@ -74,6 +76,9 @@ public:
 
 // CPU state
 private:
+    // External devices class connected to the cpu
+    Io_devices* devices;
+
     // Accumulator register a
     uint8_t     a;
     // General purpose registers b,c,d,e
@@ -138,17 +143,17 @@ private:
     void MOV_A_M();                                 // Tested
     void MOV_C_M();                                 // Tested
     void MOV_B_M();                                 // tested
-    void MOV_B_A();                                 // Skip
+    void MOV_B_A();                                 // Tested
     void MOV_E_M();                                 // Tested
     void MOV_D_M();                                 // Tested
     void MOV_H_M();                                 // Tested
-    void MOV_A_H();                                 // Skip
-    void MOV_A_B();                                 // Skip
+    void MOV_A_H();                                 // Tested
+    void MOV_A_B();                                 // Tested
     void MOV_H_A();                                 // Tested
     void MOV_E_A();                                 // Tested
-    void MOV_C_A();                                 // Skip
-    void MOV_D_A();                                 // Skipped
-    void MOV_A_D();                                 // Skip
+    void MOV_C_A();                                 // Tested
+    void MOV_D_A();                                 // Tested
+    void MOV_A_D();                                 // Tested
     void MOV_A_C();                                 // Skip
     void MOV_A_E();                                 // Skip
     void MOV_A_L();                                 // Skip
@@ -156,17 +161,17 @@ private:
     void MOV_L_B();                                 // Skip
     void MOV_H_C();                                 // Skip
     void MVI_M(uint8_t data);                       // Tested
-    void LXI_B(uint8_t byte_b, uint8_t byte_c);     // Skip
-    void LXI_D(uint8_t byte_d, uint8_t byte_e);     // Skip
-    void LXI_H(uint8_t byte_h, uint8_t byte_l);     // Skip
-    void LDAX_D();                                  // Skip
+    void LXI_B(uint8_t byte_b, uint8_t byte_c);     // Tested
+    void LXI_D(uint8_t byte_d, uint8_t byte_e);     // Tested
+    void LXI_H(uint8_t byte_h, uint8_t byte_l);     // Tested
+    void LDAX_D();                                  // Tested
     void LDAX_B();                                  // Tested
     void STA(uint8_t byte_h, uint8_t byte_l);       // Tested
     void LDA(uint8_t byte_h, uint8_t byte_l);       // Tested
     void XCHG();                                    // Tested
-    void STAX_B();                                  //
-    void LHLD(uint8_t byte_h, uint8_t byte_l);      //
-    void SHLD(uint8_t byte_h, uint8_t byte_l);      //
+    void STAX_B();                                  // Tested
+    void LHLD(uint8_t byte_h, uint8_t byte_l);      // Tested
+    void SHLD(uint8_t byte_h, uint8_t byte_l);      // Tested
     // Call group
     void CALL(uint8_t hi, uint8_t lo);              // Tested
     void CNZ(uint8_t hi, uint8_t lo);               // Skip

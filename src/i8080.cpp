@@ -127,6 +127,7 @@ void CPU_8080::Interrupt(uint8_t opcode)
     // If interrupts are enabled, service the request
     if (int_enable)
     {
+        int_enable = false;
         ExecuteInstruction(opcode);
     }
 }
@@ -371,3 +372,8 @@ void CPU_8080::Set_l(uint8_t data) { l = data; }
 void CPU_8080::Set_sp(uint16_t address) { sp = address; }
 void CPU_8080::Set_pc(uint16_t address) { pc = address; }
 
+
+void CPU_8080::Connect_io_dev(Io_devices* l_devices)
+{
+    devices = l_devices;
+}
