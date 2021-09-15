@@ -12,10 +12,7 @@ void CPU_8080::ANA_r(uint8_t& r)
 {
     uint8_t result = a & r;
 
-    cc.z  = (result == 0);
-    cc.s  = ((result & 0x80) != 0);
-    cc.p  = Parity(result);
-    cc.cy = 0;
+    logical_flags(result);
 
     a = result;
     pc += 1;
@@ -26,10 +23,9 @@ void CPU_8080::XRA_r(uint8_t& r)
 {
     uint8_t result = a ^ r;
 
-    cc.z  = (result == 0);
-    cc.s  = ((result & 0x80) != 0);
-    cc.p  = Parity(result);
-    cc.cy = 0; // Reset according to programmer's manual.
+
+
+    logical_flags(result);
 
     a = result;
     pc += 1;
@@ -40,10 +36,7 @@ void CPU_8080::ORA_r(uint8_t& r)
 {
     uint8_t result = a | r;
 
-    cc.z  = (result == 0);
-    cc.s  = ((result & 0x80) != 0);
-    cc.p  = Parity(result);
-    cc.cy = 0; // Reset according to programmer's manual.
+    logical_flags(result);
 
     a = result;
     pc += 1;
@@ -57,10 +50,7 @@ void CPU_8080::ORA_M()
     uint8_t hl_content = MemoryRead(address);
     uint8_t result = a | hl_content;
 
-    cc.z  = (result == 0);
-    cc.s  = ((result & 0x80) != 0);
-    cc.p  = Parity(result);
-    cc.cy = 0; // Reset according to programmer's manual.
+    logical_flags(result);
 
     a = result;
     pc += 1;
@@ -124,10 +114,7 @@ void CPU_8080::ANI(uint8_t data)
 {
     uint8_t result = a & data;
 
-    cc.cy = 0;
-    cc.z  = (result == 0);
-    cc.s  = ((result & 0x80) != 0);
-    cc.p  = Parity(result);
+    logical_flags(result);
 
     a = result;
     pc += 2;
@@ -139,10 +126,7 @@ void CPU_8080::ORI(uint8_t data)
 {
     uint8_t result = a | data;
 
-    cc.z  = (result == 0);
-    cc.s  = ((result & 0x80) != 0);
-    cc.p  = Parity(result);
-    cc.cy = 0; // Reset according to programmer's manual.
+    logical_flags(result);
 
     a = result;
     pc += 2;

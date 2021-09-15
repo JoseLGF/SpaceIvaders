@@ -379,3 +379,12 @@ void CPU_8080::Connect_io_dev(Io_devices* l_devices)
 {
     devices = l_devices;
 }
+
+void CPU_8080::logical_flags(uint8_t result)
+{
+    // Sets the flags according to the result after a logical operation
+    cc.z  = (result == 0);
+    cc.s  = ((result & 0x80) != 0);
+    cc.p  = Parity(result);
+    cc.cy = 0; // Reset according to programmer's manual.
+}

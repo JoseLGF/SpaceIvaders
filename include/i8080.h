@@ -179,8 +179,6 @@ private:
     void XRA_r(uint8_t& r);                         // Tested
     void ORA_r(uint8_t& r);                         // Tested
     void ORA_M();                                   // Tested
-    void ORA_B();                                   // Tested
-    void ORA_H();                                   // Tested
     void ORI(uint8_t data);                         // Tested
     void ANI(uint8_t data);                         // Tested
     void CPI(uint8_t data);                         // Tested
@@ -195,4 +193,5 @@ private:
 
     // Internal
     bool Parity(uint8_t byte);
+    void logical_flags(uint8_t result);
 };
