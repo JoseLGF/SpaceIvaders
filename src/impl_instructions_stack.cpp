@@ -14,60 +14,20 @@ void CPU_8080::LXI_SP(uint8_t hi, uint8_t lo)
     cycles += 10;
 }
 
-// Push Register Pair D & E on stack
-void CPU_8080::PUSH_D()
+// Push Register Pair
+void CPU_8080::PUSH_rp(uint8_t& r1, uint8_t& r2)
 {
-    MemoryWrite(sp-1, d);
-    MemoryWrite(sp-2, e);
+    MemoryWrite(sp-1, r1);
+    MemoryWrite(sp-2, r2);
     sp = sp - 2;
     pc += 1;
 }
 
-// Push Register Pair H & L on stack
-void CPU_8080::PUSH_H()
+// Pop Register Pair
+void CPU_8080::POP_rp(uint8_t& r1, uint8_t& r2)
 {
-    MemoryWrite(sp-1, h);
-    MemoryWrite(sp-2, l);
-    sp = sp - 2;
-    pc += 1;
-    cycles += 11;
-}
-
-// Pop Register Pair H & L off stack
-void CPU_8080::POP_H()
-{
-    l = MemoryRead(sp);
-    h = MemoryRead(sp+1);
-    sp = sp + 2;
-    pc += 1;
-    cycles += 10;
-}
-
-// Push Register Pair B & C on stack
-void CPU_8080::PUSH_B()
-{
-    MemoryWrite(sp-1, b);
-    MemoryWrite(sp-2, c);
-    sp = sp - 2;
-    pc += 1;
-    cycles += 11;
-}
-
-// Pop Register Pair B & C off stack
-void CPU_8080::POP_B()
-{
-    c = MemoryRead(sp);
-    b = MemoryRead(sp+1);
-    sp = sp + 2;
-    pc += 1;
-    cycles += 10;
-}
-
-// Pop Register Pair D & E off stack
-void CPU_8080::POP_D()
-{
-    e = MemoryRead(sp);
-    d = MemoryRead(sp+1);
+    r1 = MemoryRead(sp+1);
+    r2 = MemoryRead(sp);
     sp = sp + 2;
     pc += 1;
     cycles += 10;

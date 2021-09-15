@@ -113,19 +113,14 @@ private:
 
     // Implementations for the opcodes
     // Branch group
-    void JMP(uint8_t hi, uint8_t lo);               // Tested
     void J_Cond(uint8_t hi, uint8_t lo, bool cond); // Tested
     // Other group
     void NOP();                                     // Skip
     // Stack group
     void LXI_SP(uint8_t hi, uint8_t lo);            // Tested
-    void PUSH_B();                                  // Tested
-    void PUSH_D();                                  // Tested
-    void PUSH_H();                                  // Tested
+    void PUSH_rp(uint8_t& r1, uint8_t& r2);         // Tested
+    void POP_rp(uint8_t& r1, uint8_t& r2);          // Tested
     void PUSH_PSW();                                // Tested
-    void POP_H();                                   // Tested
-    void POP_B();                                   // Tested
-    void POP_D();                                   // Tested
     void POP_PSW();                                 // Tested
     // Move group
     void MVI(uint8_t& reg, uint8_t data);           // Tested
@@ -133,11 +128,8 @@ private:
     void MOV_r_m(uint8_t& r);                       // Tested
     void MOV_m_r(uint8_t& r);                       // Tested
     void MVI_M(uint8_t data);                       // Tested
-    void LXI_B(uint8_t byte_b, uint8_t byte_c);     // Tested
-    void LXI_D(uint8_t byte_d, uint8_t byte_e);     // Tested
-    void LXI_H(uint8_t byte_h, uint8_t byte_l);     // Tested
-    void LDAX_D();                                  // Tested
-    void LDAX_B();                                  // Tested
+    void LXI(uint8_t& r1, uint8_t& r2, uint8_t d1, uint8_t d2); // Tested
+    void LDAX(uint8_t& r1, uint8_t& r2);            // Tested
     void STA(uint8_t byte_h, uint8_t byte_l);       // Tested
     void LDA(uint8_t byte_h, uint8_t byte_l);       // Tested
     void XCHG();                                    // Tested
@@ -146,21 +138,15 @@ private:
     void SHLD(uint8_t byte_h, uint8_t byte_l);      // Tested
     // Call group
     void CALL(uint8_t hi, uint8_t lo);              // Tested
-    void CNZ(uint8_t hi, uint8_t lo);               // Skip
-    void CZ(uint8_t hi, uint8_t lo);                // Skip
+    void C_Cond(uint8_t hi, uint8_t lo, bool cond); // Tested
     void RET();                                     // Tested
     void RST(uint8_t exp);                          // Pending
-    void RZ();                                      // Tested
-    void RNZ();                                     // Tested
-    void RC();                                      // Tested
-    void RNC();                                     // Tested
+    void R_cond(bool cond);                         // Tested
     // Increment and decrement group
     void INR_r(uint8_t& r);                         // Tested
     void DCR_r(uint8_t& r);                         // Tested
-    void INX_H();                                   // Tested
+    void INX(uint8_t& r1, uint8_t& r2);             // Tested
     void DCX_H();                                   // Tested
-    void INX_D();                                   // Tested
-    void INX_B();                                   // Tested
     void DCR_M();                                   // Tested
     // Add and Subtract groups
     void ADD_M();                                   // Tested

@@ -36,13 +36,13 @@ void CPU_8080::DCR_r(uint8_t& r)
     cycles += 5;
 }
 
-// Increment HL register pair
-void CPU_8080::INX_H()
+// Increment register pair
+void CPU_8080::INX(uint8_t& r1, uint8_t& r2)
 {
-    uint16_t num = (h << 8) | l;
+    uint16_t num = (r1 << 8) | r2;
     num++;
-    h = (uint8_t) ((num >> 8) & 0xff);
-    l = (uint8_t) (num & 0xff);
+    r1 = (uint8_t) ((num >> 8) & 0xff);
+    r2 = (uint8_t) (num & 0xff);
     pc += 1;
     cycles += 5;
 }
@@ -58,27 +58,6 @@ void CPU_8080::DCX_H()
     cycles += 5;
 }
 
-// Increment DE register pair
-void CPU_8080::INX_D()
-{
-    uint16_t num = (d << 8) | e;
-    num++;
-    d = (uint8_t) ((num >> 8) & 0xff);
-    e = (uint8_t) (num & 0xff);
-    pc += 1;
-    cycles += 5;
-}
-
-// Increment BC register pair
-void CPU_8080::INX_B()
-{
-    uint16_t num = (b << 8) | c;
-    num++;
-    b = (uint8_t) ((num >> 8) & 0xff);
-    c = (uint8_t) (num & 0xff);
-    pc += 1;
-    cycles += 5;
-}
 
 // Decrement memory
 void CPU_8080::DCR_M()
@@ -97,62 +76,3 @@ void CPU_8080::DCR_M()
     cycles += 10;
 }
 
-// Decrement B register
-void CPU_8080::DCR_B()
-{
-    uint8_t result = b - 1;
-
-    cc.z = (result == 0);
-    cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
-    // cc.c = Unaffected for this instruction
-
-    b = result;
-    pc += 1;
-    cycles += 5;
-}
-
-// Decrement C register
-void CPU_8080::DCR_C()
-{
-    uint8_t result = c - 1;
-
-    cc.z = (result == 0);
-    cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
-    // cc.c = Unaffected for this instruction
-
-    c = result;
-    pc += 1;
-    cycles += 5;
-}
-
-// Decrement D register
-void CPU_8080::DCR_D()
-{
-    uint8_t result = d - 1;
-
-    cc.z = (result == 0);
-    cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
-    // cc.c = Unaffected for this instruction
-
-    d = result;
-    pc += 1;
-    cycles += 5;
-}
-
-// Decrement A register
-void CPU_8080::DCR_A()
-{
-    uint8_t result = a - 1;
-
-    cc.z = (result == 0);
-    cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
-    // cc.c = Unaffected for this instruction
-
-    a = result;
-    pc += 1;
-    cycles += 5;
-}

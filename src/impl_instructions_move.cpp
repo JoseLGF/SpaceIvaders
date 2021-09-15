@@ -35,52 +35,23 @@ void CPU_8080::MOV_m_r(uint8_t& r)
     cycles += 7;
 }
 
-
-// Load immediate register pair D and E
-void CPU_8080::LXI_D(uint8_t byte_d, uint8_t byte_e)
+// Load immediate register pair
+void CPU_8080::LXI(uint8_t& r1, uint8_t& r2, uint8_t d1, uint8_t d2)
 {
-    d = byte_d;
-    e = byte_e;
+    r1 = d1;
+    r2 = d2;
     pc += 3;
     cycles += 10;
 }
 
-// Load immediate register pair B and C
-void CPU_8080::LXI_B(uint8_t byte_b, uint8_t byte_c)
+// Load A indirect from the address pointed to by the register pair
+void CPU_8080::LDAX(uint8_t& r1, uint8_t& r2)
 {
-    b = byte_b;
-    c = byte_c;
-    pc += 3;
-    cycles += 10;
-}
-
-// Load immediate register pair H and L
-void CPU_8080::LXI_H(uint8_t byte_h, uint8_t byte_l)
-{
-    h = byte_h;
-    l = byte_l;
-    pc += 3;
-    cycles += 10;
-}
-
-// Load A indirect from the address pointed to by the register pair DE
-void CPU_8080::LDAX_D()
-{
-    uint16_t address = (d << 8) | e;
+    uint16_t address = (r1 << 8) | r2;
     a = MemoryRead(address);
     pc += 1;
     cycles += 7;
 }
-
-// Load A indirect from the address pointed to by the register pair BC
-void CPU_8080::LDAX_B()
-{
-    uint16_t address = (b << 8) | c;
-    a = MemoryRead(address);
-    pc += 1;
-    cycles += 7;
-}
-
 
 // Store A direct
 void CPU_8080::STA(uint8_t byte_h, uint8_t byte_l)

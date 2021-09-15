@@ -19,10 +19,10 @@ void CPU_8080::CALL(uint8_t hi, uint8_t lo)
     cycles += 17;
 }
 
-// Call on no zero
-void CPU_8080::CNZ(uint8_t hi, uint8_t lo)
+// Call on condition
+void CPU_8080::C_Cond(uint8_t hi, uint8_t lo, bool cond)
 {
-    if (not cc.z)
+    if (cond)
     {
         uint16_t ret = pc+3;
         MemoryWrite(sp-1 , (ret >> 8) & 0xff);
@@ -38,22 +38,19 @@ void CPU_8080::CNZ(uint8_t hi, uint8_t lo)
     }
 }
 
-// Call on zero
-void CPU_8080::CZ(uint8_t hi, uint8_t lo)
+// Return on condition
+void CPU_8080::R_cond(bool cond)
 {
-    if (cc.z)
+    if(cond)
     {
-        uint16_t ret = pc+3;
-        MemoryWrite(sp-1 , (ret >> 8) & 0xff);
-        MemoryWrite(sp-2 , (ret & 0xff));
-        sp = sp - 2;
-        pc = (hi << 8) | lo;
-        cycles += 17;
+        RET();
+        // 10 cycles of RET + 1 cycle of RZ = 11 cycles
+        cycles += 1;
     }
     else
     {
-        pc += 3;
-        cycles += 11;
+        cycles += 5;
+        pc ++;
     }
 }
 
