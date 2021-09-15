@@ -8,6 +8,34 @@
 
 #include <iostream>
 
+void CPU_8080::INR_r(uint8_t& r)
+{
+    uint8_t result = r + 1;
+
+    cc.z = (result == 0);
+    cc.s = ((result & 0x80) != 0);
+    cc.p = Parity(result);
+    // cc.c = Unaffected for this instruction
+
+    r = result;
+    pc += 1;
+    cycles += 5;
+}
+
+void CPU_8080::DCR_r(uint8_t& r)
+{
+    uint8_t result = r - 1;
+
+    cc.z = (result == 0);
+    cc.s = ((result & 0x80) != 0);
+    cc.p = Parity(result);
+    // cc.c = Unaffected for this instruction
+
+    r = result;
+    pc += 1;
+    cycles += 5;
+}
+
 // Increment HL register pair
 void CPU_8080::INX_H()
 {
@@ -80,51 +108,6 @@ void CPU_8080::DCR_B()
     // cc.c = Unaffected for this instruction
 
     b = result;
-    pc += 1;
-    cycles += 5;
-}
-
-// Increment B register
-void CPU_8080::INR_B()
-{
-    uint8_t result = b + 1;
-
-    cc.z = (result == 0);
-    cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
-    // cc.c = Unaffected for this instruction
-
-    b = result;
-    pc += 1;
-    cycles += 5;
-}
-
-// Increment A register
-void CPU_8080::INR_A()
-{
-    uint8_t result = a + 1;
-
-    cc.z = (result == 0);
-    cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
-    // cc.c = Unaffected for this instruction
-
-    a = result;
-    pc += 1;
-    cycles += 5;
-}
-
-// Increment D register
-void CPU_8080::INR_D()
-{
-    uint8_t result = d + 1;
-
-    cc.z = (result == 0);
-    cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
-    // cc.c = Unaffected for this instruction
-
-    d = result;
     pc += 1;
     cycles += 5;
 }

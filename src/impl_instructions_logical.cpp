@@ -8,10 +8,37 @@
 
 #include <iostream>
 
-// XRA A, Exclusive or register A with A
-void CPU_8080::XRA_A()
+void CPU_8080::ANA_r(uint8_t& r)
 {
-    uint8_t result = a ^ a;
+    uint8_t result = a & r;
+
+    cc.z  = (result == 0);
+    cc.s  = ((result & 0x80) != 0);
+    cc.p  = Parity(result);
+    cc.cy = 0;
+
+    a = result;
+    pc += 1;
+    cycles += 4;
+}
+
+void CPU_8080::XRA_r(uint8_t& r)
+{
+    uint8_t result = a ^ r;
+
+    cc.z  = (result == 0);
+    cc.s  = ((result & 0x80) != 0);
+    cc.p  = Parity(result);
+    cc.cy = 0; // Reset according to programmer's manual.
+
+    a = result;
+    pc += 1;
+    cycles += 4;
+}
+
+void CPU_8080::ORA_r(uint8_t& r)
+{
+    uint8_t result = a | r;
 
     cc.z  = (result == 0);
     cc.s  = ((result & 0x80) != 0);
@@ -38,51 +65,6 @@ void CPU_8080::ORA_M()
     a = result;
     pc += 1;
     cycles += 7;
-}
-
-// ORA B, Or accumulator with B
-void CPU_8080::ORA_B()
-{
-    uint8_t result = a | b;
-
-    cc.z  = (result == 0);
-    cc.s  = ((result & 0x80) != 0);
-    cc.p  = Parity(result);
-    cc.cy = 0; // Reset according to programmer's manual.
-
-    a = result;
-    pc += 1;
-    cycles += 4;
-}
-
-// ORA H, Or memory with H
-void CPU_8080::ORA_H()
-{
-    uint8_t result = a | h;
-
-    cc.z  = (result == 0);
-    cc.s  = ((result & 0x80) != 0);
-    cc.p  = Parity(result);
-    cc.cy = 0; // Reset according to programmer's manual.
-
-    a = result;
-    pc += 1;
-    cycles += 4;
-}
-
-// ANA A, And register A with A
-void CPU_8080::ANA_A()
-{
-    uint8_t result = a & a;
-
-    cc.z  = (result == 0);
-    cc.s  = ((result & 0x80) != 0);
-    cc.p  = Parity(result);
-    cc.cy = 0;
-
-    a = result;
-    pc += 1;
-    cycles += 4;
 }
 
 // Compare immediate with accumulator

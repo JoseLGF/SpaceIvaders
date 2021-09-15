@@ -5,53 +5,36 @@
 
 #include "i8080.h"
 
-// Move immediate register B
-void CPU_8080::MVI_B(uint8_t data)
+void CPU_8080::MVI(uint8_t& reg, uint8_t data)
 {
-    b = data;
+    reg = data;
     pc += 2;
     cycles += 7;
 }
 
-// Move immediate register D
-void CPU_8080::MVI_D(uint8_t data)
+void CPU_8080::MOV_r_r(uint8_t& r1, uint8_t& r2)
 {
-    d = data;
-    pc += 2;
+    r1 = r2;
+    pc += 1;
+    cycles += 5;
+}
+
+void CPU_8080::MOV_r_m(uint8_t& r)
+{
+    uint16_t address = (h << 8) | l;
+    r = MemoryRead(address);
+    pc += 1;
     cycles += 7;
 }
 
-// Move immediate register L
-void CPU_8080::MVI_L(uint8_t data)
+void CPU_8080::MOV_m_r(uint8_t& r)
 {
-    l = data;
-    pc += 2;
+    uint16_t address = (h << 8) | l;
+    MemoryWrite(address, r);
+    pc += 1;
     cycles += 7;
 }
 
-// Move immediate register A
-void CPU_8080::MVI_A(uint8_t data)
-{
-    a = data;
-    pc += 2;
-    cycles += 7;
-}
-
-// Move immediate register C
-void CPU_8080::MVI_C(uint8_t data)
-{
-    c = data;
-    pc += 2;
-    cycles += 7;
-}
-
-// Move immediate register H
-void CPU_8080::MVI_H(uint8_t data)
-{
-    h = data;
-    pc += 2;
-    cycles += 7;
-}
 
 // Load immediate register pair D and E
 void CPU_8080::LXI_D(uint8_t byte_d, uint8_t byte_e)
@@ -98,103 +81,6 @@ void CPU_8080::LDAX_B()
     cycles += 7;
 }
 
-// The contents of A are loaded to the address pointed to by the pair HL
-void CPU_8080::MOV_M_A()
-{
-    uint16_t address = (h << 8) | l;
-    MemoryWrite(address, a);
-    pc += 1;
-    cycles += 7;
-}
-
-// The contents of B are loaded to the address pointed to by the pair HL
-void CPU_8080::MOV_M_B()
-{
-    uint16_t address = (h << 8) | l;
-    MemoryWrite(address, b);
-    pc += 1;
-    cycles += 7;
-}
-
-// Move the value of H into A
-void CPU_8080::MOV_A_H()
-{
-    a = h;
-    pc += 1;
-    cycles += 5;
-}
-
-// Move the value of B into A
-void CPU_8080::MOV_A_B()
-{
-    a = b;
-    pc += 1;
-    cycles += 5;
-}
-
-// Move the value of C into A
-void CPU_8080::MOV_A_C()
-{
-    a = c;
-    pc += 1;
-    cycles += 5;
-}
-
-// Move A into H
-void CPU_8080::MOV_H_A()
-{
-    h = a;
-    pc += 1;
-    cycles += 5;
-}
-
-// Move A into E
-void CPU_8080::MOV_E_A()
-{
-    e = a;
-    pc += 1;
-    cycles += 5;
-}
-
-// Move A into D
-void CPU_8080::MOV_D_A()
-{
-    d = a;
-    pc += 1;
-    cycles += 5;
-}
-
-// Move A into C
-void CPU_8080::MOV_C_A()
-{
-    c = a;
-    pc += 1;
-    cycles += 5;
-}
-
-// Move C into H
-void CPU_8080::MOV_H_C()
-{
-    h = c;
-    pc += 1;
-    cycles += 5;
-}
-
-// Move the value of A into L
-void CPU_8080::MOV_L_A()
-{
-    l = a;
-    pc += 1;
-    cycles += 5;
-}
-
-// Move the value of B into L
-void CPU_8080::MOV_L_B()
-{
-    l = b;
-    pc += 1;
-    cycles += 5;
-}
 
 // Store A direct
 void CPU_8080::STA(uint8_t byte_h, uint8_t byte_l)
@@ -238,91 +124,6 @@ void CPU_8080::XCHG()
     cycles += 4;
 }
 
-// Contents of the address pointed to by the pair HL are loaded to E
-void CPU_8080::MOV_E_M()
-{
-    uint16_t address = (h << 8) | l;
-    e = MemoryRead(address);
-    pc += 1;
-    cycles += 7;
-}
-
-// Contents of the address pointed to by the pair HL are loaded to C
-void CPU_8080::MOV_C_M()
-{
-    uint16_t address = (h << 8) | l;
-    c = MemoryRead(address);
-    pc += 1;
-    cycles += 7;
-}
-
-// Contents of the address pointed to by the pair HL are loaded to D
-void CPU_8080::MOV_D_M()
-{
-    uint16_t address = (h << 8) | l;
-    d = MemoryRead(address);
-    pc += 1;
-    cycles += 7;
-}
-
-// Contents of the address pointed to by the pair HL are loaded to A
-void CPU_8080::MOV_A_M()
-{
-    uint16_t address = (h << 8) | l;
-    a = MemoryRead(address);
-    pc += 1;
-    cycles += 7;
-}
-
-// Contents of the address pointed to by the pair HL are loaded to B
-void CPU_8080::MOV_B_M()
-{
-    uint16_t address = (h << 8) | l;
-    b = MemoryRead(address);
-    pc += 1;
-    cycles += 7;
-}
-
-// Contents of the address pointed to by the pair HL are loaded to H
-void CPU_8080::MOV_H_M()
-{
-    uint16_t address = (h << 8) | l;
-    h = MemoryRead(address);
-    pc += 1;
-    cycles += 7;
-}
-
-// Move D to A
-void CPU_8080::MOV_A_D()
-{
-    a = d;
-    pc += 1;
-    cycles += 5;
-}
-
-// Move A to B
-void CPU_8080::MOV_B_A()
-{
-    b = a;
-    pc += 1;
-    cycles += 5;
-}
-
-// Move L to A
-void CPU_8080::MOV_A_L()
-{
-    a = l;
-    pc += 1;
-    cycles += 5;
-}
-
-// Move E to A
-void CPU_8080::MOV_A_E()
-{
-    a = e;
-    pc += 1;
-    cycles += 5;
-}
 
 // Store A indirect
 void CPU_8080::STAX_B()

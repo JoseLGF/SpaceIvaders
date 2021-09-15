@@ -132,34 +132,10 @@ private:
     void POP_D();                                   // Tested
     void POP_PSW();                                 // Tested
     // Move group
-    void MVI_B(uint8_t data);                       // Tested
-    void MVI_A(uint8_t data);                       // Tested
-    void MVI_C(uint8_t data);                       // Tested
-    void MVI_D(uint8_t data);                       // Tested
-    void MVI_L(uint8_t data);                       // Tested
-    void MVI_H(uint8_t data);                       // Tested
-    void MOV_M_A();                                 // Tested
-    void MOV_M_B();                                 // Tested
-    void MOV_A_M();                                 // Tested
-    void MOV_C_M();                                 // Tested
-    void MOV_B_M();                                 // tested
-    void MOV_B_A();                                 // Tested
-    void MOV_E_M();                                 // Tested
-    void MOV_D_M();                                 // Tested
-    void MOV_H_M();                                 // Tested
-    void MOV_A_H();                                 // Tested
-    void MOV_A_B();                                 // Tested
-    void MOV_H_A();                                 // Tested
-    void MOV_E_A();                                 // Tested
-    void MOV_C_A();                                 // Tested
-    void MOV_D_A();                                 // Tested
-    void MOV_A_D();                                 // Tested
-    void MOV_A_C();                                 // Tested
-    void MOV_A_E();                                 // Tested
-    void MOV_A_L();                                 // Tested
-    void MOV_L_A();                                 // Tested
-    void MOV_L_B();                                 // Tested
-    void MOV_H_C();                                 // Tested
+    void MVI(uint8_t& reg, uint8_t data);           // Tested
+    void MOV_r_r(uint8_t& r1, uint8_t& r2);         // Tested
+    void MOV_r_m(uint8_t& r);                       // Tested
+    void MOV_m_r(uint8_t& r);                       // Tested
     void MVI_M(uint8_t data);                       // Tested
     void LXI_B(uint8_t byte_b, uint8_t byte_c);     // Tested
     void LXI_D(uint8_t byte_d, uint8_t byte_e);     // Tested
@@ -183,17 +159,12 @@ private:
     void RC();                                      // Tested
     void RNC();                                     // Tested
     // Increment and decrement group
+    void INR_r(uint8_t& r);                         // Tested
+    void DCR_r(uint8_t& r);                         // Tested
     void INX_H();                                   // Tested
     void DCX_H();                                   // Tested
     void INX_D();                                   // Tested
     void INX_B();                                   // Tested
-    void DCR_B();                                   // Tested
-    void DCR_D();                                   // Tested
-    void INR_B();                                   // Tested
-    void INR_A();                                   // Tested
-    void INR_D();                                   // Tested
-    void DCR_C();                                   // Tested
-    void DCR_A();                                   // Tested
     void DCR_M();                                   // Tested
     // Add and Subtract groups
     void ADD_M();                                   // Tested
@@ -204,12 +175,13 @@ private:
     void SUI(uint8_t data);                         // Tested
     void SBI(uint8_t data);                         // Tested
     // Logical and rotate groups
-    void XRA_A();                                   // Tested
+    void ANA_r(uint8_t& r);                         // Tested
+    void XRA_r(uint8_t& r);                         // Tested
+    void ORA_r(uint8_t& r);                         // Tested
     void ORA_M();                                   // Tested
     void ORA_B();                                   // Tested
     void ORA_H();                                   // Tested
     void ORI(uint8_t data);                         // Tested
-    void ANA_A();                                   // Tested
     void ANI(uint8_t data);                         // Tested
     void CPI(uint8_t data);                         // Tested
     void RRC();                                     // Tested
@@ -223,6 +195,4 @@ private:
 
     // Internal
     bool Parity(uint8_t byte);
-
-
 };
