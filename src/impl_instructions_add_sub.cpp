@@ -9,16 +9,16 @@
 #include <iostream>
 #include <string>
 
-// Add D&E to H&L
-void CPU_8080::DAD_D()
+// Add r1&r2 to H&L
+void CPU_8080::DAD(uint8_t& r1, uint8_t& r2)
 {
-    uint16_t d_and_e = (d << 8) | e;
+    uint16_t r1_and_r2 = (r1 << 8) | r2;
     uint16_t h_and_l = (h << 8) | l;
-    uint32_t result  = d_and_e + h_and_l;
+    uint32_t result  = (uint32_t)r1_and_r2 + (uint32_t)h_and_l;
     h = ( (result >> 8) & 0xff );
     l = result & 0xff;
 
-    cc.cy = ( (result & 0x10000) != 0 );
+    cc.cy = (result > 0xffff);
 
     cycles += 10;
     pc += 1;
@@ -31,46 +31,11 @@ void CPU_8080::ADD_M()
     uint8_t hl_content = MemoryRead(address);
     uint16_t result  = a + hl_content;
 
-    cc.cy = ( (result & 0x100) != 0 );
-    /* cc.z = (result == 0); */
-    cc.z = ((result & 0xff) == 0);
-    cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result & 0xff);
-    //cc.ac
+    addition_flags(a, hl_content, 0);
 
     a = result;
 
     cycles += 7;
-    pc += 1;
-}
-
-// Add B&C to H&L
-void CPU_8080::DAD_B()
-{
-    uint16_t b_and_c = (b << 8) | c;
-    uint16_t h_and_l = (h << 8) | l;
-    uint32_t result  = b_and_c + h_and_l;
-    h = ( (result >> 8) & 0xff );
-    l = result & 0xff;
-
-    cc.cy = ( (result & 0x10000) != 0 );
-
-    cycles += 10;
-    pc += 1;
-}
-
-
-// Add H&L to H&L
-void CPU_8080::DAD_H()
-{
-    uint16_t h_and_l = (h << 8) | l;
-    uint32_t result  = h_and_l + h_and_l;
-    h = ( (result >> 8) & 0xff );
-    l = result & 0xff;
-
-    cc.cy = ( (result & 0x10000) != 0 );
-
-    cycles += 10;
     pc += 1;
 }
 
@@ -79,11 +44,7 @@ void CPU_8080::ADI(uint8_t data)
 {
     uint16_t result  = a + data;
 
-    cc.cy = ( (result & 0x100) != 0 );
-    cc.z = ((result & 0xff) == 0);
-    cc.s = ((result & 0x80) != 0);
-    /* cc.p = Parity(result); */
-    cc.p = Parity(result & 0xff);
+    addition_flags(a, data, 0);
 
     a = (uint8_t) (result & 0xff);
 
@@ -99,11 +60,11 @@ void CPU_8080::SUI(uint8_t data)
     uint16_t result  = a + twos_complement_data;
     /* uint16_t result  = a - data; */
 
+    //subtraction_flags(a, data, 0);
+
     cc.cy = ( (result & 0x100) == 0 );
-    /* cc.z = (result == 0); */
     cc.z = ((result & 0xff) == 0);
     cc.s = ((result & 0x80) != 0);
-    /* cc.p = Parity(result); */
     cc.p = Parity(result & 0xff);
 
     a = (uint8_t) (result & 0xff);
@@ -121,10 +82,8 @@ void CPU_8080::SBI(uint8_t data)
     uint16_t result  = a + twos_complement_data_plus_carry;
 
     cc.cy = (result & 0x100) == 0;
-    /* cc.z = (result == 0); */
     cc.z = ((result & 0xff) == 0);
     cc.s = ((result & 0x80) != 0);
-    /* cc.p = Parity(result); */
     cc.p = Parity(result & 0xff);
 
     a = (uint8_t) (result & 0xff);

@@ -23,8 +23,6 @@ void CPU_8080::XRA_r(uint8_t& r)
 {
     uint8_t result = a ^ r;
 
-
-
     logical_flags(result);
 
     a = result;

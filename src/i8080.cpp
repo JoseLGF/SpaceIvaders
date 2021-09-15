@@ -148,7 +148,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x05:    DCR_r (b);                                  break;
         case 0x06:      MVI (b, BYTE1);                           break;
         case 0x07:      RLC ();                                   break;
-        case 0x09:    DAD_B ();                                   break;
+        case 0x09:      DAD (b, c);                               break;
         case 0x0a:     LDAX (b, c);                               break;
         case 0x0d:    DCR_r (c);                                  break;
         case 0x0e:      MVI (c, BYTE1);                           break;
@@ -158,8 +158,8 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0x14:    INR_r (d);                                  break;
         case 0x15:    DCR_r (d);                                  break;
         case 0x16:      MVI (d, BYTE1);                           break;
-        case 0x19:    DAD_D ();                                   break;
-        case 0x29:    DAD_H ();                                   break;
+        case 0x19:      DAD (d, e);                               break;
+        case 0x29:      DAD (h, l);                               break;
         case 0x1a:     LDAX (d, e);                               break;
         case 0x1f:      RAR ();                                   break;
         case 0x21:      LXI (h, l, BYTE2, BYTE1);                 break;
@@ -227,7 +227,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0xd5:  PUSH_rp (d, e);                               break;
         case 0xd6:      SUI (BYTE1);                              break;
         case 0xd7:      RST (0x2);                                break;
-        case 0xd8:       RC ();                                   break;
+        case 0xd8:   R_cond (cc.cy);                              break;
         case 0xda:   J_Cond (BYTE2, BYTE1, cc.cy);                break;
         case 0xdb:       IN (BYTE1);                              break;
         case 0xde:      SBI (BYTE1);                              break;
@@ -389,4 +389,26 @@ void CPU_8080::logical_flags(uint8_t result)
     cc.s  = ((result & 0x80) != 0);
     cc.p  = Parity(result);
     cc.cy = 0; // Reset according to programmer's manual.
+}
+
+void CPU_8080::addition_flags(uint8_t i_a, uint8_t i_b, uint8_t cy)
+{
+    uint16_t sum = (uint16_t)i_a + (uint16_t)i_b + cy;
+	cc.z = ((uint8_t)(i_a + i_b + cy) == 0);
+	cc.s = ((sum & 0x80) == 0x80);
+	cc.p = (Parity((uint8_t)(i_a + i_b + cy)));
+	uint16_t carry = sum ^ i_a ^ i_b;
+	/* cc.cy = (carry & (1 << 8)); */
+	cc.cy = sum > 0xff;
+    /* cc.ac = (carry & (1 << 4)); */
+}
+
+void CPU_8080::subtraction_flags(uint8_t i_a, uint8_t i_b, uint8_t cy)
+{
+    uint16_t dif = (uint16_t)a - (uint16_t)b - cy;
+	cc.z = (dif == 0);
+	cc.s = ((dif & 0x80) == 0x80);
+	cc.p = (Parity((uint8_t)(a - b - cy)));
+	cc.cy = (a < (b + cy)) ? 1 : 0;
+	cc.ac = ~(a ^ b ^ dif) & 0x10;
 }

@@ -150,9 +150,7 @@ private:
     void DCR_M();                                   // Tested
     // Add and Subtract groups
     void ADD_M();                                   // Tested
-    void DAD_B();                                   // Tested
-    void DAD_D();                                   // Tested
-    void DAD_H();                                   // Tested
+    void DAD(uint8_t& r1, uint8_t& r2);             // Tested
     void ADI(uint8_t data);                         // Tested
     void SUI(uint8_t data);                         // Tested
     void SBI(uint8_t data);                         // Tested
@@ -176,4 +174,6 @@ private:
     // Internal
     bool Parity(uint8_t byte);
     void logical_flags(uint8_t result);
+    void addition_flags(uint8_t a, uint8_t b, uint8_t cy);
+    void subtraction_flags(uint8_t a, uint8_t b, uint8_t cy);
 };
