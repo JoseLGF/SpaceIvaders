@@ -114,11 +114,7 @@ private:
     // Implementations for the opcodes
     // Branch group
     void JMP(uint8_t hi, uint8_t lo);               // Tested
-    void JM(uint8_t hi, uint8_t lo);                // Tested
-    void JNZ(uint8_t hi, uint8_t lo);               // Tested
-    void JNC(uint8_t hi, uint8_t lo);               // Tested
-    void JC(uint8_t hi, uint8_t lo);                // Tested
-    void JZ(uint8_t hi, uint8_t lo);                // Tested
+    void J_Cond(uint8_t hi, uint8_t lo, bool cond); // Tested
     // Other group
     void NOP();                                     // Skip
     // Stack group
