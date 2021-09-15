@@ -11,6 +11,7 @@ uint8_t Io_devices::Read_device(uint8_t device_number)
 {
     switch(device_number)
     {
+        case 0x1: return 0x01;
         case 0x3: return Get_shift_register_result();
         default : return 0;
     }
@@ -35,10 +36,13 @@ uint8_t Io_devices::Get_shift_register_result()
     /*     << std::hex << (unsigned int) shift_register_value */
     /*     << std::endl; */
     return
-        /* ((shift_register_value >> (8-shift_register_offset)) & 0xff); */
-        (shift_register_value &
-            (0xff << (8 - shift_register_offset)))
-        >> (8 - shift_register_offset);
+            /* shift_register_value >> shift_register_offset; */
+
+        ((shift_register_value >> (8-shift_register_offset)) & 0xff);
+
+        /* (shift_register_value & */
+        /*     (0xff << (8 - shift_register_offset))) */
+        /* >> (8 - shift_register_offset); */
 }
 
 void Io_devices::Set_shift_register_result_offset(uint8_t amount)

@@ -12,37 +12,15 @@
 
 void captureInputs(sf::RenderWindow& window)
 {
-
     using sf::Keyboard;
 
-    // check all the window's events that were triggered since the last iteration of the loop
     sf::Event event;
     while (window.pollEvent(event))
     {
-        if (event.type == sf::Event::Closed){
+        if (event.type == sf::Event::Closed)
+        {
             window.close();
         }
-
-        // Left and Right arrows to decrease or increase emulation speed
-        /* if (event.type == sf::Event::KeyPressed){ */
-        /*     if (Keyboard::isKeyPressed(Keyboard::Right)){ */
-        /*         emulationSpeed += 50; */
-        /*         std::cout << "Set emulation speed to " << emulationSpeed << std::endl; */
-        /*         window.setFramerateLimit(emulationSpeed); */
-        /*     } */
-        /*     if (Keyboard::isKeyPressed(Keyboard::Left)){ */
-        /*         emulationSpeed -= 50; */
-        /*         std::cout << "Set emulation speed to " << emulationSpeed << std::endl; */
-        /*         window.setFramerateLimit(emulationSpeed); */
-        /*     } */
-        /* } */
-
-        /* // Enter to reset the game */
-        /* if (event.type == sf::Event::KeyPressed){ */
-        /*     if (Keyboard::isKeyPressed(Keyboard::Enter)){ */
-        /*         myChip8.resetGame(); */
-        /*     } */
-        /* } */
     }
 }
 
@@ -119,12 +97,11 @@ int main(int argc, char** argv)
     Io_devices devices;
     devices.Initialize();
 
-
     // Setup cpu
     std::cout << "Setup CPU..." << std::endl;
     CPU_8080 cpu;
     cpu.Initialize();
-    cpu.LoadRom();
+    cpu.LoadRom("invaders");
     cpu.Connect_io_dev(&devices);
 
     // System Time
@@ -140,15 +117,15 @@ int main(int argc, char** argv)
         if (System_elapsed_time.asMilliseconds() > 17/*TimePerFrame*/){
             System_elapsed_time = sf::Time::Zero;
 
-            std::cout << "First processor instruction..." << std::endl;
-            cpu.EmulateCycles(33333);
-            std::cout << "First interrupt..." << std::endl;
+            /* cpu.EmulateCycles(16666); */
+            cpu.EmulateCycles(500000);
             // Generate Half screen interrupt (1)
-            cpu.Interrupt(0xcf /*RST 1*/);
-            cpu.EmulateCycles(33333);
+            cpu.Interrupt(0xcf); /*RST 1*/
+            /* cpu.EmulateCycles(16666); */
+            cpu.EmulateCycles(500000);
             // Generate Full screen interrupt (2)
-            cpu.Interrupt(0xd7 /* RST 2 */);
-            // Draw Screen?
+            cpu.Interrupt(0xd7); /* RST 2 */
+
             drawGraphics(cpu, window);
             window.display();
         }

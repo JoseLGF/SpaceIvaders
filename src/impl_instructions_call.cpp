@@ -130,7 +130,7 @@ void CPU_8080::RNC()
 
 void CPU_8080::RST(uint8_t exp)
 {
-    uint16_t new_pc = (exp << 3);
+    uint16_t new_pc = ((uint16_t)exp << 3);
     MemoryWrite(sp-1 , (pc >> 8) & 0xff);
     MemoryWrite(sp-2 , (pc & 0xff));
     sp = sp - 2;

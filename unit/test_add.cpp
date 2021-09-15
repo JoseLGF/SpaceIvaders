@@ -121,15 +121,39 @@ TEST(AddGroup, ADI_2) {
     ASSERT_EQ(0x0004, cpu.Get_pc());
 }
 
+TEST(AddGroup, ADI_AResultThatHasCarryButZeroAnswerWillAlsoSetZ) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0xff);
+    cpu.WriteMemoryAt(0x0000, 0xc6); // ADI instruction
+    cpu.WriteMemoryAt(0x0001, 0x01);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x00, cpu.Get_a());       // A wraps to 0x00
+    ASSERT_EQ(true, cpu.Get_cy());      // carry set
+    ASSERT_EQ(true, cpu.Get_z());       // Zero set
+    ASSERT_EQ(true, cpu.Get_p());      // parity true
+    ASSERT_EQ(0x0002, cpu.Get_pc());
+}
 
 TEST(AddGroup, SUI_WhenAIsGreaterThanDataThenThereIsNoBorrow) {
     CPU_8080 cpu;
     cpu.Initialize();
-    cpu.Set_a(0x34);
+    cpu.Set_a(0x34); // 0x34 = 52
     cpu.WriteMemoryAt(0x0000, 0xd6); // SUI instruction
     cpu.WriteMemoryAt(0x0001, 0x04);
 
     cpu.RegularInstruction();
+    // 52 - 4 = 0x130, result has carry out set
+    //
+    // +52 = 0 0 1 1 0 1 0 0
+    // - 4 = 1 1 1 1 1 1 0 0
+    //       ---------------
+    //     1 0 0 1 1 0 0 0 0
+    //     |
+    //     +--- Carry set, meaning number is in two's complement
+    //          Therefore, carry must be reset
 
     ASSERT_EQ(0x30, cpu.Get_a());
     ASSERT_EQ(false, cpu.Get_cy());
@@ -142,17 +166,25 @@ TEST(AddGroup, SUI_WhenAIsGreaterThanDataThenThereIsNoBorrow) {
 TEST(AddGroup, SUI_WhenDataIsGreaterThanAThenThereIsBorrowAndUnderflow) {
     CPU_8080 cpu;
     cpu.Initialize();
-    cpu.Set_a(0x00);
+    cpu.Set_a(0x0c);
     cpu.WriteMemoryAt(0x0000, 0xd6); // SUI instruction
-    cpu.WriteMemoryAt(0x0001, 0x01);
+    cpu.WriteMemoryAt(0x0001, 0x0f);
 
     cpu.RegularInstruction();
+    // 12 - 15 = 0xff, with no borrow
+    //
+    // +12 = 0 0 0 0 1 1 0 0
+    // -15 = 1 1 1 1 0 0 0 1
+    //       ---------------
+    //     0 1 1 1 1 1 1 0 1
+    //     |
+    //     +--- Carry reset, means no borrow, causing the carry to be set
 
-    ASSERT_EQ(0xff, cpu.Get_a());
+    ASSERT_EQ(0xfd, cpu.Get_a());
     ASSERT_EQ(true, cpu.Get_cy());
     ASSERT_EQ(false, cpu.Get_z());
     ASSERT_EQ(true, cpu.Get_s());
-    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(false, cpu.Get_p());
     ASSERT_EQ(0x0002, cpu.Get_pc());
 }
 

@@ -22,7 +22,7 @@ public:
 	void Initialize();
 	void ExecuteInstruction(uint8_t opcode);
 	void EmulateCycles(uint32_t num_cycles);
-    void LoadRom();
+    void LoadRom(std::string filename);
     void PrintState();
     bool Running();
     void DumpMemory();
@@ -154,12 +154,12 @@ private:
     void MOV_C_A();                                 // Tested
     void MOV_D_A();                                 // Tested
     void MOV_A_D();                                 // Tested
-    void MOV_A_C();                                 // Skip
-    void MOV_A_E();                                 // Skip
-    void MOV_A_L();                                 // Skip
-    void MOV_L_A();                                 // Skip
-    void MOV_L_B();                                 // Skip
-    void MOV_H_C();                                 // Skip
+    void MOV_A_C();                                 // Tested
+    void MOV_A_E();                                 // Tested
+    void MOV_A_L();                                 // Tested
+    void MOV_L_A();                                 // Tested
+    void MOV_L_B();                                 // Tested
+    void MOV_H_C();                                 // Tested
     void MVI_M(uint8_t data);                       // Tested
     void LXI_B(uint8_t byte_b, uint8_t byte_c);     // Tested
     void LXI_D(uint8_t byte_d, uint8_t byte_e);     // Tested

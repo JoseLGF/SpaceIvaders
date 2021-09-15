@@ -32,9 +32,10 @@ void CPU_8080::ADD_M()
     uint16_t result  = a + hl_content;
 
     cc.cy = ( (result & 0x100) != 0 );
-    cc.z = (result == 0);
+    /* cc.z = (result == 0); */
+    cc.z = ((result & 0xff) == 0);
     cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
+    cc.p = Parity(result & 0xff);
     //cc.ac
 
     a = result;
@@ -79,9 +80,10 @@ void CPU_8080::ADI(uint8_t data)
     uint16_t result  = a + data;
 
     cc.cy = ( (result & 0x100) != 0 );
-    cc.z = (result == 0);
+    cc.z = ((result & 0xff) == 0);
     cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
+    /* cc.p = Parity(result); */
+    cc.p = Parity(result & 0xff);
 
     a = (uint8_t) (result & 0xff);
 
@@ -92,12 +94,17 @@ void CPU_8080::ADI(uint8_t data)
 // Subtract immediate from A
 void CPU_8080::SUI(uint8_t data)
 {
-    uint16_t result  = a - data;
+    uint8_t twos_complement_data =
+        -(unsigned int)data;
+    uint16_t result  = a + twos_complement_data;
+    /* uint16_t result  = a - data; */
 
-    cc.cy = ( (result & 0x100) != 0 );
-    cc.z = (result == 0);
+    cc.cy = ( (result & 0x100) == 0 );
+    /* cc.z = (result == 0); */
+    cc.z = ((result & 0xff) == 0);
     cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
+    /* cc.p = Parity(result); */
+    cc.p = Parity(result & 0xff);
 
     a = (uint8_t) (result & 0xff);
 
@@ -114,9 +121,11 @@ void CPU_8080::SBI(uint8_t data)
     uint16_t result  = a + twos_complement_data_plus_carry;
 
     cc.cy = (result & 0x100) == 0;
-    cc.z = (result == 0);
+    /* cc.z = (result == 0); */
+    cc.z = ((result & 0xff) == 0);
     cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
+    /* cc.p = Parity(result); */
+    cc.p = Parity(result & 0xff);
 
     a = (uint8_t) (result & 0xff);
 

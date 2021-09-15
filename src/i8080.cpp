@@ -26,16 +26,17 @@ void CPU_8080::Initialize()
 }
 
 
-void CPU_8080::LoadRom()
+void CPU_8080::LoadRom(std::string filename)
 {
-    std::cout << "Loading file invaders..." << std::endl;
+    std::cout << "Loading file " << filename << std::endl;
 
     FILE * pFile;
     long lSize;
     unsigned char * buffer;
     size_t result;
 
-    pFile = fopen ( "invaders" , "rb" );
+    const char * fname = filename.c_str();
+    pFile = fopen ( fname, "rb" );
     if (pFile==NULL) {fputs ("File error",stderr); exit (1);}
 
     // obtain file size:
@@ -329,6 +330,7 @@ void CPU_8080::MemoryWrite(uint16_t address, uint8_t data)
     memory[address & 0x3fff] = data;
 }
 
+/* Initial implementations of R/W used for unit testing */
 void CPU_8080::WriteMemoryAt(uint16_t address, uint8_t data)
 {
     memory[address] = data;
