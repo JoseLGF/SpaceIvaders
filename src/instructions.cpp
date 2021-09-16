@@ -205,6 +205,21 @@ void CPU_8080::INR_r(uint8_t& r)
     cycles += 5;
 }
 
+void CPU_8080::INR_M()
+{
+    uint16_t address = (h << 8) | l;
+    uint8_t num = MemoryRead(address);
+    num++;
+    MemoryWrite(address, num);
+
+    cc.z = (num == 0);
+    cc.s = ((num & 0x80) != 0);
+    cc.p = Parity(num);
+
+    pc += 1;
+    cycles += 10;
+}
+
 void CPU_8080::DCR_r(uint8_t& r)
 {
     uint8_t result = r - 1;

@@ -146,13 +146,14 @@ private:
     void R_cond(bool cond);                         // Tested
     // Increment and decrement group
     void INR_r(uint8_t& r);                         // Tested
+    void INR_M();                                   // Tested
     void DCR_r(uint8_t& r);                         // Tested
     void INX(uint8_t& r1, uint8_t& r2);             // Tested
     void DCX_H();                                   // Tested
     void DCR_M();                                   // Tested
     // Add and Subtract groups
     void ADD_M();                                   // Tested
-    void ADD_r(uint8_t& r);                         //
+    void ADD_r(uint8_t& r);                         // Tested
     void DAD(uint8_t& r1, uint8_t& r2);             // Tested
     void ADI(uint8_t data);                         // Tested
     void SUI(uint8_t data);                         // Tested

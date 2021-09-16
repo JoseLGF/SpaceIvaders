@@ -355,3 +355,18 @@ TEST(IncDecGroup, INR_D_WhenDIsFfThenWrapTo00)
     ASSERT_EQ(false, cpu.Get_cy());
     ASSERT_EQ(0x01, cpu.Get_pc());
 }
+
+TEST(IncDecGroup, INR_M_VerifyNormalIncrement)
+{
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_h(0x23);
+    cpu.Set_l(0x45);
+    cpu.WriteMemoryAt(0x0000, 0x34); // INR_M
+    cpu.WriteMemoryAt(0x2345, 0xbb);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xbc, cpu.ReadMemoryAt(0x2345));
+    ASSERT_EQ(0x01, cpu.Get_pc());
+}
