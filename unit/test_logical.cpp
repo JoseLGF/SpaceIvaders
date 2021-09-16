@@ -269,3 +269,58 @@ TEST(LogicalGroup, ORI) {
     ASSERT_EQ(0xbf, cpu.Get_a());
     ASSERT_EQ(0x0002, cpu.Get_pc());
 }
+
+TEST(LogicalGroup, CMP_E_Ex1) {
+    //
+    // Subtracts contents of reg from accumulator
+    // Leaving both unchanged.
+    // Zero bit is set if both quantities are equal
+    // Carry bit set if contents of reg are greater than acc.
+    //
+    // Before test
+    // A            = 0x0a
+    // E            = 0x05
+    // Subtraction:
+    // Acc      = 0AH = 0 0 0 0 1 0 1 0
+    // (-E Reg) = -5H = 1 1 1 1 1 0 1 1
+    //                  ---------------
+    //            +-- 1 0 0 0 0 0 1 0 1 = result
+    //            |
+    //            +-> carry = 1, causing the carry bit to be reset
+    //
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x0a);
+    cpu.Set_e(0x05);
+    cpu.Set_cy(true);
+    cpu.WriteMemoryAt(0x0000, 0xbb); // CMP E instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x0a, cpu.Get_a());
+    ASSERT_EQ(0x05, cpu.Get_e());
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(false, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}
+
+TEST(LogicalGroup, CMP_E_Ex2) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0x02);
+    cpu.Set_e(0x05);
+    cpu.Set_cy(true);
+    cpu.WriteMemoryAt(0x0000, 0xbb); // CMP E instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x02, cpu.Get_a());
+    ASSERT_EQ(0x05, cpu.Get_e());
+    ASSERT_EQ(true, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(true, cpu.Get_s());
+    ASSERT_EQ(false, cpu.Get_p());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}

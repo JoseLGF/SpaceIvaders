@@ -164,6 +164,8 @@ private:
     void XRA_r(uint8_t& r);                         // Tested
     void ORA_r(uint8_t& r);                         // Tested
     void ORA_M();                                   // Tested
+    void CMP_r(uint8_t& r);                         // Tested
+    void CMP_M();                                   // Skip
     void ORI(uint8_t data);                         // Tested
     void ANI(uint8_t data);                         // Tested
     void CPI(uint8_t data);                         // Tested

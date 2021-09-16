@@ -335,6 +335,42 @@ void CPU_8080::ANA_M()
     cycles += 4;
 }
 
+// Compare register with A
+void CPU_8080::CMP_r(uint8_t& r)
+{
+    uint8_t result = a - r;
+
+    logical_flags(result);
+
+    cc.cy = (r > a);
+    if((a & 0x80) != (r & 0x80))
+    {
+        cc.cy = !cc.cy;
+    }
+
+    pc += 1;
+    cycles += 4;
+}
+
+// Compare memory with A
+void CPU_8080::CMP_M()
+{
+    uint16_t address = (h << 8) | l;
+    uint8_t hl_content = MemoryRead(address);
+    uint8_t result = a - hl_content;
+
+    logical_flags(result);
+
+    cc.cy = (hl_content > a);
+    if((a & 0x80) != (hl_content & 0x80))
+    {
+        cc.cy = !cc.cy;
+    }
+
+    pc += 1;
+    cycles += 7;
+}
+
 void CPU_8080::XRA_r(uint8_t& r)
 {
     uint8_t result = a ^ r;

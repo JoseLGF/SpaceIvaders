@@ -272,6 +272,14 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0xad:    XRA_r (l);                                  break;
         case 0xaf:    XRA_r (a);                                  break;
         case 0xb0:    ORA_r (b);                                  break;
+        case 0xb8:    CMP_r (b);                                  break;
+        case 0xb9:    CMP_r (c);                                  break;
+        case 0xba:    CMP_r (d);                                  break;
+        case 0xbb:    CMP_r (e);                                  break;
+        case 0xbc:    CMP_r (h);                                  break;
+        case 0xbd:    CMP_r (l);                                  break;
+        case 0xbe:    CMP_M ();                                   break;
+        case 0xbf:    CMP_r (a);                                  break;
         case 0xb4:    ORA_r (h);                                  break;
         case 0xb6:    ORA_M ();                                   break;
         case 0xc0:   R_cond (!cc.z);                              break;
