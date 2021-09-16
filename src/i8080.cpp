@@ -300,16 +300,20 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0xd1:   POP_rp (d, e);                               break;
         case 0xd2:   J_Cond (BYTE2, BYTE1, !cc.cy);               break;
         case 0xd3:      OUT (BYTE1);                              break;
+        case 0xd4:   C_Cond (BYTE2, BYTE1, !cc.cy);               break;
         case 0xd5:  PUSH_rp (d, e);                               break;
         case 0xd6:      SUI (BYTE1);                              break;
         case 0xd7:      RST (0x2);                                break;
         case 0xd8:   R_cond (cc.cy);                              break;
         case 0xda:   J_Cond (BYTE2, BYTE1, cc.cy);                break;
         case 0xdb:       IN (BYTE1);                              break;
+        case 0xdc:   C_Cond (BYTE2, BYTE1, cc.cy);                break;
         case 0xde:      SBI (BYTE1);                              break;
         case 0xdf:      RST (0x3);                                break;
         case 0xe3:     XTHL ();                                   break;
+        case 0xe4:   C_Cond (BYTE2, BYTE1, !cc.p);                break;
         case 0xeb:     XCHG ();                                   break;
+        case 0xec:   C_Cond (BYTE2, BYTE1, cc.p);                 break;
         case 0xe1:   POP_rp (h, l);                               break;
         case 0xe5:  PUSH_rp (h, l);                               break;
         case 0xe6:      ANI (BYTE1);                              break;
@@ -324,6 +328,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
         case 0xfa:   J_Cond (BYTE2, BYTE1, cc.s);                 break;
         case 0xfe:      CPI (BYTE1);                              break;
         case 0xfb:       EI ();                                   break;
+        case 0xfc:   C_Cond (BYTE2, BYTE1, cc.s);                 break;
         case 0xff:      RST (0x7);                                break;
         default  : UnimplementedInstruction(opcode);              break;
     }
