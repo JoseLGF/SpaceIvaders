@@ -65,7 +65,7 @@ void CPU_8080::CPI(uint8_t data)
     cc.p  = Parity(result);
     cc.cy = data > a;
 
-    a = result;
+    /* a = result; */ //Ouch! This should not happened
     pc += 2;
     cycles += 7;
 }

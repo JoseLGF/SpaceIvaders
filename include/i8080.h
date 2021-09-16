@@ -98,7 +98,7 @@ private:
     // 0x2000 - 0x23ff - Work  RAM
     // 0x2400 - 0x3fff - Video RAM
     // 0x4000 - ------ - RAM mirror
-    uint8_t     memory[0x1000];
+    uint8_t     memory[0x4000];
     // Processor flags
     struct ConditionCodes cc;
     // interrupt enable

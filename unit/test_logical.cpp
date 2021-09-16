@@ -53,6 +53,8 @@ TEST(LogicalGroup, CPI_VerifyEqualNumbers) {
 
     cpu.RegularInstruction();
 
+
+    ASSERT_EQ(0xf0, cpu.Get_a()); // A Must not be modified -__-
     ASSERT_EQ(false, cpu.Get_cy());
     ASSERT_EQ(true, cpu.Get_z());
     ASSERT_EQ(false, cpu.Get_s());
