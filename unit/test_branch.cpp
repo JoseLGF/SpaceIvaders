@@ -162,3 +162,16 @@ TEST(BranchGroup, JM_WhenSIsClearedThenDontJmpToSpecifiedAddress) {
 
     ASSERT_EQ(0x0003, cpu.Get_pc());
 }
+
+TEST(BranchGroup, PCHL) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_h(0x23);
+    cpu.Set_l(0x45);
+
+    cpu.WriteMemoryAt(0x0000, 0xe9); // PCHL
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x2345, cpu.Get_pc());
+}

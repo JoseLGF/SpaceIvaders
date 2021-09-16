@@ -44,6 +44,29 @@ TEST(LogicalGroup, ANA_A_VerifyNormalOperation) {
     ASSERT_EQ(0x0001, cpu.Get_pc());
 }
 
+TEST(LogicalGroup, ANA_M_VerifyNormalOperation) {
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_a(0xf0);
+    cpu.Set_h(0x23);
+    cpu.Set_l(0x45);
+    cpu.Set_cy(true);
+    cpu.Set_s(false);
+    cpu.Set_p(false);
+    cpu.Set_z(true);
+    cpu.WriteMemoryAt(0x0000, 0xa6); // ANA_M instruction
+    cpu.WriteMemoryAt(0x2345, 0xff);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xf0, cpu.Get_a());
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(true, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}
+
 TEST(LogicalGroup, CPI_VerifyEqualNumbers) {
     CPU_8080 cpu;
     cpu.Initialize();

@@ -243,3 +243,35 @@ TEST(AddGroup, SBI_WhenResultIsPositiveThenTheCarryBitIsReset) {
     ASSERT_EQ(0x0002, cpu.Get_pc());
 }
 
+TEST(AddGroup, ADD_r) {
+    //
+    // Before test:
+    // D        = 0x2e
+    // A        = 0x6e
+    // Instruction
+    // ADD D
+    // Addition:
+    // 2eh = 0 0 1 0 1 1 1 0
+    // 6ch = 0 1 1 0 1 1 0 0
+    // ---------------------
+    // 9ah = 1 0 0 1 1 0 1 0
+    // After instruction
+    // z, cy reset
+    // p, s set
+    // A        = 0x9a
+    //
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_d(0x2e);
+    cpu.Set_a(0x6c);
+    cpu.WriteMemoryAt(0x0000, 0x82); // ADD_D instruction
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0x9a, cpu.Get_a());
+    ASSERT_EQ(false, cpu.Get_cy());
+    ASSERT_EQ(false, cpu.Get_z());
+    ASSERT_EQ(true, cpu.Get_s());
+    ASSERT_EQ(true, cpu.Get_p());
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}

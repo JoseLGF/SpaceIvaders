@@ -173,3 +173,36 @@ TEST(StackGroup, LXI_SP)
     ASSERT_EQ(0x2345, cpu.Get_sp());
     ASSERT_EQ(0x0003, cpu.Get_pc());
 }
+
+TEST(StackGroup, XTHL)
+{
+    //
+    // Before test:
+    // HL           = 0x1234
+    // SP           = 0x2c00
+    // (SP),(SP+1)  = 0xadde
+    // PC           = 0x0000
+    // After test:
+    // HL           = 0xdead
+    // (SP),(SP+1)  = 0x3412
+    // PC           = x00001
+    // Rest of registers and status bits unaffected.
+    //
+    CPU_8080 cpu;
+    cpu.Initialize();
+    cpu.Set_h(0x12); // HL = 0x1234
+    cpu.Set_l(0x34);
+    cpu.Set_sp(0x2c00);
+    cpu.WriteMemoryAt(0x0000, 0xe3); // XHTL instruction
+    cpu.WriteMemoryAt(0x2c00, 0xad);
+    cpu.WriteMemoryAt(0x2c01, 0xde);
+
+    cpu.RegularInstruction();
+
+    ASSERT_EQ(0xde, cpu.Get_h());
+    ASSERT_EQ(0xad, cpu.Get_l());
+    ASSERT_EQ(0x2c00, cpu.Get_sp());
+    ASSERT_EQ(0x34, cpu.ReadMemoryAt(0x2c00));
+    ASSERT_EQ(0x12, cpu.ReadMemoryAt(0x2c01));
+    ASSERT_EQ(0x0001, cpu.Get_pc());
+}
