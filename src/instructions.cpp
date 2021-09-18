@@ -23,6 +23,20 @@ void CPU_8080::DAD(uint8_t& r1, uint8_t& r2)
     pc += 1;
 }
 
+// Add SP to H&L
+void CPU_8080::DAD_SP()
+{
+    uint16_t h_and_l = (h << 8) | l;
+    uint32_t result  = (uint32_t)sp + (uint32_t)h_and_l;
+    h = ( (result >> 8) & 0xff );
+    l = result & 0xff;
+
+    cc.cy = (result > 0xffff);
+
+    cycles += 10;
+    pc += 1;
+}
+
 // Add memory to A
 void CPU_8080::ADD_M()
 {
@@ -38,12 +52,40 @@ void CPU_8080::ADD_M()
     pc += 1;
 }
 
-// Add memory to A
+// Add memory to A with carry
+void CPU_8080::ADC_M()
+{
+    uint16_t address = (h << 8) | l;
+    uint8_t hl_content = MemoryRead(address);
+    uint16_t result  = a + hl_content + cc.cy;
+
+    addition_flags(a, hl_content, cc.cy);
+
+    a = result;
+
+    cycles += 7;
+    pc += 1;
+}
+
+// Add register to A
 void CPU_8080::ADD_r(uint8_t& r)
 {
     uint16_t result  = a + r;
 
     addition_flags(a, r, 0);
+
+    a = result;
+
+    cycles += 4;
+    pc += 1;
+}
+
+// Add register to A with carry
+void CPU_8080::ADC_r(uint8_t& r)
+{
+    uint16_t result  = a + r + cc.cy;
+
+    addition_flags(a, r, cc.cy);
 
     a = result;
 
@@ -64,6 +106,19 @@ void CPU_8080::ADI(uint8_t data)
     pc += 2;
 }
 
+// Add immediate to A with carry
+void CPU_8080::ACI(uint8_t data)
+{
+    uint16_t result  = a + data + cc.cy;
+
+    addition_flags(a, data, cc.cy);
+
+    a = (uint8_t) (result & 0xff);
+
+    cycles += 7;
+    pc += 2;
+}
+
 // Subtract immediate from A
 void CPU_8080::SUI(uint8_t data)
 {
@@ -72,17 +127,80 @@ void CPU_8080::SUI(uint8_t data)
     uint16_t result  = a + twos_complement_data;
     /* uint16_t result  = a - data; */
 
-    //subtraction_flags(a, data, 0);
+    subtraction_flags(a, data, 0);
 
-    cc.cy = ( (result & 0x100) == 0 );
-    cc.z = ((result & 0xff) == 0);
-    cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result & 0xff);
+    /* cc.cy = ( (result & 0x100) == 0 ); */
+    /* cc.z = ((result & 0xff) == 0); */
+    /* cc.s = ((result & 0x80) != 0); */
+    /* cc.p = Parity(result & 0xff); */
 
     a = (uint8_t) (result & 0xff);
 
     cycles += 7;
     pc += 2;
+}
+
+// Subtract register from A
+void CPU_8080::SUB_r(uint8_t& r)
+{
+    uint8_t twos_complement_r =
+        -(unsigned int)r;
+    uint16_t result  = a + twos_complement_r;
+    /* uint16_t result  = a - data; */
+
+    subtraction_flags(a, r, 0);
+
+    a = (uint8_t) (result & 0xff);
+
+    cycles += 4;
+    pc += 1;
+}
+
+// Subtract register from A with borrow
+void CPU_8080::SBB_r(uint8_t& r)
+{
+    uint8_t twos_complement_r =
+        -(unsigned int)r;
+    uint16_t result  = a - r - (uint8_t)cc.cy;
+
+    subtraction_flags(a, r, cc.cy);
+
+    a = (uint8_t) (result & 0xff);
+
+    cycles += 4;
+    pc += 1;
+}
+
+// Subtract memory from A
+void CPU_8080::SUB_M()
+{
+    uint16_t address = (h << 8) | l;
+    uint8_t mem = MemoryRead(address);
+    uint8_t twos_complement_mem =
+        -(unsigned int)mem;
+    uint16_t result  = a + twos_complement_mem;
+
+    subtraction_flags(a, mem, 0);
+
+    a = (uint8_t) (result & 0xff);
+
+    cycles += 7;
+    pc += 1;
+}
+
+// Subtract memory from A with borrow
+void CPU_8080::SBB_M()
+{
+    uint16_t address = (h << 8) | l;
+    uint8_t mem = MemoryRead(address);
+    uint16_t result  = a - mem - cc.cy;
+
+    subtraction_flags(a, mem, cc.cy);
+
+    a = (uint8_t) (result & 0xff);
+
+    cycles += 7;
+    pc += 1;
 }
 
 // Subtract immediate from A with borrow
@@ -125,6 +243,14 @@ void CPU_8080::J_Cond(uint8_t hi, uint8_t lo, bool cond)
 // following the call instruction
 void CPU_8080::CALL(uint8_t hi, uint8_t lo)
 {
+
+    uint16_t address = (hi << 8) | lo;
+    if(0x0689 == address)
+    {
+        std::cout << "CPU Error!" << std::endl;
+        PrintState();
+        exit(0);
+    }
     uint16_t ret = pc+3;
     MemoryWrite(sp-1 , (ret >> 8) & 0xff);
     MemoryWrite(sp-2 , (ret & 0xff));
@@ -245,6 +371,14 @@ void CPU_8080::INX(uint8_t& r1, uint8_t& r2)
     cycles += 5;
 }
 
+// Increment stack pointer
+void CPU_8080::INX_SP()
+{
+    sp++;
+    pc += 1;
+    cycles += 5;
+}
+
 // Decrement HL register pair
 void CPU_8080::DCX_H()
 {
@@ -252,6 +386,36 @@ void CPU_8080::DCX_H()
     num--;
     h = (uint8_t) ((num >> 8) & 0xff);
     l = (uint8_t) (num & 0xff);
+    pc += 1;
+    cycles += 5;
+}
+
+// Decrement Stack pointer
+void CPU_8080::DCX_SP()
+{
+    sp--;
+    pc += 1;
+    cycles += 5;
+}
+
+// Decrement BC register pair
+void CPU_8080::DCX_B()
+{
+    uint16_t num = (b << 8) | c;
+    num--;
+    b = (uint8_t) ((num >> 8) & 0xff);
+    c = (uint8_t) (num & 0xff);
+    pc += 1;
+    cycles += 5;
+}
+
+// Decrement DE register pair
+void CPU_8080::DCX_D()
+{
+    uint16_t num = (d << 8) | e;
+    num--;
+    d = (uint8_t) ((num >> 8) & 0xff);
+    e = (uint8_t) (num & 0xff);
     pc += 1;
     cycles += 5;
 }
@@ -295,6 +459,13 @@ void CPU_8080::EI()
     cycles += 4;
 }
 
+void CPU_8080::DI()
+{
+    int_enable = false;
+    pc += 1;
+    cycles += 4;
+}
+
 // Set carry
 void CPU_8080::STC()
 {
@@ -307,6 +478,14 @@ void CPU_8080::STC()
 void CPU_8080::CMA()
 {
     a = ~a;
+    pc += 1;
+    cycles += 4;
+}
+
+// Complement carry
+void CPU_8080::CMC()
+{
+    cc.cy = !cc.cy;
     pc += 1;
     cycles += 4;
 }
@@ -407,6 +586,20 @@ void CPU_8080::ORA_M()
     cycles += 7;
 }
 
+// Xor memory with A
+void CPU_8080::XRA_M()
+{
+    uint16_t address = (h << 8) | l;
+    uint8_t hl_content = MemoryRead(address);
+    uint8_t result = a ^ hl_content;
+
+    logical_flags(result);
+
+    a = result;
+    pc += 1;
+    cycles += 7;
+}
+
 // Compare immediate with accumulator
 void CPU_8080::CPI(uint8_t data)
 {
@@ -447,6 +640,19 @@ void CPU_8080::RAR()
     cycles += 4;
 }
 
+// Rotate A Left through carry
+void CPU_8080::RAL()
+{
+    uint8_t prev_cy = cc.cy;
+    uint8_t msb = a & 0x80;
+    a = (a << 1) | (prev_cy);
+
+    cc.cy = (msb != 0);
+
+    pc += 1;
+    cycles += 4;
+}
+
 // Rotate A Left
 void CPU_8080::RLC()
 {
@@ -475,6 +681,18 @@ void CPU_8080::ANI(uint8_t data)
 void CPU_8080::ORI(uint8_t data)
 {
     uint8_t result = a | data;
+
+    logical_flags(result);
+
+    a = result;
+    pc += 2;
+    cycles += 7;
+}
+
+// XRI, Xor immediate with A
+void CPU_8080::XRI(uint8_t data)
+{
+    uint8_t result = a ^ data;
 
     logical_flags(result);
 
@@ -578,6 +796,15 @@ void CPU_8080::XCHG()
 void CPU_8080::STAX_B()
 {
     uint16_t address = (b << 8) | c;
+    MemoryWrite(address, a);
+    pc += 1;
+    cycles += 7;
+}
+
+// Store A indirect
+void CPU_8080::STAX_D()
+{
+    uint16_t address = (d << 8) | e;
     MemoryWrite(address, a);
     pc += 1;
     cycles += 7;
@@ -689,4 +916,13 @@ void CPU_8080::XTHL()
 
     pc += 1;
     cycles += 18;
+}
+
+// HL to stack pointer
+void CPU_8080::SPHL()
+{
+    sp = (h << 8) | l;
+
+    pc += 1;
+    cycles += 5;
 }
