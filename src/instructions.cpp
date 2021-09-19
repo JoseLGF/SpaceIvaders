@@ -245,12 +245,6 @@ void CPU_8080::CALL(uint8_t hi, uint8_t lo)
 {
 
     uint16_t address = (hi << 8) | lo;
-    if(0x0689 == address)
-    {
-        std::cout << "CPU Error!" << std::endl;
-        PrintState();
-        exit(0);
-    }
     uint16_t ret = pc+3;
     MemoryWrite(sp-1 , (ret >> 8) & 0xff);
     MemoryWrite(sp-2 , (ret & 0xff));
@@ -659,7 +653,7 @@ void CPU_8080::RLC()
     uint8_t msb = a & 0x80;
     a = (a << 1) | (msb >> 7);
 
-    cc.cy = msb != 0;
+    cc.cy = (msb != 0);
 
     pc += 1;
     cycles += 4;
@@ -888,11 +882,11 @@ void CPU_8080::PUSH_PSW()
 void CPU_8080::POP_PSW()
 {
     uint8_t flags = MemoryRead(sp);
-    cc.cy = (flags & 0x01) != 0;   // bit 0
-    cc.p  = (flags & 0x04) != 0;   // bit 2
-    cc.ac = (flags & 0x10) != 0;   // bit 4
-    cc.z  = (flags & 0x40) != 0;   // bit 6
-    cc.s  = (flags & 0x80) != 0;   // bit 7
+    cc.cy = ((flags & 0x01) != 0);   // bit 0
+    cc.p  = ((flags & 0x04) != 0);   // bit 2
+    cc.ac = ((flags & 0x10) != 0);   // bit 4
+    cc.z  = ((flags & 0x40) != 0);   // bit 6
+    cc.s  = ((flags & 0x80) != 0);   // bit 7
 
     a = MemoryRead(sp+1);
     sp = sp + 2;
@@ -903,7 +897,6 @@ void CPU_8080::POP_PSW()
 // Exchange top of stack, H & L
 void CPU_8080::XTHL()
 {
-
     uint8_t tmp;
     // l<->(SP)
     tmp = l;
@@ -925,4 +918,9 @@ void CPU_8080::SPHL()
 
     pc += 1;
     cycles += 5;
+}
+
+uint8_t CPU_8080::read_rp(uint8_t r1, uint8_t r2)
+{
+    return (r1 << 8) | r2;
 }

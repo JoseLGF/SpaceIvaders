@@ -25,7 +25,6 @@ void CPU_8080::Initialize()
     instructions_executed = 0;
 }
 
-
 void CPU_8080::LoadRom(std::string filename)
 {
     std::cout << "Loading file " << filename << std::endl;
@@ -56,13 +55,13 @@ void CPU_8080::LoadRom(std::string filename)
 
 
     // transfer the contents of buffer to the memory starting
-    // at address 0x100
+    // at address 0x0
     for(int i = 0; i < lSize; ++i)
     {
         if(i<10){
             printf("%02x \n", buffer[i]);
         }
-        memory[i+0x100] = buffer[i];
+        memory[i] = buffer[i];
     }
 
     // terminate
@@ -445,26 +444,13 @@ bool CPU_8080::Parity(uint8_t byte)
       1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1
     };
     return parity_table[byte];
-
-    /* bool parity = true; */
-
-    /* for(int i=0; i<8; i++) */
-    /* { */
-    /*     if(byte & 0x01) */
-    /*     { */
-    /*         parity = !parity; */
-    /*     } */
-    /*     parity = (parity >> 1) & 0x7f; */
-    /* } */
-
-    /* return parity; */
 }
 
 uint8_t CPU_8080::MemoryRead(uint16_t address)
 {
     /* Implement RAM mirroring by dropping the two MSBs from the */
     /* provided address */
-    return memory[address & 0x3fff];
+    return memory[address];
 }
 
 void CPU_8080::MemoryWrite(uint16_t address, uint8_t data)
@@ -479,7 +465,7 @@ void CPU_8080::MemoryWrite(uint16_t address, uint8_t data)
     /*     return; */
     /* } */
 
-    memory[address & 0x3fff] = data;
+    memory[address] = data;
 }
 
 /* Initial implementations of R/W used for unit testing */
