@@ -477,10 +477,10 @@ void CPU_8080::CMP_r(uint8_t& r)
     logical_flags(result);
 
     cc.cy = (r > a);
-    if((a & 0x80) != (r & 0x80))
-    {
-        cc.cy = !cc.cy;
-    }
+    /* if((a & 0x80) != (r & 0x80)) */
+    /* { */
+    /*     cc.cy = !cc.cy; */
+    /* } */
 
     pc += 1;
     cycles += 4;
