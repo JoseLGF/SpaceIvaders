@@ -144,6 +144,7 @@ public:
     void SHLD(uint8_t byte_h, uint8_t byte_l);      // Tested
     // Call group
     void CALL(uint8_t hi, uint8_t lo);              // Tested
+    void CALL(uint16_t address);
     void C_Cond(uint8_t hi, uint8_t lo, bool cond); // Tested
     void RET();                                     // Tested
     void RST(uint8_t exp);                          // Pending
@@ -206,4 +207,6 @@ public:
     void addition_flags(uint8_t a, uint8_t b, uint8_t cy);
     void subtraction_flags(uint8_t a, uint8_t b, uint8_t cy);
     uint8_t read_rp(uint8_t r1, uint8_t r2);
+    uint8_t ReadFromRegPair(uint8_t& hi, uint8_t& lo);
+    void ZSPFlags(uint8_t result);
 };

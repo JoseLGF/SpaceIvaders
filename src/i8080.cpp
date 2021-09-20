@@ -140,7 +140,7 @@ void CPU_8080::ExecuteInstruction(uint8_t opcode)
     switch(opcode)
     {
         case 0x00:      NOP ();                                   break;
-        case 0x01:      LXI (b, c, BYTE2, BYTE1);                 break;
+        case 0x01: LXI (b, c, BYTE2, BYTE1);                 break;
         case 0x02:   STAX_B ();                                   break;
         case 0x03:      INX (b, c);                               break;
         case 0x04:    INR_r (b);                                  break;

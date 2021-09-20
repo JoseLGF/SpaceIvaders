@@ -40,14 +40,9 @@ void CPU_8080::DAD_SP()
 // Add memory to A
 void CPU_8080::ADD_M()
 {
-    uint16_t address = (h << 8) | l;
-    uint8_t hl_content = MemoryRead(address);
-    uint16_t result  = a + hl_content;
-
-    addition_flags(a, hl_content, 0);
-
-    a = result;
-
+    uint8_t mem = ReadFromRegPair(h, l);
+    addition_flags(a, mem, 0);
+    a += mem;
     cycles += 7;
     pc += 1;
 }
@@ -55,14 +50,10 @@ void CPU_8080::ADD_M()
 // Add memory to A with carry
 void CPU_8080::ADC_M()
 {
-    uint16_t address = (h << 8) | l;
-    uint8_t hl_content = MemoryRead(address);
-    uint16_t result  = a + hl_content + cc.cy;
-
-    addition_flags(a, hl_content, cc.cy);
-
+    uint8_t mem = ReadFromRegPair(h, l);
+    uint16_t result  = a + mem + cc.cy;
+    addition_flags(a, mem, cc.cy);
     a = result;
-
     cycles += 7;
     pc += 1;
 }
@@ -71,11 +62,8 @@ void CPU_8080::ADC_M()
 void CPU_8080::ADD_r(uint8_t& r)
 {
     uint16_t result  = a + r;
-
     addition_flags(a, r, 0);
-
     a = result;
-
     cycles += 4;
     pc += 1;
 }
@@ -84,11 +72,8 @@ void CPU_8080::ADD_r(uint8_t& r)
 void CPU_8080::ADC_r(uint8_t& r)
 {
     uint16_t result  = a + r + cc.cy;
-
     addition_flags(a, r, cc.cy);
-
     a = result;
-
     cycles += 4;
     pc += 1;
 }
@@ -97,11 +82,8 @@ void CPU_8080::ADC_r(uint8_t& r)
 void CPU_8080::ADI(uint8_t data)
 {
     uint16_t result  = a + data;
-
     addition_flags(a, data, 0);
-
     a = (uint8_t) (result & 0xff);
-
     cycles += 7;
     pc += 2;
 }
@@ -109,12 +91,9 @@ void CPU_8080::ADI(uint8_t data)
 // Add immediate to A with carry
 void CPU_8080::ACI(uint8_t data)
 {
-    uint16_t result  = a + data + cc.cy;
-
+    uint16_t result = a + data + cc.cy;
     addition_flags(a, data, cc.cy);
-
     a = (uint8_t) (result & 0xff);
-
     cycles += 7;
     pc += 2;
 }
@@ -125,17 +104,8 @@ void CPU_8080::SUI(uint8_t data)
     uint8_t twos_complement_data =
         -(unsigned int)data;
     uint16_t result  = a + twos_complement_data;
-    /* uint16_t result  = a - data; */
-
     subtraction_flags(a, data, 0);
-
-    /* cc.cy = ( (result & 0x100) == 0 ); */
-    /* cc.z = ((result & 0xff) == 0); */
-    /* cc.s = ((result & 0x80) != 0); */
-    /* cc.p = Parity(result & 0xff); */
-
     a = (uint8_t) (result & 0xff);
-
     cycles += 7;
     pc += 2;
 }
@@ -146,12 +116,8 @@ void CPU_8080::SUB_r(uint8_t& r)
     uint8_t twos_complement_r =
         -(unsigned int)r;
     uint16_t result  = a + twos_complement_r;
-    /* uint16_t result  = a - data; */
-
     subtraction_flags(a, r, 0);
-
     a = (uint8_t) (result & 0xff);
-
     cycles += 4;
     pc += 1;
 }
@@ -174,8 +140,7 @@ void CPU_8080::SBB_r(uint8_t& r)
 // Subtract memory from A
 void CPU_8080::SUB_M()
 {
-    uint16_t address = (h << 8) | l;
-    uint8_t mem = MemoryRead(address);
+    uint8_t mem = ReadFromRegPair(h, l);
     uint8_t twos_complement_mem =
         -(unsigned int)mem;
     uint16_t result  = a + twos_complement_mem;
@@ -191,8 +156,7 @@ void CPU_8080::SUB_M()
 // Subtract memory from A with borrow
 void CPU_8080::SBB_M()
 {
-    uint16_t address = (h << 8) | l;
-    uint8_t mem = MemoryRead(address);
+    uint8_t mem = ReadFromRegPair(h, l);
     uint16_t result  = a - mem - cc.cy;
 
     subtraction_flags(a, mem, cc.cy);
@@ -212,9 +176,7 @@ void CPU_8080::SBI(uint8_t data)
     uint16_t result  = a + twos_complement_data_plus_carry;
 
     cc.cy = (result & 0x100) == 0;
-    cc.z = ((result & 0xff) == 0);
-    cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result & 0xff);
+    ZSPFlags(result);
 
     a = (uint8_t) (result & 0xff);
 
@@ -251,6 +213,16 @@ void CPU_8080::CALL(uint8_t hi, uint8_t lo)
     sp = sp - 2;
     pc = (hi << 8) | lo;
     cycles += 17;
+}
+
+void CPU_8080::CALL(uint16_t address)
+{
+    uint16_t ret = pc;
+    MemoryWrite(sp-1 , (ret >> 8) & 0xff);
+    MemoryWrite(sp-2 , (ret & 0xff));
+    sp = sp - 2;
+    pc = address;
+    /* cycles += 17; */
 }
 
 // Call on condition
@@ -290,7 +262,8 @@ void CPU_8080::R_cond(bool cond)
 
 void CPU_8080::RET()
 {
-    pc = MemoryRead(sp) | (MemoryRead(sp+1) << 8);
+    pc = MemoryRead(sp) |
+        ( (MemoryRead(sp+1) << 8) & 0xff00);
     sp += 2;
     cycles += 10;
 }
@@ -303,9 +276,9 @@ void CPU_8080::PCHL()
 
 void CPU_8080::RST(uint8_t exp)
 {
-    uint16_t new_pc = ((uint16_t)exp << 3);
-    MemoryWrite(sp-1 , (pc >> 8) & 0xff);
-    MemoryWrite(sp-2 , (pc & 0xff));
+    uint16_t new_pc = ((uint16_t)exp * 8);
+    MemoryWrite(sp-1 , ((pc) >> 8) & 0xff);
+    MemoryWrite(sp-2 , ((pc) & 0xff));
     sp = sp - 2;
     pc = new_pc;
     cycles += 11;
@@ -315,10 +288,7 @@ void CPU_8080::INR_r(uint8_t& r)
 {
     uint8_t result = r + 1;
 
-    cc.z = (result == 0);
-    cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
-    // cc.c = Unaffected for this instruction
+    ZSPFlags(result);
 
     r = result;
     pc += 1;
@@ -332,9 +302,7 @@ void CPU_8080::INR_M()
     num++;
     MemoryWrite(address, num);
 
-    cc.z = (num == 0);
-    cc.s = ((num & 0x80) != 0);
-    cc.p = Parity(num);
+    ZSPFlags(num);
 
     pc += 1;
     cycles += 10;
@@ -344,10 +312,7 @@ void CPU_8080::DCR_r(uint8_t& r)
 {
     uint8_t result = r - 1;
 
-    cc.z = (result == 0);
-    cc.s = ((result & 0x80) != 0);
-    cc.p = Parity(result);
-    // cc.c = Unaffected for this instruction
+    ZSPFlags(result);
 
     r = result;
     pc += 1;
@@ -423,10 +388,7 @@ void CPU_8080::DCR_M()
     num--;
     MemoryWrite(address, num);
 
-    cc.z = (num == 0);
-    cc.s = ((num & 0x80) != 0);
-    cc.p = Parity(num);
-    // cc.c = Unaffected for this instruction
+    ZSPFlags(num);
 
     pc += 1;
     cycles += 10;
@@ -497,9 +459,8 @@ void CPU_8080::ANA_r(uint8_t& r)
 
 void CPU_8080::ANA_M()
 {
-    uint16_t address = (h << 8) | l;
-    uint8_t hl_content = MemoryRead(address);
-    uint8_t result = a & hl_content;
+    uint8_t mem = ReadFromRegPair(h, l);
+    uint8_t result = a & mem;
 
     logical_flags(result);
 
@@ -528,14 +489,13 @@ void CPU_8080::CMP_r(uint8_t& r)
 // Compare memory with A
 void CPU_8080::CMP_M()
 {
-    uint16_t address = (h << 8) | l;
-    uint8_t hl_content = MemoryRead(address);
-    uint8_t result = a - hl_content;
+    uint8_t mem = ReadFromRegPair(h, l);
+    uint8_t result = a - mem;
 
     logical_flags(result);
 
-    cc.cy = (hl_content > a);
-    if((a & 0x80) != (hl_content & 0x80))
+    cc.cy = (mem > a);
+    if((a & 0x80) != (mem & 0x80))
     {
         cc.cy = !cc.cy;
     }
@@ -569,9 +529,8 @@ void CPU_8080::ORA_r(uint8_t& r)
 // ORA M, Or memory with A
 void CPU_8080::ORA_M()
 {
-    uint16_t address = (h << 8) | l;
-    uint8_t hl_content = MemoryRead(address);
-    uint8_t result = a | hl_content;
+    uint8_t mem = ReadFromRegPair(h, l);
+    uint8_t result = a | mem;
 
     logical_flags(result);
 
@@ -583,9 +542,8 @@ void CPU_8080::ORA_M()
 // Xor memory with A
 void CPU_8080::XRA_M()
 {
-    uint16_t address = (h << 8) | l;
-    uint8_t hl_content = MemoryRead(address);
-    uint8_t result = a ^ hl_content;
+    uint8_t mem = ReadFromRegPair(h, l);
+    uint8_t result = a ^ mem;
 
     logical_flags(result);
 
@@ -599,12 +557,9 @@ void CPU_8080::CPI(uint8_t data)
 {
     uint8_t result = a - data;
 
-    cc.z  = (result == 0);
-    cc.s  = ((result & 0x80) != 0);
-    cc.p  = Parity(result);
+    ZSPFlags(result);
     cc.cy = data > a;
 
-    /* a = result; */ //Ouch! This should not happened
     pc += 2;
     cycles += 7;
 }
@@ -923,4 +878,16 @@ void CPU_8080::SPHL()
 uint8_t CPU_8080::read_rp(uint8_t r1, uint8_t r2)
 {
     return (r1 << 8) | r2;
+}
+
+uint8_t CPU_8080::ReadFromRegPair(uint8_t& hi, uint8_t& lo)
+{
+    return MemoryRead( (uint16_t) (hi<<8)  | (uint16_t)lo );
+}
+
+void CPU_8080::ZSPFlags(uint8_t result)
+{
+    cc.z  = (result == 0);
+    cc.s  = ((result & 0x80) != 0);
+    cc.p  = Parity(result);
 }

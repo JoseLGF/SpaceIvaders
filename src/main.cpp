@@ -115,12 +115,12 @@ int main(int argc, char** argv)
         if (System_elapsed_time.asMilliseconds() > 17/*TimePerFrame*/){
             System_elapsed_time = sf::Time::Zero;
 
-            /* cpu.EmulateCycles(16666); */
-            cpu.EmulateCycles(500000);
+            cpu.EmulateCycles(16666);
+            /* cpu.EmulateCycles(500000); */
             // Generate Half screen interrupt (1)
             cpu.Interrupt(0xcf); // RST 1
-            /* cpu.EmulateCycles(16666); */
-            cpu.EmulateCycles(500000);
+            cpu.EmulateCycles(16666);
+            /* cpu.EmulateCycles(500000); */
             /* cpu.PrintState(); */
             // Generate Full screen interrupt (2)
             cpu.Interrupt(0xd7); // RST 2
