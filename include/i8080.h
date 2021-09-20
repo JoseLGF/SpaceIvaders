@@ -74,8 +74,10 @@ public:
     uint8_t ReadMemoryAt(uint16_t address);
     void WriteMemoryAt(uint16_t address, uint8_t data);
 
+    void DisassembleOp();
+
 // CPU state
-private:
+public:
     // External devices class connected to the cpu
     Io_devices* devices;
 
@@ -124,6 +126,7 @@ private:
     void PUSH_PSW();                                // Tested
     void POP_PSW();                                 // Tested
     void XTHL();                                    // Skip
+    void SPHL();
     // Move group
     void MVI(uint8_t& reg, uint8_t data);           // Tested
     void MOV_r_r(uint8_t& r1, uint8_t& r2);         // Tested
@@ -136,10 +139,12 @@ private:
     void LDA(uint8_t byte_h, uint8_t byte_l);       // Tested
     void XCHG();                                    // Tested
     void STAX_B();                                  // Tested
+    void STAX_D();                                  // Tested
     void LHLD(uint8_t byte_h, uint8_t byte_l);      // Tested
     void SHLD(uint8_t byte_h, uint8_t byte_l);      // Tested
     // Call group
     void CALL(uint8_t hi, uint8_t lo);              // Tested
+    void CALL(uint16_t address);
     void C_Cond(uint8_t hi, uint8_t lo, bool cond); // Tested
     void RET();                                     // Tested
     void RST(uint8_t exp);                          // Pending
@@ -149,39 +154,59 @@ private:
     void INR_M();                                   // Tested
     void DCR_r(uint8_t& r);                         // Tested
     void INX(uint8_t& r1, uint8_t& r2);             // Tested
+    void INX_SP();
     void DCX_H();                                   // Tested
+    void DCX_B();                                   // Tested
+    void DCX_D();                                   // Tested
+    void DCX_SP();                                   // Tested
     void DCR_M();                                   // Tested
     // Add and Subtract groups
     void ADD_M();                                   // Tested
+    void ADC_M();                                   // Tested
     void ADD_r(uint8_t& r);                         // Tested
+    void ADC_r(uint8_t& r);                         // Tested
     void DAD(uint8_t& r1, uint8_t& r2);             // Tested
+    void DAD_SP();
     void ADI(uint8_t data);                         // Tested
+    void ACI(uint8_t data);                         // Tested
     void SUI(uint8_t data);                         // Tested
+    void SUB_r(uint8_t& r);                         // Tested
+    void SBB_r(uint8_t& r);                         // Tested
+    void SUB_M();
+    void SBB_M();
     void SBI(uint8_t data);                         // Tested
     // Logical and rotate groups
     void ANA_r(uint8_t& r);                         // Tested
     void ANA_M();                                   // Tested
     void XRA_r(uint8_t& r);                         // Tested
+    void XRA_M();                         // Tested
     void ORA_r(uint8_t& r);                         // Tested
     void ORA_M();                                   // Tested
     void CMP_r(uint8_t& r);                         // Tested
     void CMP_M();                                   // Skip
     void ORI(uint8_t data);                         // Tested
     void ANI(uint8_t data);                         // Tested
+    void XRI(uint8_t data);                         // Tested
     void CPI(uint8_t data);                         // Tested
     void RRC();                                     // Tested
     void RLC();                                     // Tested
     void RAR();                                     // Tested
+    void RAL();                                     // Tested
     // IO and special groups
     void OUT(uint8_t byte);                         // Pending
     void IN(uint8_t device);                        // Pending
     void EI();
+    void DI();
     void STC();                                     // Tested
     void CMA();                                     //
+    void CMC();                                     //
 
     // Internal
     bool Parity(uint8_t byte);
     void logical_flags(uint8_t result);
     void addition_flags(uint8_t a, uint8_t b, uint8_t cy);
     void subtraction_flags(uint8_t a, uint8_t b, uint8_t cy);
+    uint8_t read_rp(uint8_t r1, uint8_t r2);
+    uint8_t ReadFromRegPair(uint8_t& hi, uint8_t& lo);
+    void ZSPFlags(uint8_t result);
 };

@@ -9,7 +9,6 @@
 #include "i8080.h"
 #include "io_devices.h"
 
-
 void captureInputs(sf::RenderWindow& window)
 {
     using sf::Keyboard;
@@ -23,7 +22,6 @@ void captureInputs(sf::RenderWindow& window)
         }
     }
 }
-
 
 void drawGraphics(CPU_8080& cpu, sf::RenderWindow& window)
 {
@@ -113,24 +111,23 @@ int main(int argc, char** argv)
     std::cout << "Starting emulation..." << std::endl;
     while(window.isOpen() && cpu.Running())
     {
-        System_elapsed_time += System_time_clock.restart();
+    System_elapsed_time += System_time_clock.restart();
         if (System_elapsed_time.asMilliseconds() > 17/*TimePerFrame*/){
             System_elapsed_time = sf::Time::Zero;
 
             cpu.EmulateCycles(16666);
             /* cpu.EmulateCycles(500000); */
             // Generate Half screen interrupt (1)
-            cpu.Interrupt(0xcf); /*RST 1*/
+            cpu.Interrupt(0xcf); // RST 1
             cpu.EmulateCycles(16666);
             /* cpu.EmulateCycles(500000); */
+            /* cpu.PrintState(); */
             // Generate Full screen interrupt (2)
-            cpu.Interrupt(0xd7); /* RST 2 */
+            cpu.Interrupt(0xd7); // RST 2
 
             drawGraphics(cpu, window);
             window.display();
         }
-        //cpu.PrintState();
-        //cpu.ExecuteInstruction();
         captureInputs(window);
     }
 
