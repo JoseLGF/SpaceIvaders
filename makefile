@@ -27,7 +27,7 @@ BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
 # Shared Compiler Flags
 CFLAGS := -ggdb -O0
 OFLAGS  = $(LIBDIRS) -lm -lpthread -lncurses \
-		  -lsfml-graphics -lsfml-window -lsfml-system
+		  -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
 
 INC := -I include #$(INCLIST) -I /usr/local/include
 LIB := -L /usr/local/lib

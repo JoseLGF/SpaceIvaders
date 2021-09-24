@@ -495,10 +495,10 @@ void CPU_8080::CMP_M()
     logical_flags(result);
 
     cc.cy = (mem > a);
-    if((a & 0x80) != (mem & 0x80))
-    {
-        cc.cy = !cc.cy;
-    }
+    /* if((a & 0x80) != (mem & 0x80)) */
+    /* { */
+    /*     cc.cy = !cc.cy; */
+    /* } */
 
     pc += 1;
     cycles += 7;

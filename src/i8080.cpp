@@ -104,7 +104,7 @@ void CPU_8080::EmulateCycles(uint32_t num_cycles)
     while(cycles < num_cycles)
     {
         RegularInstruction();
-        std::cout << std::hex << pc << std::endl;
+        /* std::cout << std::hex << pc << std::endl; */
     }
 }
 

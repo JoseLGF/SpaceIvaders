@@ -3,22 +3,61 @@
  */
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <SFML/System.hpp>
 #include <iostream>
 #include <cstdio>
 #include "i8080.h"
 #include "io_devices.h"
 
-void captureInputs(sf::RenderWindow& window)
+void captureInputs(sf::RenderWindow& window, Io_devices& devices)
 {
     using sf::Keyboard;
 
     sf::Event event;
-    while (window.pollEvent(event))
-    {
-        if (event.type == sf::Event::Closed)
-        {
+    while (window.pollEvent(event)) {
+        if (event.type == sf::Event::Closed) {
             window.close();
+        }
+
+        if (event.type == sf::Event::KeyPressed) {
+            switch (event.key.code) {
+                case sf::Keyboard::C:
+                    devices.port1 |= 0x01;
+                    break;
+                case sf::Keyboard::Enter:
+                    devices.port1 |= 0x04;
+                    break;
+                case sf::Keyboard::Space:
+                    devices.port1 |= 0x10;
+                    break;
+                case sf::Keyboard::Left:
+                    devices.port1 |= 0x20;
+                    break;
+                case sf::Keyboard::Right:
+                    devices.port1 |= 0x40;
+                    break;
+            }
+        }
+
+        if (event.type == sf::Event::KeyReleased) {
+            switch (event.key.code) {
+                case sf::Keyboard::C:
+                    devices.port1 &= 0xfe;
+                    break;
+                case sf::Keyboard::Enter:
+                    devices.port1 &= 0xfb;
+                    break;
+                case sf::Keyboard::Space:
+                    devices.port1 &= 0xef;
+                    break;
+                case sf::Keyboard::Left:
+                    devices.port1 &= 0xdf;
+                    break;
+                case sf::Keyboard::Right:
+                    devices.port1 &= 0xbf;
+                    break;
+            }
         }
     }
 }
@@ -128,10 +167,12 @@ int main(int argc, char** argv)
             drawGraphics(cpu, window);
             window.display();
         }
-        captureInputs(window);
-    }
+        captureInputs(window, devices);
+        devices.UpdateSounds();
 
-    cpu.DumpMemory();
+
+
+    }
     std::cout << "Bye!" << std::endl;
 
     return 0;
