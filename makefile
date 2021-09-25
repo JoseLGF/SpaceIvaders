@@ -44,7 +44,7 @@ endif
 # SDL Build, Use: $ make LIB_SDL=1
 ###################################################################
 ifeq ($(SYSLIB),SDL)
-	OFLAGS  += -lSDL2
+	OFLAGS  += -lSDL2 `pkg-config --cflags --libs sdl2` -lSDL2_mixer
 	CFLAGS	+= -DLIB_SDL
 endif
 ###################################################################

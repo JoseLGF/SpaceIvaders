@@ -188,7 +188,7 @@ int main(int argc, char** argv)
             window.display();
         }
         captureInputs(window, devices);
-#ifdef SOUND_ENABLED
+#ifdef LIB_SFML
         devices.UpdateSounds();
 #endif
 

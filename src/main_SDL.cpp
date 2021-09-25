@@ -137,7 +137,7 @@ int main(int argc, char** argv)
     SDL_Window *window;
     int i;
 
-    SDL_Init(SDL_INIT_VIDEO);
+    SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     SDL_CreateWindowAndRenderer(224, 256, 0, &window, &renderer);
 
     // Setup io devices
@@ -172,7 +172,7 @@ int main(int argc, char** argv)
             drawGraphics(cpu, window, renderer);
         }
         captureInputs(devices);
-#ifdef SOUND_ENABLED
+#ifdef LIB_SDL
         devices.UpdateSounds();
 #endif
     }
