@@ -6,7 +6,14 @@
 #ifndef IO_DEVICES
 #define IO_DEVICES
 #include <string>
+
+#ifdef LIB_SFML
 #include <SFML/Audio.hpp>
+#endif
+#ifdef LIB_SDL
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_mixer.h>
+#endif
 
 class Io_devices {
 public:
@@ -52,6 +59,7 @@ public:
     bool currentUfohitSound;
 
     /* SFML sound interface */
+#ifdef LIB_SFML
     sf::SoundBuffer shootBuffer;
     sf::SoundBuffer explosionBuffer;
     sf::SoundBuffer fastinvader1Buffer;
@@ -71,6 +79,26 @@ public:
     sf::Sound invaderkilledSound;
     sf::Sound uforepeatSound;
     sf::Sound ufohitSound;
+
+    void SFML_AudioSetup();
+    void SFML_UpdateSounds();
+#endif
+
+    /* SDL sound interface */
+#ifdef LIB_SDL
+    Mix_Chunk *shootBuffer;
+    Mix_Chunk *explosionBuffer;
+    Mix_Chunk *fastinvader1Buffer;
+    Mix_Chunk *fastinvader2Buffer;
+    Mix_Chunk *fastinvader3Buffer;
+    Mix_Chunk *fastinvader4Buffer;
+    Mix_Chunk *invaderkilledBuffer;
+    Mix_Chunk *uforepeatBuffer;
+    Mix_Chunk *ufohitBuffer;
+
+    void SDL_AudioSetup();
+    void SDL_UpdateSounds();
+#endif
 
 };
 

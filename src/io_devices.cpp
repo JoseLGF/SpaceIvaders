@@ -2,6 +2,7 @@
 #include <iostream>
 #include <fstream>
 
+
 void Io_devices::Initialize()
 {
     port1 = 0x00;
@@ -19,7 +20,12 @@ void Io_devices::Initialize()
     lastFastinvader4Sound    = false;
     lastUforepeatSound       = false;
 
-    SetupSounds();
+#ifdef LIB_SFML
+    SFML_AudioSetup();
+#endif
+#ifdef LIB_SDL
+    SDL_AudioSetup();
+#endif
 }
 
 uint8_t Io_devices::Read_device(uint8_t device_number)
@@ -63,6 +69,17 @@ void Io_devices::Fill_shift_register(uint8_t data)
 }
 
 void Io_devices::UpdateSounds()
+{
+#ifdef LIB_SFML
+    SFML_UpdateSounds();
+#endif
+#ifdef LIB_SDL
+    SDL_UpdateSounds();
+#endif
+}
+
+#ifdef LIB_SFML
+void Io_devices::SFML_UpdateSounds()
 {
     currentUforepeatSound       = ((portout3 & 0x01) != 0);
     currentShootSoundActive     = ((portout3 & 0x02) != 0);
@@ -111,7 +128,7 @@ void Io_devices::UpdateSounds()
     lastUfohitSound = currentUfohitSound;
 }
 
-void Io_devices::SetupSounds()
+void Io_devices::SFML_AudioSetup()
 {
     // Load sounds from files
     if (
@@ -145,3 +162,106 @@ void Io_devices::SetupSounds()
     uforepeatSound.setLoop(true);
     std::cout << "Sounds setup complete." << std::endl;
 }
+#endif
+
+#ifdef LIB_SDL
+void Io_devices::SDL_AudioSetup()
+{
+    //Initialize SDL_mixer
+    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+    {
+        printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+    }
+
+    // Load sounds from files
+    uforepeatBuffer     = Mix_LoadWAV("./sounds/ufo_highpitch.wav");
+    ufohitBuffer        = Mix_LoadWAV("./sounds/ufo_lowpitch.wav");
+    shootBuffer         = Mix_LoadWAV("./sounds/shoot.wav");
+    explosionBuffer     = Mix_LoadWAV("./sounds/explosion.wav");
+    fastinvader1Buffer  = Mix_LoadWAV("./sounds/fastinvader1.wav");
+    fastinvader2Buffer  = Mix_LoadWAV("./sounds/fastinvader2.wav");
+    fastinvader3Buffer  = Mix_LoadWAV("./sounds/fastinvader3.wav");
+    fastinvader4Buffer  = Mix_LoadWAV("./sounds/fastinvader4.wav");
+    invaderkilledBuffer = Mix_LoadWAV("./sounds/invaderkilled.wav");
+
+    if (
+        (shootBuffer         == NULL) ||
+        (uforepeatBuffer     == NULL) ||
+        (ufohitBuffer        == NULL) ||
+        (shootBuffer         == NULL) ||
+        (explosionBuffer     == NULL) ||
+        (fastinvader1Buffer  == NULL) ||
+        (fastinvader2Buffer  == NULL) ||
+        (fastinvader3Buffer  == NULL) ||
+        (fastinvader4Buffer  == NULL) ||
+        (invaderkilledBuffer == NULL)
+    )
+    {
+        std::cout << "SDL: Error loading audio files." << std::endl;
+    }
+    else
+    {
+        // Continue setup
+        /* uforepeatSound.setLoop(true); */
+        std::cout << "Sounds setup complete." << std::endl;
+    }
+}
+
+void Io_devices::SDL_UpdateSounds()
+{
+#define CHNL_SHOOT  0
+#define CHNL_EXPLSN 1
+#define CHNL_INVKLD 2
+#define CHNL_FSINV1 3
+#define CHNL_FSINV2 4
+#define CHNL_FSINV3 5
+#define CHNL_FSINV4 6
+#define CHNL_UFORPT 7
+#define CHNL_UFOHIT 8
+    currentUforepeatSound       = ((portout3 & 0x01) != 0);
+    currentShootSoundActive     = ((portout3 & 0x02) != 0);
+    currentExplosionSoundActive = ((portout3 & 0x04) != 0);
+    currentInvaderkilledSound   = ((portout3 & 0x08) != 0);
+    currentFastinvader1Sound    = ((portout5 & 0x01) != 0);
+    currentFastinvader2Sound    = ((portout5 & 0x02) != 0);
+    currentFastinvader3Sound    = ((portout5 & 0x04) != 0);
+    currentFastinvader4Sound    = ((portout5 & 0x08) != 0);
+    currentUfohitSound          = ((portout5 & 0x10) != 0);
+
+    if (!lastShootSoundActive && currentShootSoundActive) { Mix_PlayChannel(CHNL_SHOOT, shootBuffer, 0);}
+    if (lastShootSoundActive && !currentShootSoundActive) { Mix_HaltChannel(CHNL_SHOOT); }
+    lastShootSoundActive = currentShootSoundActive;
+
+    if (!lastExplosionSoundActive && currentExplosionSoundActive) { Mix_PlayChannel(CHNL_EXPLSN, explosionBuffer, 0); }
+    if (lastExplosionSoundActive && !currentExplosionSoundActive) { Mix_HaltChannel(CHNL_EXPLSN); }
+    lastExplosionSoundActive = currentExplosionSoundActive;
+
+    if (!lastInvaderkilledSound && currentInvaderkilledSound) { Mix_PlayChannel(CHNL_INVKLD, invaderkilledBuffer, 0); }
+    if (lastInvaderkilledSound && !currentInvaderkilledSound) { Mix_HaltChannel(CHNL_INVKLD); }
+    lastInvaderkilledSound = currentInvaderkilledSound;
+
+    if (!lastFastinvader1Sound && currentFastinvader1Sound) { Mix_PlayChannel(CHNL_FSINV1, fastinvader1Buffer, 0); }
+    if (lastFastinvader1Sound && !currentFastinvader1Sound) { Mix_HaltChannel(CHNL_FSINV1); }
+    lastFastinvader1Sound = currentFastinvader1Sound;
+
+    if (!lastFastinvader2Sound && currentFastinvader2Sound) { Mix_PlayChannel(CHNL_FSINV2, fastinvader2Buffer, 0); }
+    if (lastFastinvader2Sound && !currentFastinvader2Sound) { Mix_HaltChannel(CHNL_FSINV2); }
+    lastFastinvader2Sound = currentFastinvader2Sound;
+
+    if (!lastFastinvader3Sound && currentFastinvader3Sound) { Mix_PlayChannel(CHNL_FSINV3, fastinvader3Buffer, 0); }
+    if (lastFastinvader3Sound && !currentFastinvader3Sound) { Mix_HaltChannel(CHNL_FSINV3); }
+    lastFastinvader3Sound = currentFastinvader3Sound;
+
+    if (!lastFastinvader4Sound && currentFastinvader4Sound) { Mix_PlayChannel(CHNL_FSINV4, fastinvader4Buffer, 0); }
+    if (lastFastinvader4Sound && !currentFastinvader4Sound) { Mix_HaltChannel(CHNL_FSINV4); }
+    lastFastinvader4Sound = currentFastinvader4Sound;
+
+    if (!lastUforepeatSound && currentUforepeatSound) { Mix_PlayChannel(CHNL_UFORPT, uforepeatBuffer, -1); }
+    if (lastUforepeatSound && !currentUforepeatSound) { Mix_HaltChannel(CHNL_UFORPT); }
+    lastUforepeatSound = currentUforepeatSound;
+
+    if (!lastUfohitSound && currentUfohitSound) { Mix_PlayChannel(CHNL_UFOHIT, ufohitBuffer, 0); }
+    if (lastUfohitSound && !currentUfohitSound) { Mix_HaltChannel(CHNL_UFOHIT); }
+    lastUfohitSound = currentUfohitSound;
+}
+#endif
