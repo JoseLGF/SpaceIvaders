@@ -13,10 +13,10 @@ void Io_devices::Initialize()
     lastShootSoundActive     = false;
     lastExplosionSoundActive = false;
     lastInvaderkilledSound   = false;
-
-    currentShootSoundActive     = ((portout3 & 0x02) != 0);
-    currentExplosionSoundActive = ((portout3 & 0x04) != 0);
-    currentInvaderkilledSound   = ((portout3 & 0x08) != 0);
+    lastFastinvader1Sound    = false;
+    lastFastinvader2Sound    = false;
+    lastFastinvader3Sound    = false;
+    lastFastinvader4Sound    = false;
 
     SetupSounds();
 }
@@ -37,6 +37,7 @@ void Io_devices::Write_device(uint8_t device_number, uint8_t data)
     {
         case 0x2: Set_shift_register_result_offset(data);   break;
         case 0x3: portout3 = data;                          break;
+        case 0x5: portout5 = data;                          break;
         case 0x4: Fill_shift_register(data);                break;
         default : break;
     }
@@ -65,10 +66,10 @@ void Io_devices::UpdateSounds()
     currentShootSoundActive     = ((portout3 & 0x02) != 0);
     currentExplosionSoundActive = ((portout3 & 0x04) != 0);
     currentInvaderkilledSound   = ((portout3 & 0x08) != 0);
-    /* currentFastInvader1Sound    = ((devices.portout5 & 0x01) != 0); */
-    /* currentFastInvader2Sound    = ((devices.portout5 & 0x02) != 0); */
-    /* currentFastInvader3Sound    = ((devices.portout5 & 0x04) != 0); */
-    /* currentFastInvader4Sound    = ((devices.portout5 & 0x08) != 0); */
+    currentFastinvader1Sound    = ((portout5 & 0x01) != 0);
+    currentFastinvader2Sound    = ((portout5 & 0x02) != 0);
+    currentFastinvader3Sound    = ((portout5 & 0x04) != 0);
+    currentFastinvader4Sound    = ((portout5 & 0x08) != 0);
 
     if (!lastShootSoundActive && currentShootSoundActive) { shootSound.play(); }
     if (lastShootSoundActive && !currentShootSoundActive) { shootSound.stop(); }
@@ -81,6 +82,23 @@ void Io_devices::UpdateSounds()
     if (!lastInvaderkilledSound && currentInvaderkilledSound) { invaderkilledSound.play(); }
     if (lastInvaderkilledSound && !currentInvaderkilledSound) { invaderkilledSound.stop(); }
     lastInvaderkilledSound = currentInvaderkilledSound;
+
+    if (!lastFastinvader1Sound && currentFastinvader1Sound) { fastinvader1Sound.play(); }
+    if (lastFastinvader1Sound && !currentFastinvader1Sound) { fastinvader1Sound.stop(); }
+    lastFastinvader1Sound = currentFastinvader1Sound;
+
+    if (!lastFastinvader2Sound && currentFastinvader2Sound) { fastinvader2Sound.play(); }
+    if (lastFastinvader2Sound && !currentFastinvader2Sound) { fastinvader2Sound.stop(); }
+    lastFastinvader2Sound = currentFastinvader2Sound;
+
+    if (!lastFastinvader3Sound && currentFastinvader3Sound) { fastinvader3Sound.play(); }
+    if (lastFastinvader3Sound && !currentFastinvader3Sound) { fastinvader3Sound.stop(); }
+    lastFastinvader3Sound = currentFastinvader3Sound;
+
+    if (!lastFastinvader4Sound && currentFastinvader4Sound) { fastinvader4Sound.play(); }
+    if (lastFastinvader4Sound && !currentFastinvader4Sound) { fastinvader4Sound.stop(); }
+    lastFastinvader4Sound = currentFastinvader4Sound;
+
 }
 
 void Io_devices::SetupSounds()

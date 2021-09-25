@@ -34,18 +34,18 @@ public:
     bool lastShootSoundActive    ;
     bool lastExplosionSoundActive;
     bool lastInvaderkilledSound  ;
-    bool lastFastInvader1Sound   ;
-    bool lastFastInvader2Sound   ;
-    bool lastFastInvader3Sound   ;
-    bool lastFastInvader4Sound   ;
+    bool lastFastinvader1Sound   ;
+    bool lastFastinvader2Sound   ;
+    bool lastFastinvader3Sound   ;
+    bool lastFastinvader4Sound   ;
 
     bool currentShootSoundActive    ;
     bool currentExplosionSoundActive;
     bool currentInvaderkilledSound  ;
-    /* bool currentFastInvader1Sound; */
-    /* bool currentFastInvader2Sound; */
-    /* bool currentFastInvader3Sound; */
-    /* bool currentFastInvader4Sound; */
+    bool currentFastinvader1Sound;
+    bool currentFastinvader2Sound;
+    bool currentFastinvader3Sound;
+    bool currentFastinvader4Sound;
 
     /* SFML sound interface */
     sf::SoundBuffer shootBuffer;

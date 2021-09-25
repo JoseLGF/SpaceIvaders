@@ -155,11 +155,9 @@ int main(int argc, char** argv)
             System_elapsed_time = sf::Time::Zero;
 
             cpu.EmulateCycles(16666);
-            /* cpu.EmulateCycles(500000); */
             // Generate Half screen interrupt (1)
             cpu.Interrupt(0xcf); // RST 1
             cpu.EmulateCycles(16666);
-            /* cpu.EmulateCycles(500000); */
             /* cpu.PrintState(); */
             // Generate Full screen interrupt (2)
             cpu.Interrupt(0xd7); // RST 2
@@ -169,8 +167,6 @@ int main(int argc, char** argv)
         }
         captureInputs(window, devices);
         devices.UpdateSounds();
-
-
 
     }
     std::cout << "Bye!" << std::endl;
