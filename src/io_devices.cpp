@@ -17,6 +17,7 @@ void Io_devices::Initialize()
     lastFastinvader2Sound    = false;
     lastFastinvader3Sound    = false;
     lastFastinvader4Sound    = false;
+    lastUforepeatSound       = false;
 
     SetupSounds();
 }
@@ -63,6 +64,7 @@ void Io_devices::Fill_shift_register(uint8_t data)
 
 void Io_devices::UpdateSounds()
 {
+    currentUforepeatSound       = ((portout3 & 0x01) != 0);
     currentShootSoundActive     = ((portout3 & 0x02) != 0);
     currentExplosionSoundActive = ((portout3 & 0x04) != 0);
     currentInvaderkilledSound   = ((portout3 & 0x08) != 0);
@@ -99,12 +101,16 @@ void Io_devices::UpdateSounds()
     if (lastFastinvader4Sound && !currentFastinvader4Sound) { fastinvader4Sound.stop(); }
     lastFastinvader4Sound = currentFastinvader4Sound;
 
+    if (!lastUforepeatSound && currentUforepeatSound) { uforepeatSound.play(); }
+    if (lastUforepeatSound && !currentUforepeatSound) { uforepeatSound.stop(); }
+    lastUforepeatSound = currentUforepeatSound;
 }
 
 void Io_devices::SetupSounds()
 {
     // Load sounds from files
     if (
+        !uforepeatBuffer.loadFromFile("./sounds/ufo_highpitch.wav")     ||
         !shootBuffer.loadFromFile("./sounds/shoot.wav")                 ||
         !explosionBuffer.loadFromFile("./sounds/explosion.wav")         ||
         !fastinvader1Buffer.loadFromFile("./sounds/fastinvader1.wav")   ||
@@ -121,6 +127,7 @@ void Io_devices::SetupSounds()
 
 
     // Continue setup
+    uforepeatSound.setBuffer(uforepeatBuffer);
     shootSound.setBuffer(shootBuffer);
     explosionSound.setBuffer(explosionBuffer);
     fastinvader1Sound.setBuffer(fastinvader1Buffer);
@@ -128,5 +135,6 @@ void Io_devices::SetupSounds()
     fastinvader3Sound.setBuffer(fastinvader3Buffer);
     fastinvader4Sound.setBuffer(fastinvader4Buffer);
     invaderkilledSound.setBuffer(invaderkilledBuffer);
+    uforepeatSound.setLoop(true);
     std::cout << "Sounds setup complete." << std::endl;
 }
