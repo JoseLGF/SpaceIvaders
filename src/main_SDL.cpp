@@ -1,19 +1,17 @@
 /*
  * Main file for the spaceInvaders emulator program.
- * This main file is for the SFML library
+ * This main program uses the SDL library
  */
+#ifdef LIB_SDL
 
-#ifdef LIB_SFML
-
-#include <SFML/Graphics.hpp>
-#include <SFML/Audio.hpp>
-#include <SFML/System.hpp>
+#include <SDL2/SDL.h>
 
 #include <iostream>
 #include <cstdio>
 #include "i8080.h"
 #include "io_devices.h"
 
+#ifdef TODO
 void captureInputs(sf::RenderWindow& window, Io_devices& devices)
 {
     using sf::Keyboard;
@@ -65,37 +63,41 @@ void captureInputs(sf::RenderWindow& window, Io_devices& devices)
         }
     }
 }
+#endif
 
-sf::Color calculateOverlay(uint8_t hor, uint8_t ver)
+SDL_Color calculateOverlay(uint8_t hor, uint8_t ver)
 {
+#define WHITE {255,255,255}
+#define RED   {255,  0,  0}
+#define GREEN {  0,255,  0}
     // Default Space invaders game overlay
     if (ver >= 256 - 32) {
-        return sf::Color::White;
+        return WHITE;
     }
     if (ver >= (256 - 32 - 32)) {
-        return sf::Color::Red;
+        return RED;
     }
     if (ver >= (256 - 32 - 32 - 120)) {
-        return sf::Color::White;
+        return WHITE;
     }
     if (ver >= (256 - 32 - 32 - 120 - 56)) {
-        return sf::Color::Green;
+        return GREEN;
     }
     // Last horizontal region divided in 3 parts
     if (hor <= 16) {
-        return sf::Color::White;
+        return WHITE;
     }
     if (hor <= (16 + 118)) {
-        return sf::Color::Green;
+        return GREEN;
     }
-    return sf::Color::White;
+    return WHITE;
 }
 
-void drawGraphics(CPU_8080& cpu, sf::RenderWindow& window)
+void drawGraphics(CPU_8080& cpu, SDL_Window * window, SDL_Renderer * renderer)
 {
-    // Create a 256x224 image filled with black color
-    sf::Image image;
-    image.create(224, 256, sf::Color::Black);
+    SDL_Color pixelColor;
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_RenderClear(renderer);
 
     // Draw the pixels from the memory locations 0x2400 - 0x3fff
     // into the window screen
@@ -112,45 +114,37 @@ void drawGraphics(CPU_8080& cpu, sf::RenderWindow& window)
 
             bool thisPixel =
                 (cpu.MemoryRead(current_byte) & (1 << current_bit)) != 0;
-            sf::Color thisColor;
 
             // retrieve the current pixel color
             if(thisPixel){
-                thisColor = calculateOverlay(v, h);
+                pixelColor = calculateOverlay(v, h);
+                SDL_SetRenderDrawColor(renderer, pixelColor.r, pixelColor.g, pixelColor.b, 255);
             }
             else{
-                thisColor = sf::Color::Black;
+                SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
             }
 
             // Rotate coordinates counter clockwise
-            image.setPixel(v, 256 - h - 1, thisColor);
+            SDL_RenderDrawPoint(renderer, v, 256-h-1);
         }
     }
-
-    // load image to texture
-    sf::Texture texture;
-    texture.loadFromImage(image);
-    sf::Sprite sprite;
-    sprite.setPosition(0, 0);
-    sprite.setTexture(texture, false);
-
-    // draw image in window
-    window.draw(sprite);
+    SDL_RenderPresent(renderer);
 }
+
 
 int main(int argc, char** argv)
 {
 
     std::cout << "Space Invaders Emulator!" << std::endl;
 
-    // Setup sfml Graphics
-    sf::ContextSettings settings;
-    settings.antialiasingLevel = 8;
-    sf::RenderWindow window(
-            sf::VideoMode(224, 256),
-            "I8080 Emulator",
-            sf::Style::Default, settings);
-    window.setFramerateLimit(60);
+    // Setup SDL System
+    SDL_Event event;
+    SDL_Renderer *renderer;
+    SDL_Window *window;
+    int i;
+
+    SDL_Init(SDL_INIT_VIDEO);
+    SDL_CreateWindowAndRenderer(224, 256, 0, &window, &renderer);
 
     // Setup io devices
     Io_devices devices;
@@ -164,36 +158,38 @@ int main(int argc, char** argv)
     cpu.Connect_io_dev(&devices);
 
     // System Time
-    sf::Clock System_time_clock;
-    sf::Time System_elapsed_time = sf::Time::Zero;
-    System_time_clock.restart();
+    uint32_t lastFrameTime = SDL_GetTicks();
+    uint32_t currentTime = SDL_GetTicks();
 
     // Emulation loop
     std::cout << "Starting emulation..." << std::endl;
-    while(window.isOpen() && cpu.Running())
-    {
-    System_elapsed_time += System_time_clock.restart();
-        if (System_elapsed_time.asMilliseconds() > 17/*TimePerFrame*/){
-            System_elapsed_time = sf::Time::Zero;
+    while(cpu.Running()) { //TODO add window running check
+        if (SDL_PollEvent(&event) && event.type == SDL_QUIT) {
+           break;
+        }
+        currentTime = SDL_GetTicks();
+        if ( (currentTime - lastFrameTime) > 17) {
+            lastFrameTime = currentTime;
 
             cpu.EmulateCycles(16666);
             // Generate Half screen interrupt (1)
             cpu.Interrupt(0xcf); // RST 1
             cpu.EmulateCycles(16666);
-            /* cpu.PrintState(); */
             // Generate Full screen interrupt (2)
             cpu.Interrupt(0xd7); // RST 2
 
-            drawGraphics(cpu, window);
-            window.display();
+            drawGraphics(cpu, window, renderer);
         }
-        captureInputs(window, devices);
+        /* captureInputs(window, devices); */
 #ifdef SOUND_ENABLED
         devices.UpdateSounds();
 #endif
-
     }
     std::cout << "Bye!" << std::endl;
+
+    SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(window);
+    SDL_Quit();
 
     return 0;
 }

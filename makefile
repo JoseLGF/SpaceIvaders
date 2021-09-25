@@ -1,6 +1,9 @@
 # Compiler to use
 CC := g++
 
+# System Library to use, choose between 'SFML' or 'SDL'
+SYSLIB := SDL
+
 # Folders
 SRCDIR    := src
 BUILDDIR  := build
@@ -26,13 +29,33 @@ BUILDLIST := $(patsubst include/%,$(BUILDDIR)/%,$(INCDIRS))
 
 # Shared Compiler Flags
 CFLAGS := -ggdb -O0
-OFLAGS  = $(LIBDIRS) -lm -lpthread -lncurses \
-		  -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+OFLAGS  = $(LIBDIRS) -lm -lpthread -lncurses
+
+###################################################################
+# SFML Build, Use: $ make LIB_SFML=1
+###################################################################
+ifeq ($(SYSLIB),SFML)
+	OFLAGS  += -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio
+	CFLAGS	+= -DLIB_SFML
+endif
+###################################################################
+
+###################################################################
+# SDL Build, Use: $ make LIB_SDL=1
+###################################################################
+ifeq ($(SYSLIB),SDL)
+	OFLAGS  += -lSDL2
+	CFLAGS	+= -DLIB_SDL
+endif
+###################################################################
 
 INC := -I include #$(INCLIST) -I /usr/local/include
 LIB := -L /usr/local/lib
 
 CFLAGS += -std=c++11
+# Uncomment as required
+#CFLAGS += -DSOUND_ENABLED
+CFLAGS += -DCONTROLS_ENABLED
 
 # rule for the main program
 $(TARGET): $(OBJECTS)

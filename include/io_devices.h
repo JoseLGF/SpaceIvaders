@@ -52,6 +52,7 @@ public:
     bool currentUfohitSound;
 
     /* SFML sound interface */
+#ifdef LIB_SFML
     sf::SoundBuffer shootBuffer;
     sf::SoundBuffer explosionBuffer;
     sf::SoundBuffer fastinvader1Buffer;
@@ -71,6 +72,7 @@ public:
     sf::Sound invaderkilledSound;
     sf::Sound uforepeatSound;
     sf::Sound ufohitSound;
+#endif
 
 };
 

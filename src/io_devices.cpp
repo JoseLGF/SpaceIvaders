@@ -19,7 +19,9 @@ void Io_devices::Initialize()
     lastFastinvader4Sound    = false;
     lastUforepeatSound       = false;
 
+#ifdef SOUND_ENABLED
     SetupSounds();
+#endif
 }
 
 uint8_t Io_devices::Read_device(uint8_t device_number)
@@ -62,6 +64,7 @@ void Io_devices::Fill_shift_register(uint8_t data)
         (data << 8);
 }
 
+#ifdef SOUND_ENABLED
 void Io_devices::UpdateSounds()
 {
     currentUforepeatSound       = ((portout3 & 0x01) != 0);
@@ -145,3 +148,4 @@ void Io_devices::SetupSounds()
     uforepeatSound.setLoop(true);
     std::cout << "Sounds setup complete." << std::endl;
 }
+#endif
