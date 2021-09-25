@@ -11,59 +11,54 @@
 #include "i8080.h"
 #include "io_devices.h"
 
-#ifdef TODO
-void captureInputs(sf::RenderWindow& window, Io_devices& devices)
+void captureInputs(Io_devices& devices)
 {
-    using sf::Keyboard;
-
-    sf::Event event;
-    while (window.pollEvent(event)) {
-        if (event.type == sf::Event::Closed) {
-            window.close();
+    SDL_Event event;
+    while (SDL_PollEvent(&event)) {
+        if (event.type == SDL_QUIT) {
+            exit(0);
         }
-
-        if (event.type == sf::Event::KeyPressed) {
-            switch (event.key.code) {
-                case sf::Keyboard::C:
+        if (event.type == SDL_KEYDOWN) {
+            switch (event.key.keysym.sym) {
+                case SDLK_c:
                     devices.port1 |= 0x01;
                     break;
-                case sf::Keyboard::Enter:
+                case SDLK_RETURN:
                     devices.port1 |= 0x04;
                     break;
-                case sf::Keyboard::Space:
+                case SDLK_SPACE:
                     devices.port1 |= 0x10;
                     break;
-                case sf::Keyboard::Left:
+                case SDLK_LEFT:
                     devices.port1 |= 0x20;
                     break;
-                case sf::Keyboard::Right:
+                case SDLK_RIGHT:
                     devices.port1 |= 0x40;
                     break;
             }
         }
 
-        if (event.type == sf::Event::KeyReleased) {
-            switch (event.key.code) {
-                case sf::Keyboard::C:
+        if (event.type == SDL_KEYUP) {
+            switch (event.key.keysym.sym) {
+                case SDLK_c:
                     devices.port1 &= 0xfe;
                     break;
-                case sf::Keyboard::Enter:
+                case SDLK_RETURN:
                     devices.port1 &= 0xfb;
                     break;
-                case sf::Keyboard::Space:
+                case SDLK_SPACE:
                     devices.port1 &= 0xef;
                     break;
-                case sf::Keyboard::Left:
+                case SDLK_LEFT:
                     devices.port1 &= 0xdf;
                     break;
-                case sf::Keyboard::Right:
+                case SDLK_RIGHT:
                     devices.port1 &= 0xbf;
                     break;
             }
         }
     }
 }
-#endif
 
 SDL_Color calculateOverlay(uint8_t hor, uint8_t ver)
 {
@@ -110,7 +105,6 @@ void drawGraphics(CPU_8080& cpu, SDL_Window * window, SDL_Renderer * renderer)
                                  + vertical_offset
                                  + horizontal_offset;
             uint8_t current_bit = (h % 8);
-
 
             bool thisPixel =
                 (cpu.MemoryRead(current_byte) & (1 << current_bit)) != 0;
@@ -164,9 +158,6 @@ int main(int argc, char** argv)
     // Emulation loop
     std::cout << "Starting emulation..." << std::endl;
     while(cpu.Running()) { //TODO add window running check
-        if (SDL_PollEvent(&event) && event.type == SDL_QUIT) {
-           break;
-        }
         currentTime = SDL_GetTicks();
         if ( (currentTime - lastFrameTime) > 17) {
             lastFrameTime = currentTime;
@@ -180,7 +171,7 @@ int main(int argc, char** argv)
 
             drawGraphics(cpu, window, renderer);
         }
-        /* captureInputs(window, devices); */
+        captureInputs(devices);
 #ifdef SOUND_ENABLED
         devices.UpdateSounds();
 #endif
