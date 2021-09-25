@@ -39,6 +39,7 @@ public:
     bool lastFastinvader3Sound   ;
     bool lastFastinvader4Sound   ;
     bool lastUforepeatSound;
+    bool lastUfohitSound;
 
     bool currentShootSoundActive    ;
     bool currentExplosionSoundActive;
@@ -48,6 +49,7 @@ public:
     bool currentFastinvader3Sound;
     bool currentFastinvader4Sound;
     bool currentUforepeatSound;
+    bool currentUfohitSound;
 
     /* SFML sound interface */
     sf::SoundBuffer shootBuffer;
@@ -58,6 +60,7 @@ public:
     sf::SoundBuffer fastinvader4Buffer;
     sf::SoundBuffer invaderkilledBuffer;
     sf::SoundBuffer uforepeatBuffer;
+    sf::SoundBuffer ufohitBuffer;
 
     sf::Sound shootSound;
     sf::Sound explosionSound;
@@ -67,6 +70,7 @@ public:
     sf::Sound fastinvader4Sound;
     sf::Sound invaderkilledSound;
     sf::Sound uforepeatSound;
+    sf::Sound ufohitSound;
 
 };
 

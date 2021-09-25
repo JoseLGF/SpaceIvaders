@@ -72,6 +72,7 @@ void Io_devices::UpdateSounds()
     currentFastinvader2Sound    = ((portout5 & 0x02) != 0);
     currentFastinvader3Sound    = ((portout5 & 0x04) != 0);
     currentFastinvader4Sound    = ((portout5 & 0x08) != 0);
+    currentUfohitSound          = ((portout5 & 0x10) != 0);
 
     if (!lastShootSoundActive && currentShootSoundActive) { shootSound.play(); }
     if (lastShootSoundActive && !currentShootSoundActive) { shootSound.stop(); }
@@ -104,6 +105,10 @@ void Io_devices::UpdateSounds()
     if (!lastUforepeatSound && currentUforepeatSound) { uforepeatSound.play(); }
     if (lastUforepeatSound && !currentUforepeatSound) { uforepeatSound.stop(); }
     lastUforepeatSound = currentUforepeatSound;
+
+    if (!lastUfohitSound && currentUfohitSound) { ufohitSound.play(); }
+    if (lastUfohitSound && !currentUfohitSound) { ufohitSound.stop(); }
+    lastUfohitSound = currentUfohitSound;
 }
 
 void Io_devices::SetupSounds()
@@ -111,6 +116,7 @@ void Io_devices::SetupSounds()
     // Load sounds from files
     if (
         !uforepeatBuffer.loadFromFile("./sounds/ufo_highpitch.wav")     ||
+        !ufohitBuffer.loadFromFile("./sounds/ufo_lowpitch.wav")         ||
         !shootBuffer.loadFromFile("./sounds/shoot.wav")                 ||
         !explosionBuffer.loadFromFile("./sounds/explosion.wav")         ||
         !fastinvader1Buffer.loadFromFile("./sounds/fastinvader1.wav")   ||
@@ -128,6 +134,7 @@ void Io_devices::SetupSounds()
 
     // Continue setup
     uforepeatSound.setBuffer(uforepeatBuffer);
+    ufohitSound.setBuffer(ufohitBuffer);
     shootSound.setBuffer(shootBuffer);
     explosionSound.setBuffer(explosionBuffer);
     fastinvader1Sound.setBuffer(fastinvader1Buffer);
