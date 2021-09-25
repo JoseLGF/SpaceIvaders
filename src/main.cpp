@@ -62,6 +62,31 @@ void captureInputs(sf::RenderWindow& window, Io_devices& devices)
     }
 }
 
+sf::Color calculateOverlay(uint8_t hor, uint8_t ver)
+{
+    // Default Space invaders game overlay
+    if (ver >= 256 - 32) {
+        return sf::Color::White;
+    }
+    if (ver >= (256 - 32 - 32)) {
+        return sf::Color::Red;
+    }
+    if (ver >= (256 - 32 - 32 - 120)) {
+        return sf::Color::White;
+    }
+    if (ver >= (256 - 32 - 32 - 120 - 56)) {
+        return sf::Color::Green;
+    }
+    // Last horizontal region divided in 3 parts
+    if (hor <= 16) {
+        return sf::Color::White;
+    }
+    if (hor <= (16 + 118)) {
+        return sf::Color::Green;
+    }
+    return sf::Color::White;
+}
+
 void drawGraphics(CPU_8080& cpu, sf::RenderWindow& window)
 {
     // Create a 256x224 image filled with black color
@@ -87,7 +112,7 @@ void drawGraphics(CPU_8080& cpu, sf::RenderWindow& window)
 
             // retrieve the current pixel color
             if(thisPixel){
-                thisColor = sf::Color::White;
+                thisColor = calculateOverlay(v, h);
             }
             else{
                 thisColor = sf::Color::Black;
@@ -95,13 +120,6 @@ void drawGraphics(CPU_8080& cpu, sf::RenderWindow& window)
 
             // Rotate coordinates counter clockwise
             image.setPixel(v, 256 - h - 1, thisColor);
-            // Draw the corresponding pixel
-            /* for(int ii=0; ii<config_DotSize; ii++){ */
-            /* for(int jj=0; jj<config_DotSize; jj++){ */
-            /*     image.setPixel(config_DotSize*i+ii, config_DotSize*j+jj, thisColor); */
-            /* } */
-            /* } */
-
         }
     }
 
