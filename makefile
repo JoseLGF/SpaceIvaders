@@ -2,7 +2,7 @@
 CC := g++
 
 # System Library to use, choose between 'SFML' or 'SDL'
-SYSLIB := SFML
+SYSLIB := SDL
 
 # Folders
 SRCDIR    := src
