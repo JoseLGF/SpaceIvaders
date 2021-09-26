@@ -64,48 +64,6 @@ public:
     bool currentUforepeatSound;
     bool currentUfohitSound;
 
-    /* SFML sound interface */
-#ifdef LIB_SFML
-    sf::SoundBuffer shootBuffer;
-    sf::SoundBuffer explosionBuffer;
-    sf::SoundBuffer fastinvader1Buffer;
-    sf::SoundBuffer fastinvader2Buffer;
-    sf::SoundBuffer fastinvader3Buffer;
-    sf::SoundBuffer fastinvader4Buffer;
-    sf::SoundBuffer invaderkilledBuffer;
-    sf::SoundBuffer uforepeatBuffer;
-    sf::SoundBuffer ufohitBuffer;
-
-    sf::Sound shootSound;
-    sf::Sound explosionSound;
-    sf::Sound fastinvader1Sound;
-    sf::Sound fastinvader2Sound;
-    sf::Sound fastinvader3Sound;
-    sf::Sound fastinvader4Sound;
-    sf::Sound invaderkilledSound;
-    sf::Sound uforepeatSound;
-    sf::Sound ufohitSound;
-
-    void SFML_AudioSetup();
-    void SFML_UpdateSounds();
-#endif
-
-    /* SDL sound interface */
-#ifdef LIB_SDL
-    Mix_Chunk *shootBuffer;
-    Mix_Chunk *explosionBuffer;
-    Mix_Chunk *fastinvader1Buffer;
-    Mix_Chunk *fastinvader2Buffer;
-    Mix_Chunk *fastinvader3Buffer;
-    Mix_Chunk *fastinvader4Buffer;
-    Mix_Chunk *invaderkilledBuffer;
-    Mix_Chunk *uforepeatBuffer;
-    Mix_Chunk *ufohitBuffer;
-
-    void SDL_AudioSetup();
-    void SDL_UpdateSounds();
-#endif
-
 };
 
 #endif

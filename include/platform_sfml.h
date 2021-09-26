@@ -9,17 +9,6 @@
 class Io_devices;
 class CPU_8080;
 
-#define SNDID_EXPLOSION 0
-#define SNDID_SHOOT     1
-#define SNDID_FSTINV1   2
-#define SNDID_FSTINV2   3
-#define SNDID_FSTINV3   4
-#define SNDID_FSTINV4   5
-#define SNDID_INVKLLD   6
-#define SNDID_UFOREPT   7
-#define SNDID_UFOHIT    8
-
-
 class Platform_SFML {
 public:
     /* Public interface */

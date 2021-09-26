@@ -12,6 +12,7 @@
 #include <SDL2/SDL.h>
 #include <iostream>
 #include "io_devices.h"
+#include "i8080.h"
 
 void Platform_SDL::Initialize(Io_devices* devices, CPU_8080* cpu)
 {
@@ -20,6 +21,77 @@ void Platform_SDL::Initialize(Io_devices* devices, CPU_8080* cpu)
     // Graphics
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO);
     SDL_CreateWindowAndRenderer(224, 256, 0, &window, &renderer);
+
+    SetupAudio();
+}
+
+void Platform_SDL::SetupAudio()
+{
+    //Initialize SDL_mixer
+    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 ) {
+        printf( "SDL_mixer could not initialize! SDL_mixer Error: %s\n", Mix_GetError() );
+    }
+
+    // Load sounds from files
+    uforepeatBuffer     = Mix_LoadWAV("./sounds/ufo_highpitch.wav");
+    ufohitBuffer        = Mix_LoadWAV("./sounds/ufo_lowpitch.wav");
+    shootBuffer         = Mix_LoadWAV("./sounds/shoot.wav");
+    explosionBuffer     = Mix_LoadWAV("./sounds/explosion.wav");
+    fastinvader1Buffer  = Mix_LoadWAV("./sounds/fastinvader1.wav");
+    fastinvader2Buffer  = Mix_LoadWAV("./sounds/fastinvader2.wav");
+    fastinvader3Buffer  = Mix_LoadWAV("./sounds/fastinvader3.wav");
+    fastinvader4Buffer  = Mix_LoadWAV("./sounds/fastinvader4.wav");
+    invaderkilledBuffer = Mix_LoadWAV("./sounds/invaderkilled.wav");
+
+    if (
+        (shootBuffer         == NULL) ||
+        (uforepeatBuffer     == NULL) ||
+        (ufohitBuffer        == NULL) ||
+        (shootBuffer         == NULL) ||
+        (explosionBuffer     == NULL) ||
+        (fastinvader1Buffer  == NULL) ||
+        (fastinvader2Buffer  == NULL) ||
+        (fastinvader3Buffer  == NULL) ||
+        (fastinvader4Buffer  == NULL) ||
+        (invaderkilledBuffer == NULL)
+    )
+    {
+        std::cout << "SDL: Error loading audio files." << std::endl;
+    }
+    else {
+        // Continue setup
+        std::cout << "Sounds setup complete." << std::endl;
+    }
+}
+
+void Platform_SDL::PlaySound(uint8_t id)
+{
+    switch(id) {
+        case SNDID_EXPLOSION: Mix_PlayChannel(CHNL_SHOOT  , shootBuffer, 0); break;
+        case SNDID_SHOOT    : Mix_PlayChannel(CHNL_EXPLSN , explosionBuffer, 0); break;
+        case SNDID_FSTINV1  : Mix_PlayChannel(CHNL_INVKLD , fastinvader1Buffer, 0); break;
+        case SNDID_FSTINV2  : Mix_PlayChannel(CHNL_FSINV1 , fastinvader2Buffer, 0); break;
+        case SNDID_FSTINV3  : Mix_PlayChannel(CHNL_FSINV2 , fastinvader3Buffer, 0); break;
+        case SNDID_FSTINV4  : Mix_PlayChannel(CHNL_FSINV3 , fastinvader4Buffer, 0); break;
+        case SNDID_INVKLLD  : Mix_PlayChannel(CHNL_FSINV4 , invaderkilledBuffer, 0); break;
+        case SNDID_UFOREPT  : Mix_PlayChannel(CHNL_UFORPT , uforepeatBuffer, 0); break;
+        case SNDID_UFOHIT   : Mix_PlayChannel(CHNL_UFOHIT , ufohitBuffer, 0); break;
+    }
+}
+
+void Platform_SDL::StopSound(uint8_t id)
+{
+    switch(id) {
+        case SNDID_EXPLOSION: Mix_HaltChannel(CHNL_SHOOT ); break;
+        case SNDID_SHOOT    : Mix_HaltChannel(CHNL_EXPLSN); break;
+        case SNDID_FSTINV1  : Mix_HaltChannel(CHNL_INVKLD); break;
+        case SNDID_FSTINV2  : Mix_HaltChannel(CHNL_FSINV1); break;
+        case SNDID_FSTINV3  : Mix_HaltChannel(CHNL_FSINV2); break;
+        case SNDID_FSTINV4  : Mix_HaltChannel(CHNL_FSINV3); break;
+        case SNDID_INVKLLD  : Mix_HaltChannel(CHNL_FSINV4); break;
+        case SNDID_UFOREPT  : Mix_HaltChannel(CHNL_UFORPT); break;
+        case SNDID_UFOHIT   : Mix_HaltChannel(CHNL_UFOHIT); break;
+    }
 }
 
 void Platform_SDL::CaptureInputs(Io_devices& devices)

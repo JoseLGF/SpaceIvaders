@@ -34,7 +34,6 @@ void Platform_SFML::Initialize(Io_devices* devices, CPU_8080* cpu)
 
 void Platform_SFML::PlaySound(uint8_t id)
 {
-
     switch(id) {
         case SNDID_EXPLOSION: explosionSound.play(); break;
         case SNDID_SHOOT    : shootSound.play(); break;
@@ -50,7 +49,6 @@ void Platform_SFML::PlaySound(uint8_t id)
 
 void Platform_SFML::StopSound(uint8_t id)
 {
-
     switch(id) {
         case SNDID_EXPLOSION: explosionSound.stop(); break;
         case SNDID_SHOOT    : shootSound.stop(); break;
