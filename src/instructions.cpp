@@ -4,6 +4,7 @@
  */
 
 #include "i8080.h"
+#include "io_devices.h"
 
 #include <iostream>
 #include <string>

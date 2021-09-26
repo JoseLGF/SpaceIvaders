@@ -5,6 +5,7 @@
 
 #ifndef IO_DEVICES
 #define IO_DEVICES
+
 #include <string>
 
 #ifdef LIB_SFML
@@ -15,6 +16,8 @@
 #include <SDL2/SDL_mixer.h>
 #endif
 
+#include "platform.h"
+
 class Io_devices {
 public:
     /* Public interface */
@@ -23,6 +26,7 @@ public:
     void    Write_device(uint8_t device_number, uint8_t data);
     void    UpdateSounds();
     void    SetupSounds();
+    void    Connect(PLATFORMTYPE* platform);
 
 public:
     uint8_t port1;

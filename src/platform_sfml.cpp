@@ -13,6 +13,7 @@
 #include <SFML/System.hpp>
 #include <iostream>
 #include "io_devices.h"
+#include "i8080.h"
 
 void Platform_SFML::Initialize(Io_devices* devices, CPU_8080* cpu)
 {

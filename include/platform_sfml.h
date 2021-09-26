@@ -1,7 +1,12 @@
+#ifndef PLTFRM_SFML
+#define PLTFRM_SFML
+
+
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
-#include "io_devices.h"
-#include "i8080.h"
+
+class Io_devices;
+class CPU_8080;
 
 class Platform_SFML {
 public:
@@ -22,3 +27,5 @@ public:
     // Graphics
     sf::RenderWindow* window;
 };
+
+#endif

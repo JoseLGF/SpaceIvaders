@@ -7,7 +7,6 @@
 #define I8080_H
 
 #include <string>
-#include "io_devices.h"
 
 // Processor flags
 typedef struct ConditionCodes {
@@ -18,6 +17,8 @@ typedef struct ConditionCodes {
     uint8_t     ac  : 1; //  Unused in Space Invaders
     uint8_t     pad : 3;
 } ConditionCodes;
+
+class Io_devices;
 
 class CPU_8080 {
 public:
