@@ -28,6 +28,11 @@ void Io_devices::Initialize()
 #endif
 }
 
+void Io_devices::Connect(PLATFORMTYPE* platform)
+{
+    m_platform = platform;
+}
+
 uint8_t Io_devices::Read_device(uint8_t device_number)
 {
     switch(device_number)
@@ -70,17 +75,6 @@ void Io_devices::Fill_shift_register(uint8_t data)
 
 void Io_devices::UpdateSounds()
 {
-#ifdef LIB_SFML
-    SFML_UpdateSounds();
-#endif
-#ifdef LIB_SDL
-    SDL_UpdateSounds();
-#endif
-}
-
-#ifdef LIB_SFML
-void Io_devices::SFML_UpdateSounds()
-{
     currentUforepeatSound       = ((portout3 & 0x01) != 0);
     currentShootSoundActive     = ((portout3 & 0x02) != 0);
     currentExplosionSoundActive = ((portout3 & 0x04) != 0);
@@ -90,42 +84,46 @@ void Io_devices::SFML_UpdateSounds()
     currentFastinvader3Sound    = ((portout5 & 0x04) != 0);
     currentFastinvader4Sound    = ((portout5 & 0x08) != 0);
     currentUfohitSound          = ((portout5 & 0x10) != 0);
-
-    if (!lastShootSoundActive && currentShootSoundActive) { shootSound.play(); }
-    if (lastShootSoundActive && !currentShootSoundActive) { shootSound.stop(); }
+    if (!lastShootSoundActive && currentShootSoundActive) { m_platform->PlaySound(SNDID_SHOOT); }
+    if (lastShootSoundActive && !currentShootSoundActive) { m_platform->StopSound(SNDID_SHOOT); }
     lastShootSoundActive = currentShootSoundActive;
 
-    if (!lastExplosionSoundActive && currentExplosionSoundActive) { explosionSound.play(); }
-    if (lastExplosionSoundActive && !currentExplosionSoundActive) { explosionSound.stop(); }
+    if (!lastExplosionSoundActive && currentExplosionSoundActive) { m_platform->PlaySound(SNDID_EXPLOSION); }
+    if (lastExplosionSoundActive && !currentExplosionSoundActive) { m_platform->StopSound(SNDID_EXPLOSION); }
     lastExplosionSoundActive = currentExplosionSoundActive;
 
-    if (!lastInvaderkilledSound && currentInvaderkilledSound) { invaderkilledSound.play(); }
-    if (lastInvaderkilledSound && !currentInvaderkilledSound) { invaderkilledSound.stop(); }
+    if (!lastInvaderkilledSound && currentInvaderkilledSound) { m_platform->PlaySound(SNDID_INVKLLD); }
+    if (lastInvaderkilledSound && !currentInvaderkilledSound) { m_platform->StopSound(SNDID_INVKLLD); }
     lastInvaderkilledSound = currentInvaderkilledSound;
 
-    if (!lastFastinvader1Sound && currentFastinvader1Sound) { fastinvader1Sound.play(); }
-    if (lastFastinvader1Sound && !currentFastinvader1Sound) { fastinvader1Sound.stop(); }
+    if (!lastFastinvader1Sound && currentFastinvader1Sound) { m_platform->PlaySound(SNDID_FSTINV1); }
+    if (lastFastinvader1Sound && !currentFastinvader1Sound) { m_platform->StopSound(SNDID_FSTINV1); }
     lastFastinvader1Sound = currentFastinvader1Sound;
 
-    if (!lastFastinvader2Sound && currentFastinvader2Sound) { fastinvader2Sound.play(); }
-    if (lastFastinvader2Sound && !currentFastinvader2Sound) { fastinvader2Sound.stop(); }
+    if (!lastFastinvader2Sound && currentFastinvader2Sound) { m_platform->PlaySound(SNDID_FSTINV2); }
+    if (lastFastinvader2Sound && !currentFastinvader2Sound) { m_platform->StopSound(SNDID_FSTINV2); }
     lastFastinvader2Sound = currentFastinvader2Sound;
 
-    if (!lastFastinvader3Sound && currentFastinvader3Sound) { fastinvader3Sound.play(); }
-    if (lastFastinvader3Sound && !currentFastinvader3Sound) { fastinvader3Sound.stop(); }
+    if (!lastFastinvader3Sound && currentFastinvader3Sound) { m_platform->PlaySound(SNDID_FSTINV3); }
+    if (lastFastinvader3Sound && !currentFastinvader3Sound) { m_platform->StopSound(SNDID_FSTINV3); }
     lastFastinvader3Sound = currentFastinvader3Sound;
 
-    if (!lastFastinvader4Sound && currentFastinvader4Sound) { fastinvader4Sound.play(); }
-    if (lastFastinvader4Sound && !currentFastinvader4Sound) { fastinvader4Sound.stop(); }
+    if (!lastFastinvader4Sound && currentFastinvader4Sound) { m_platform->PlaySound(SNDID_FSTINV4); }
+    if (lastFastinvader4Sound && !currentFastinvader4Sound) { m_platform->StopSound(SNDID_FSTINV4); }
     lastFastinvader4Sound = currentFastinvader4Sound;
 
-    if (!lastUforepeatSound && currentUforepeatSound) { uforepeatSound.play(); }
-    if (lastUforepeatSound && !currentUforepeatSound) { uforepeatSound.stop(); }
+    if (!lastUforepeatSound && currentUforepeatSound) { m_platform->PlaySound(SNDID_UFOREPT); }
+    if (lastUforepeatSound && !currentUforepeatSound) { m_platform->StopSound(SNDID_UFOREPT); }
     lastUforepeatSound = currentUforepeatSound;
 
-    if (!lastUfohitSound && currentUfohitSound) { ufohitSound.play(); }
-    if (lastUfohitSound && !currentUfohitSound) { ufohitSound.stop(); }
+    if (!lastUfohitSound && currentUfohitSound) { m_platform->PlaySound(SNDID_UFOHIT); }
+    if (lastUfohitSound && !currentUfohitSound) { m_platform->StopSound(SNDID_UFOHIT); }
     lastUfohitSound = currentUfohitSound;
+}
+
+#ifdef LIB_SFML
+void Io_devices::SFML_UpdateSounds()
+{
 }
 
 void Io_devices::SFML_AudioSetup()

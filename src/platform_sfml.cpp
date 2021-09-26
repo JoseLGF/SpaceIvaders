@@ -11,6 +11,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <SFML/Audio.hpp>
 #include <iostream>
 #include "io_devices.h"
 #include "i8080.h"
@@ -27,6 +28,73 @@ void Platform_SFML::Initialize(Io_devices* devices, CPU_8080* cpu)
             "I8080 Emulator",
             sf::Style::Default, settings);
     window->setFramerateLimit(60);
+
+    SetupAudio();
+}
+
+void Platform_SFML::PlaySound(uint8_t id)
+{
+
+    switch(id) {
+        case SNDID_EXPLOSION: explosionSound.play(); break;
+        case SNDID_SHOOT    : shootSound.play(); break;
+        case SNDID_FSTINV1  : fastinvader1Sound.play(); break;
+        case SNDID_FSTINV2  : fastinvader2Sound.play(); break;
+        case SNDID_FSTINV3  : fastinvader3Sound.play(); break;
+        case SNDID_FSTINV4  : fastinvader4Sound.play(); break;
+        case SNDID_INVKLLD  : invaderkilledSound.play(); break;
+        case SNDID_UFOREPT  : uforepeatSound.play(); break;
+        case SNDID_UFOHIT   : ufohitSound.play(); break;
+    }
+}
+
+void Platform_SFML::StopSound(uint8_t id)
+{
+
+    switch(id) {
+        case SNDID_EXPLOSION: explosionSound.stop(); break;
+        case SNDID_SHOOT    : shootSound.stop(); break;
+        case SNDID_FSTINV1  : fastinvader1Sound.stop(); break;
+        case SNDID_FSTINV2  : fastinvader2Sound.stop(); break;
+        case SNDID_FSTINV3  : fastinvader3Sound.stop(); break;
+        case SNDID_FSTINV4  : fastinvader4Sound.stop(); break;
+        case SNDID_INVKLLD  : invaderkilledSound.stop(); break;
+        case SNDID_UFOREPT  : uforepeatSound.stop(); break;
+        case SNDID_UFOHIT   : ufohitSound.stop(); break;
+    }
+}
+
+void Platform_SFML::SetupAudio()
+{
+    if (
+        !uforepeatBuffer.loadFromFile("./sounds/ufo_highpitch.wav")     ||
+        !ufohitBuffer.loadFromFile("./sounds/ufo_lowpitch.wav")         ||
+        !shootBuffer.loadFromFile("./sounds/shoot.wav")                 ||
+        !explosionBuffer.loadFromFile("./sounds/explosion.wav")         ||
+        !fastinvader1Buffer.loadFromFile("./sounds/fastinvader1.wav")   ||
+        !fastinvader2Buffer.loadFromFile("./sounds/fastinvader2.wav")   ||
+        !fastinvader3Buffer.loadFromFile("./sounds/fastinvader3.wav")   ||
+        !fastinvader4Buffer.loadFromFile("./sounds/fastinvader4.wav")   ||
+        !invaderkilledBuffer.loadFromFile("./sounds/invaderkilled.wav")
+       )
+    {
+        std::cout << "Error loading sounds." << std::endl;
+        return;
+    }
+    std::cout << "Sounds loaded correctly." << std::endl;
+
+    // Continue setup
+    uforepeatSound.setBuffer(uforepeatBuffer);
+    ufohitSound.setBuffer(ufohitBuffer);
+    shootSound.setBuffer(shootBuffer);
+    explosionSound.setBuffer(explosionBuffer);
+    fastinvader1Sound.setBuffer(fastinvader1Buffer);
+    fastinvader2Sound.setBuffer(fastinvader2Buffer);
+    fastinvader3Sound.setBuffer(fastinvader3Buffer);
+    fastinvader4Sound.setBuffer(fastinvader4Buffer);
+    invaderkilledSound.setBuffer(invaderkilledBuffer);
+    uforepeatSound.setLoop(true);
+    std::cout << "Sounds setup complete." << std::endl;
 }
 
 void Platform_SFML::CaptureInputs(sf::RenderWindow& window, Io_devices& devices)

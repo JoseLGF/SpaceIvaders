@@ -29,6 +29,8 @@ public:
     void    Connect(PLATFORMTYPE* platform);
 
 public:
+    PLATFORMTYPE * m_platform;
+
     uint8_t port1;
     uint8_t portout3;
     uint8_t portout5;

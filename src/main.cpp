@@ -13,19 +13,24 @@ int main(int argc, char** argv)
 {
     std::cout << "Space Invaders Emulator!" << std::endl;
 
-    // Setup io devices
+    // Spawns
     Io_devices devices;
+    CPU_8080 cpu;
+    PLATFORMTYPE platform;
+
+    // connections
+    devices.Connect(&platform);
+    cpu.Connect_io_dev(&devices);
+
+    // Setup io devices
     devices.Initialize();
 
     // Setup cpu
     std::cout << "Setup CPU..." << std::endl;
-    CPU_8080 cpu;
     cpu.Initialize();
     cpu.LoadRom("invaders");
-    cpu.Connect_io_dev(&devices);
 
     // Setup System Platform
-    PLATFORMTYPE platform;
     platform.Initialize(&devices, &cpu);
 
     platform.BeginEmulation();
