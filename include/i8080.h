@@ -3,6 +3,9 @@
  * Description: Header definitions for the i8080 cpu class.
  * */
 
+#ifndef I8080_H
+#define I8080_H
+
 #include <string>
 #include "io_devices.h"
 
@@ -210,3 +213,6 @@ public:
     uint8_t ReadFromRegPair(uint8_t& hi, uint8_t& lo);
     void ZSPFlags(uint8_t result);
 };
+
+
+#endif
