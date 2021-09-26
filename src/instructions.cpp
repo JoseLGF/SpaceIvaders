@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstdint>
 
 // Add r1&r2 to H&L
 void CPU_8080::DAD(uint8_t& r1, uint8_t& r2)

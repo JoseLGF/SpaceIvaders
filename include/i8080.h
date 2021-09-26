@@ -6,7 +6,11 @@
 #ifndef I8080_H
 #define I8080_H
 
-#include <string>
+#include <cstdint>
+
+// Forward declarations
+class Io_devices;
+class Memory;
 
 // Processor flags
 typedef struct ConditionCodes {
@@ -18,73 +22,30 @@ typedef struct ConditionCodes {
     uint8_t     pad : 3;
 } ConditionCodes;
 
-class Io_devices;
-
 class CPU_8080 {
 public:
     /* Public interface */
 	void Initialize();
 	void ExecuteInstruction(uint8_t opcode);
 	void EmulateCycles(uint32_t num_cycles);
-    void LoadRom(std::string filename);
-    void PrintState();
     bool Running();
-    void DumpMemory();
     void Interrupt(uint8_t opcode);
-    void Connect_io_dev(Io_devices* devices);
+    void Connect(Io_devices* devices, Memory* memory);
 
-public:
     /* Memory Read and Write interface */
     uint8_t MemoryRead(uint16_t address);
     void MemoryWrite(uint16_t address, uint8_t data);
-
-public:
     /* Internal functions */
     void RegularInstruction();
 
-public:
-    /* Functions for unit testing */
-    bool Get_z();
-    bool Get_s();
-    bool Get_p();
-    bool Get_cy();
-    bool Get_ac();
-    void Set_z(bool bit);
-    void Set_s(bool bit);
-    void Set_p(bool bit);
-    void Set_cy(bool bit);
-    void Set_ac(bool bit);
 
-    uint8_t Get_a();
-    uint8_t Get_b();
-    uint8_t Get_c();
-    uint8_t Get_d();
-    uint8_t Get_e();
-    uint8_t Get_h();
-    uint8_t Get_l();
-    void Set_a(uint8_t data);
-    void Set_b(uint8_t data);
-    void Set_c(uint8_t data);
-    void Set_d(uint8_t data);
-    void Set_e(uint8_t data);
-    void Set_h(uint8_t data);
-    void Set_l(uint8_t data);
-
-    uint16_t Get_sp();
-    void Set_sp(uint16_t address);
-    uint16_t Get_pc();
-    void Set_pc(uint16_t address);
-
-    uint8_t ReadMemoryAt(uint16_t address);
-    void WriteMemoryAt(uint16_t address, uint8_t data);
-
-    void DisassembleOp();
+private:
+    // External devices class connected to the cpu
+    Io_devices* devices;
+    Memory *    m_memory;
 
 // CPU state
 public:
-    // External devices class connected to the cpu
-    Io_devices* devices;
-
     // Accumulator register a
     uint8_t     a;
     // General purpose registers b,c,d,e
@@ -99,12 +60,6 @@ public:
     uint16_t    sp;
     // Program counter
     uint16_t    pc;
-    // Memory
-    // 0x0000 - 0x1fff - Game  ROM
-    // 0x2000 - 0x23ff - Work  RAM
-    // 0x2400 - 0x3fff - Video RAM
-    // 0x4000 - ------ - RAM mirror
-    uint8_t     memory[0x4000];
     // Processor flags
     struct ConditionCodes cc;
     // interrupt enable

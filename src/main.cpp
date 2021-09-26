@@ -8,31 +8,28 @@
 #include "i8080.h"
 #include "io_devices.h"
 #include "platform.h"
+#include "memory.h"
 
 int main(int argc, char** argv)
 {
-    std::cout << "Space Invaders Emulator!" << std::endl;
+    // Spawn modules
+    Io_devices      devices;
+    CPU_8080        cpu;
+    PLATFORMTYPE    platform;
+    Memory          memory;
 
-    // Spawns
-    Io_devices devices;
-    CPU_8080 cpu;
-    PLATFORMTYPE platform;
-
-    // connections
+    // Modules interconnections
     devices.Connect(&platform);
-    cpu.Connect_io_dev(&devices);
+    cpu.Connect(&devices, &memory);
 
-    // Setup io devices
+    // Module initializations
     devices.Initialize();
-
-    // Setup cpu
-    std::cout << "Setup CPU..." << std::endl;
     cpu.Initialize();
-    cpu.LoadRom("invaders");
-
-    // Setup System Platform
+    memory.Initialize();
+    memory.LoadRom("invaders");
     platform.Initialize(&devices, &cpu);
 
+    // System operation
     platform.BeginEmulation();
 
     return 0;
