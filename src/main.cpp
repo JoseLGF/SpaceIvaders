@@ -1,6 +1,5 @@
 /*
  * Main file for the spaceInvaders emulator program.
- * This main file is for the SFML library
  */
 
 #include <iostream>
